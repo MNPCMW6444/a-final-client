@@ -3,6 +3,7 @@ import { Table, Thead, Tbody, Tr, Th, Td } from "react-super-responsive-table";
 import "react-super-responsive-table/dist/SuperResponsiveTableStyle.css";
 import "./todayStyles.css";
 import Axios from "axios";
+import domain from "../../../domain";
 
 export default function TodayTable() {
   const [all, setAll] = useState([
@@ -16,7 +17,7 @@ export default function TodayTable() {
   ]);
 
   useEffect(() => {
-    const promise = Axios.get("url");
+    const promise = Axios.get(domain + "all");
     promise.then((res) => setAll(res.data));
     return () => {};
   }, []);
