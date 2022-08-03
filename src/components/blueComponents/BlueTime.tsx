@@ -1,5 +1,7 @@
-import React from "react";
+import { useState } from "react";
 
 export default function BlueTime() {
-  return <div>{new Date().toLocaleString()}</div>;
+  const [time, setTime] = useState(new Date().toLocaleString());
+  setTimeout(() => setTime(new Date().toLocaleString()), 1000);
+  return <div>{time}</div>;
 }

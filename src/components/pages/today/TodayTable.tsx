@@ -1,92 +1,26 @@
-import React, { useEffect, useState } from "react";
 import { Table, Thead, Tbody, Tr, Th, Td } from "react-super-responsive-table";
 import "react-super-responsive-table/dist/SuperResponsiveTableStyle.css";
 import "./todayStyles.css";
-import Axios, { CancelTokenSource } from "axios";
-import domain from "../../../domain";
-import { iNotification, Store } from "react-notifications-component";
-const defaultSettings: iNotification = {
-  container: "bottom-center",
-  animationIn: ["animate__animated", "animate__fadeIn"],
-  animationOut: ["animate__animated", "animate__fadeOut"],
-  dismiss: {
-    duration: 3000,
-    onScreen: true,
-  },
-  insert: "top",
-};
 
-export default function TodayTable() {
-  const [all, setAll] = useState([
-    {
-      type: "loading...",
-      priority: "loading...",
-      title: "loading...",
-      other: "loading...",
-      actions: "loading...",
-    },
-  ]);
-  let isFetching = false;
+interface Item {
+  type: string;
+  priority: string;
+  title: string;
+  other: string;
+  actions: string;
+}
 
-  const getAll = async (source: CancelTokenSource) => {
-    isFetching = true;
-    Store.removeAllNotifications();
-    Store.addNotification({
-      title: "Connecting to Server",
-      message: "Trying for 3 seconds to fetch data",
-      type: "info",
+interface Event extends Item {
+  type: "event";
+}
 
-      ...defaultSettings,
-    });
-    const promise = Axios.get(domain + "all", { cancelToken: source.token });
-    promise.then((res) => {
-      setAll([...res.data.events, ...res.data.tasks]);
-      Store.removeAllNotifications();
-      Store.addNotification({
-        title: "Success",
-        message: "Data was fetched from the server",
-        type: "success",
+interface Task extends Item {
+  type: "task";
+}
 
-        ...defaultSettings,
-      });
-      isFetching = false;
-    });
-    promise.catch((err) => {
-      if (err.message !== "canceled") {
-        Store.removeAllNotifications();
-        Store.addNotification({
-          title: "Error",
-          message: err.message,
-          type: "danger",
-
-          ...defaultSettings,
-        });
-      }
-      isFetching = false;
-    });
-  };
-
-  useEffect(() => {
-    const source = Axios.CancelToken.source();
-    getAll(source);
-    return () => {
-      setTimeout(() => {
-        if (isFetching) {
-          source.cancel();
-          Store.removeAllNotifications();
-          Store.addNotification({
-            title: "Error!",
-            message: "Connection to server Timeout",
-            type: "danger",
-
-            ...defaultSettings,
-          });
-          isFetching = false;
-        }
-      }, 3000);
-    };
-  }, []);
-
+export default function TodayTable(props: {
+  all: false | { tasks: Task[]; events: Event[] };
+}) {
   return (
     <div className="todayTable">
       <Table>
@@ -100,17 +34,39 @@ export default function TodayTable() {
           </Tr>
         </Thead>
         <Tbody>
-          {all &&
-            all.length > 0 &&
-            all.map((item, i) => (
-              <Tr key={i}>
-                <Td>{item.type}</Td>
-                <Td>{item.priority}</Td>
-                <Td>{item.title}</Td>
-                <Td>{item.other}</Td>
-                <Td>{item.actions}</Td>
-              </Tr>
-            ))}
+          {typeof props.all === "object" ? (
+            <>
+              {props.all.events.length > 0 &&
+                props.all.events.map((event: Event, i: number) => (
+                  <Tr key={i}>
+                    <Td>Event</Td>
+                    <Td>{event.priority}</Td>
+                    <Td>{event.title}</Td>
+                    <Td>{event.other}</Td>
+                    <Td>{event.actions}</Td>
+                  </Tr>
+                ))}
+              {props.all.tasks.length > 0 &&
+                props.all.tasks.map((task: Task, i: number) => (
+                  <Tr key={i}>
+                    <Td>Task</Td>
+                    <Td>{task.priority}</Td>
+                    <Td>{task.title}</Td>
+                    <Td>{task.other}</Td>
+                    <Td>{task.actions}</Td>
+                  </Tr>
+                ))}
+              {props.all.tasks.length === 0 && props.all.tasks.length === 0 && (
+                <Tr>
+                  <Td colSpan={5}>No data matches the search</Td>
+                </Tr>
+              )}
+            </>
+          ) : (
+            <Tr>
+              <Td colSpan={5}>Can not get data from server</Td>
+            </Tr>
+          )}
         </Tbody>
       </Table>
     </div>
