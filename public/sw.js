@@ -1,7 +1,5 @@
 self.addEventListener("install", (e) => {
-  e.waitUntil(
-    caches.open("").then((cache) => cache.addAll(["/index.html", "/index.js"]))
-  );
+  e.waitUntil(caches.open("").then((cache) => cache.addAll(["/index.html"])));
 });
 
 self.addEventListener("fetch", (e) => {
