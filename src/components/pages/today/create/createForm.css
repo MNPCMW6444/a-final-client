@@ -1,0 +1,17 @@
+.createForm {
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.selectors {
+  width: 90vw;
+  height: 15;
+}
+
+.selector {
+  height: 5vh;
+  width: 50%;
+}

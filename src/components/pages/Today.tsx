@@ -2,9 +2,8 @@ import { useState } from "react";
 import Search from "./today/Search";
 import QuickFilters from "./today/QuickFilters";
 import TodayTable from "./today/TodayTable";
-import CreateButton from "./today/CreateButton";
+import Create from "./today/Create";
 import useFetch from "../../hooks/useFetch";
-import { FormatListNumberedSharp } from "@mui/icons-material";
 
 interface Item {
   type: string;
@@ -42,7 +41,7 @@ export default function Today() {
       <br />
       <TodayTable all={filteredAll} />
       <br />
-      <CreateButton />
+      <Create />
     </div>
   );
 }
