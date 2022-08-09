@@ -9,6 +9,8 @@ import FormControl from "@mui/material/FormControl";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
+import domain from "../../../../domain";
+import Axios from "axios";
 
 export default function CreateForm() {
   const [itemType, setItemType] = useState("");
@@ -16,11 +18,41 @@ export default function CreateForm() {
 
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
-  const [estimatedTime, setEstimatedTime] = useState(new Date());
+  const [estimatedTime, setEstimatedTime] = useState("");
   const [status, setStatus] = useState("");
   const [priority, setPriority] = useState("");
+  const [beginningTime, setBeginningTime] = useState("");
+  const [endingTime, setEndingTime] = useState("");
+  const [color, setColor] = useState("");
+  const [invitedGuests, setInvitedGuests] = useState("");
+  const [location, setLocation] = useState("");
 
-  const save = () => {};
+  const save = async () => {
+    setSavingStatus("Saving...");
+    console.log(estimatedTime);
+    debugger;
+    const dataToSave =
+      itemType === "Task"
+        ? {
+            title,
+            description,
+            estimatedTime,
+            status,
+            priority,
+          }
+        : {
+            title,
+            description,
+            beginningTime,
+            endingTime,
+            color,
+            invitedGuests,
+            location,
+            estimatedTime,
+          };
+    debugger;
+    const res = await Axios.post(domain + "save" + itemType, { dataToSave });
+  };
 
   return (
     <div className="createForm">
@@ -58,25 +90,8 @@ export default function CreateForm() {
               <br />
               <DatePicker
                 label="Estimated time"
-                value={
-                  estimatedTime.getDate() +
-                  "/" +
-                  estimatedTime.getMonth() +
-                  "/" +
-                  estimatedTime.getFullYear()
-                }
-                onChange={(e) => {
-                  debugger;
-                  const eString = e?.toString();
-                  if (eString && eString !== null)
-                    setEstimatedTime(
-                      new Date(
-                        parseInt(eString.split(" ")[2]),
-                        parseInt("9"),
-                        parseInt(eString.split(" ")[3])
-                      )
-                    );
-                }}
+                value={estimatedTime}
+                onChange={(e) => setEstimatedTime(e || "")}
                 renderInput={(params) => <TextField {...params} />}
               />
               <br />
@@ -107,6 +122,8 @@ export default function CreateForm() {
                 id="outlined-basic"
                 label="Title"
                 variant="outlined"
+                value={title}
+                onChange={(e) => setTitle(e.target.value)}
               />
               <br />
               <TextField
@@ -114,53 +131,21 @@ export default function CreateForm() {
                 id="outlined-basic"
                 label="Description"
                 variant="outlined"
+                value={description}
+                onChange={(e) => setDescription(e.target.value)}
               />
               <br />
               <DatePicker
                 label="Beginning time"
-                value={
-                  estimatedTime.getDate() +
-                  "/" +
-                  estimatedTime.getMonth() +
-                  "/" +
-                  estimatedTime.getFullYear()
-                }
-                onChange={(e) => {
-                  debugger;
-                  const eString = e?.toString();
-                  if (eString && eString !== null)
-                    setEstimatedTime(
-                      new Date(
-                        parseInt(eString.split(" ")[2]),
-                        parseInt("9"),
-                        parseInt(eString.split(" ")[3])
-                      )
-                    );
-                }}
+                value={beginningTime}
+                onChange={(e) => setBeginningTime(e || "")}
                 renderInput={(params) => <TextField {...params} />}
               />
               <br />
               <DatePicker
                 label="ending time"
-                value={
-                  estimatedTime.getDate() +
-                  "/" +
-                  estimatedTime.getMonth() +
-                  "/" +
-                  estimatedTime.getFullYear()
-                }
-                onChange={(e) => {
-                  debugger;
-                  const eString = e?.toString();
-                  if (eString && eString !== null)
-                    setEstimatedTime(
-                      new Date(
-                        parseInt(eString.split(" ")[2]),
-                        parseInt("9"),
-                        parseInt(eString.split(" ")[3])
-                      )
-                    );
-                }}
+                value={endingTime}
+                onChange={(e) => setEndingTime(e || "")}
                 renderInput={(params) => <TextField {...params} />}
               />
               <br />
@@ -169,41 +154,30 @@ export default function CreateForm() {
                 id="outlined-basic"
                 label="Color"
                 variant="outlined"
+                value={color}
+                onChange={(e) => setColor(e.target.value)}
               />
               <br />
               <TextField
                 id="outlined-basic"
                 label="Invited guests"
                 variant="outlined"
+                value={invitedGuests}
+                onChange={(e) => setInvitedGuests(e.target.value)}
               />
               <br />
               <TextField
                 id="outlined-basic"
                 label="Location"
                 variant="outlined"
+                value={location}
+                onChange={(e) => setLocation(e.target.value)}
               />
               <br />
               <DatePicker
                 label="Estimated time"
-                value={
-                  estimatedTime.getDate() +
-                  "/" +
-                  estimatedTime.getMonth() +
-                  "/" +
-                  estimatedTime.getFullYear()
-                }
-                onChange={(e) => {
-                  debugger;
-                  const eString = e?.toString();
-                  if (eString && eString !== null)
-                    setEstimatedTime(
-                      new Date(
-                        parseInt(eString.split(" ")[2]),
-                        parseInt("9"),
-                        parseInt(eString.split(" ")[3])
-                      )
-                    );
-                }}
+                value={estimatedTime}
+                onChange={(e) => setEstimatedTime(e || "")}
                 renderInput={(params) => <TextField {...params} />}
               />
               <br />
