@@ -24,17 +24,11 @@ export default function Create() {
         onRequestClose={closeCreateForm}
         contentLabel="Create Form"
         style={{
-          overlay: {
-            top: "5vw",
-            left: "5vw",
-            right: "5vw",
-            bottom: "5vw",
-          },
           content: {
-            top: "5vw",
-            left: "5vw",
-            right: "5vw",
-            bottom: "5vw",
+            top: "10vh",
+            left: "10vw",
+            right: "10vw",
+            bottom: "10vh",
           },
         }}
       >

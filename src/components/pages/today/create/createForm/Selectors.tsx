@@ -1,10 +1,11 @@
-import Button, { ButtonPropsColorOverrides } from "@mui/material/Button";
+import Button from "@mui/material/Button";
 import {
   createTheme,
   PaletteColorOptions,
   ThemeProvider,
 } from "@mui/material/styles";
 import { Stack } from "@mui/material";
+import { Dispatch, SetStateAction } from "react";
 
 declare module "@mui/material/styles" {
   interface CustomPalette {
@@ -28,19 +29,32 @@ const createColor = (mainColor: string) =>
   augmentColor({ color: { main: mainColor } });
 const theme = createTheme({
   palette: {
-    selected: createColor("#ff800081"),
-    unselected: createColor("#ff8000d1"),
+    unselected: createColor("#ff800081"),
+    selected: createColor("#ff8000d1"),
   },
 });
 
-export default function CustomStyles() {
+export default function Selectors(props: {
+  itemType: string;
+  setItemType: Dispatch<SetStateAction<string>>;
+}) {
   return (
     <ThemeProvider theme={theme}>
       <Stack direction="row" gap={0.1}>
-        <Button color="selected" variant="contained" className="selector">
+        <Button
+          color={props.itemType === "Task" ? "selected" : "unselected"}
+          variant="contained"
+          className="selector"
+          onClick={() => props.setItemType("Task")}
+        >
           Task
         </Button>
-        <Button color="unselected" variant="contained" className="selector">
+        <Button
+          color={props.itemType === "Event" ? "selected" : "unselected"}
+          variant="contained"
+          className="selector"
+          onClick={() => props.setItemType("Event")}
+        >
           Event
         </Button>
       </Stack>
