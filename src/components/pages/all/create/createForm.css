@@ -2,7 +2,6 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  height: 100%;
   width: 100%;
 }
 
@@ -16,7 +15,7 @@
 }
 
 .selector {
-  height: 5vh;
+  height: 10vh;
   width: 40vw;
 }
 

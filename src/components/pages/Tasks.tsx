@@ -1,5 +1,5 @@
-import React from "react";
+import All from "./All";
 
 export default function Tasks() {
-  return <div>Tasks</div>;
+  return <All type="tasks" time="all" />;
 }

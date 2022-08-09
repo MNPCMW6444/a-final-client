@@ -1,5 +1,5 @@
-import React from "react";
+import All from "./All";
 
 export default function Events() {
-  return <div>Events</div>;
+  return <All type="events" time="all" />;
 }

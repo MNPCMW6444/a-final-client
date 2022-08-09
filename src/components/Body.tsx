@@ -1,4 +1,5 @@
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
+import All from "./pages/All";
 import Today from "./pages/Today";
 import Tasks from "./pages/Tasks";
 import Events from "./pages/Events";

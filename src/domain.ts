@@ -1,2 +1,3 @@
-//export default "http://localhost:5001/";
-export default "https://a-final-project.herokuapp.com/";
+export default process.env.NODE_ENV === "production"
+  ? "https://a-final-project.herokuapp.com/"
+  : "http://localhost:5001/";

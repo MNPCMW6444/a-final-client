@@ -1,6 +1,5 @@
 //import { Table, Thead, Tbody, Tr, Th, TableCell } from "react-super-responsive-table";
 import "react-super-responsive-table/dist/SuperResponsiveTableStyle.css";
-import "./todayStyles.css";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
 import TableCell from "@mui/material/TableCell";
@@ -25,11 +24,11 @@ interface Task extends Item {
   type: "task";
 }
 
-export default function TodayTable(props: {
+export default function allTable(props: {
   all: false | { tasks: Task[]; events: Event[] };
 }) {
   return (
-    <div className="todayTable">
+    <div className="allTable">
       <TableContainer component={Paper}>
         <Table sx={{ minWidth: 650 }} aria-label="simple table">
           <TableHead>
@@ -65,7 +64,7 @@ export default function TodayTable(props: {
                       <TableCell>{task.actions}</TableCell>
                     </TableRow>
                   ))}
-                {props.all.tasks.length === 0 && props.all.tasks.length === 0 && (
+                {props.all.tasks.length === 0 && props.all.events.length === 0 && (
                   <TableRow>
                     <TableCell colSpan={5}>
                       No data matches the search
