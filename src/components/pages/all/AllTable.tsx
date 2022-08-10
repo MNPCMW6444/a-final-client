@@ -8,25 +8,29 @@ import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
 
-interface Item {
-  type: string;
-  priority: string;
-  title: string;
-  other: string;
-  actions: string;
+interface Event {
+  title: String;
+  description: String;
+  beginningTime: Date;
+  endingTime: Date;
+  color: String;
+  invitedGuests: String;
+  location: String;
+  estimatedTime: Date;
 }
 
-interface Event extends Item {
-  type: "event";
-}
-
-interface Task extends Item {
-  type: "task";
+interface Task {
+  title: String;
+  description: String;
+  estimatedTime: Date;
+  status: String;
+  priority: String;
 }
 
 export default function allTable(props: {
-  all: false | { tasks: Task[]; events: Event[] };
+  all: false | { tasks: false | Task[]; events: false | Event[] };
 }) {
+  console.log(props);
   return (
     <div className="allTable">
       <TableContainer component={Paper}>
@@ -44,33 +48,38 @@ export default function allTable(props: {
           <TableBody>
             {typeof props.all === "object" ? (
               <>
-                {props.all.events.length > 0 &&
+                {props.all.events &&
+                  props.all.events.length > 0 &&
                   props.all.events.map((event: Event, i: number) => (
                     <TableRow key={i}>
                       <TableCell>Event</TableCell>
-                      <TableCell>{event.priority}</TableCell>
+                      <TableCell></TableCell>
                       <TableCell>{event.title}</TableCell>
-                      <TableCell>{event.other}</TableCell>
-                      <TableCell>{event.actions}</TableCell>
+                      <TableCell></TableCell>
+                      <TableCell></TableCell>
                     </TableRow>
                   ))}
-                {props.all.tasks.length > 0 &&
+                {props.all.tasks &&
+                  props.all.tasks.length > 0 &&
                   props.all.tasks.map((task: Task, i: number) => (
                     <TableRow key={i}>
                       <TableCell>Task</TableCell>
                       <TableCell>{task.priority}</TableCell>
                       <TableCell>{task.title}</TableCell>
-                      <TableCell>{task.other}</TableCell>
-                      <TableCell>{task.actions}</TableCell>
+                      <TableCell></TableCell>
+                      <TableCell></TableCell>
                     </TableRow>
                   ))}
-                {props.all.tasks.length === 0 && props.all.events.length === 0 && (
-                  <TableRow>
-                    <TableCell colSpan={5}>
-                      No data matches the search
-                    </TableCell>
-                  </TableRow>
-                )}
+                {props.all.tasks &&
+                  props.all.tasks.length === 0 &&
+                  props.all.events &&
+                  props.all.events.length === 0 && (
+                    <TableRow>
+                      <TableCell colSpan={5}>
+                        No data matches the search
+                      </TableCell>
+                    </TableRow>
+                  )}
               </>
             ) : (
               <TableRow>
