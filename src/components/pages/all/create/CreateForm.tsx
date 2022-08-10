@@ -26,11 +26,14 @@ export default function CreateForm() {
   const [color, setColor] = useState("");
   const [invitedGuests, setInvitedGuests] = useState("");
   const [location, setLocation] = useState("");
+  const [review, setReview] = useState("");
+  const [timeSpent, setTimeSpent] = useState(0);
+  const [untilDate, setUntilDate] = useState("");
+  const [notificationTime, setNotificationTime] = useState("");
 
   const save = async () => {
     setSavingStatus("Saving...");
     console.log(estimatedTime);
-    debugger;
     const dataToSave =
       itemType === "Task"
         ? {
@@ -50,16 +53,16 @@ export default function CreateForm() {
             location,
             estimatedTime,
           };
-    debugger;
     const res = await Axios.post(domain + "save" + itemType, { dataToSave });
   };
-
   return (
     <div className="createForm">
       <div className="selectors">
         <StyledEngineProvider injectFirst>
+          <br />
+
           <Typography variant="h2" component="h2">
-            Create a New Item:
+            Create a New {itemType || "Item"}:
           </Typography>
           <br />
           <Selectors itemType={itemType} setItemType={setItemType} />
@@ -94,6 +97,7 @@ export default function CreateForm() {
                 onChange={(e) => setEstimatedTime(e || "")}
                 renderInput={(params) => <TextField {...params} />}
               />
+
               <br />
               <TextField
                 required
@@ -113,6 +117,39 @@ export default function CreateForm() {
                 onChange={(e) => setPriority(e.target.value)}
               />
               <br />
+              {status === "Close" && (
+                <>
+                  <TextField
+                    required
+                    id="outlined-basic"
+                    label="Review"
+                    variant="outlined"
+                    value={review}
+                    onChange={(e) => setReview(e.target.value)}
+                  />
+                  <br />
+                  <TextField
+                    required
+                    id="outlined-basic"
+                    label="Time Spent"
+                    variant="outlined"
+                    value={timeSpent}
+                    onChange={(e) => setTimeSpent(parseFloat(e.target.value))}
+                  />
+                  <br />
+                </>
+              )}
+              {(priority === "Top" || status === "Close") && (
+                <>
+                  <DatePicker
+                    label="Until Date"
+                    value={untilDate}
+                    onChange={(e) => setUntilDate(e || "")}
+                    renderInput={(params) => <TextField {...params} />}
+                  />
+                  <br />
+                </>
+              )}
             </>
           )}
           {itemType === "Event" && (
@@ -175,9 +212,9 @@ export default function CreateForm() {
               />
               <br />
               <DatePicker
-                label="Estimated time"
-                value={estimatedTime}
-                onChange={(e) => setEstimatedTime(e || "")}
+                label="Notification time"
+                value={notificationTime}
+                onChange={(e) => setNotificationTime(e || "")}
                 renderInput={(params) => <TextField {...params} />}
               />
               <br />
