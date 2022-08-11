@@ -1,6 +1,4 @@
-import "./createForm.css";
 import { useState } from "react";
-import Selectors from "./createForm/Selectors";
 import TextField from "@mui/material/TextField";
 import Typography from "@mui/material/Typography";
 import { StyledEngineProvider } from "@mui/material/styles";
@@ -15,7 +13,7 @@ import { Widgets } from "@mui/icons-material";
 import { Store } from "react-notifications-component";
 import defaultSettings from "../../../../config/notificationDefaultSettings";
 
-export default function CreateForm(props: { closeCreateForm: Function }) {
+export default function EditForm(props: { closeEditForm: Function }) {
   const [itemType, setItemType] = useState("");
   const [savingStatus, setSavingStatus] = useState("Save");
 
@@ -58,7 +56,7 @@ export default function CreateForm(props: { closeCreateForm: Function }) {
           };
     Axios.post(domain + "save" + itemType, { dataToSave })
       .then((res) => {
-        if (res.status === 200) props.closeCreateForm();
+        if (res.status === 200) props.closeEditForm();
       })
       .catch((err) => {
         debugger;
@@ -74,16 +72,15 @@ export default function CreateForm(props: { closeCreateForm: Function }) {
   };
 
   return (
-    <div className="createForm">
+    <div>
       <div className="selectors">
         <StyledEngineProvider injectFirst>
           <br />
 
           <Typography variant="h2" component="h2">
-            Create a New {itemType || "Item"}:
+            Edit:
           </Typography>
           <br />
-          <Selectors itemType={itemType} setItemType={setItemType} />
         </StyledEngineProvider>
       </div>
       <br />

@@ -2,18 +2,9 @@ import { useState, useEffect } from "react";
 
 import Axios, { CancelTokenSource } from "axios";
 import domain from "../domain";
-import { iNotification, Store } from "react-notifications-component";
+import { Store } from "react-notifications-component";
 
-const defaultSettings: iNotification = {
-  container: "bottom-center",
-  animationIn: ["animate__animated", "animate__fadeIn"],
-  animationOut: ["animate__animated", "animate__fadeOut"],
-  dismiss: {
-    duration: 1500,
-    onScreen: true,
-  },
-  insert: "top",
-};
+import defaultSettings from "../config/notificationDefaultSettings";
 
 export default (endpoit: string, params: {}, dependecies: []): any => {
   let isFetching = false;
@@ -81,5 +72,5 @@ export default (endpoit: string, params: {}, dependecies: []): any => {
       }, 3000);
     };
   }, [...dependecies]);
-  return data;
+  return [data, setData];
 };

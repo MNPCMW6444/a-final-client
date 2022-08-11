@@ -1,11 +1,12 @@
 import { useState } from "react";
 import Search from "./all/Search";
 import QuickFilters from "./all/QuickFilters";
-import AllTable from "./all/AllTable";
+import AllTable from "./all/all-table/AllTable";
 import Create from "./all/Create";
 import useFetch from "../../hooks/useFetch";
 
 interface Event {
+  _id: String;
   title: String;
   description: String;
   beginningTime: Date;
@@ -17,6 +18,7 @@ interface Event {
 }
 
 interface Task {
+  _id: String;
   title: String;
   description: String;
   estimatedTime: Date;
@@ -26,11 +28,8 @@ interface Task {
 
 export default function All(props: { type: string; time: string }) {
   const [query, setQuery] = useState("");
-  const all: { events: Event[]; tasks: Task[] } = useFetch(
-    props.type + "-" + props.time,
-    {},
-    []
-  );
+  const [all, setAll]: [{ events: Event[]; tasks: Task[] }, Function] =
+    useFetch(props.type + "-" + props.time, {}, []);
   const filteredAll = typeof all === "object" && {
     events:
       all.events &&
@@ -52,7 +51,7 @@ export default function All(props: { type: string; time: string }) {
       <br />
       <QuickFilters />
       <br />
-      <AllTable all={filteredAll} />
+      <AllTable all={filteredAll} setAll={setAll} />
       <br />
       <Create />
     </div>

@@ -32,7 +32,7 @@ export default function Create() {
           },
         }}
       >
-        <CreateForm />
+        <CreateForm closeCreateForm={closeCreateForm} />
       </Modal>
     </div>
   );
