@@ -1,7 +1,6 @@
 import { useState } from "react";
 import Search from "./all/Search";
-import QuickFilters from "./all/QuickFilters";
-import AllTable from "./all/all-table/AllTable";
+import AllTable from "./all/AllTable";
 import Create from "./all/Create";
 import useFetch from "../../hooks/useFetch";
 
@@ -53,7 +52,6 @@ export default function All(props: { type: string; time: string }) {
     <div>
       <Search setQuery={setQuery} />
       <br />
-      <QuickFilters />
       <br />
       <AllTable all={filteredAll} setAll={setAll} type={props.type} />
       <br />

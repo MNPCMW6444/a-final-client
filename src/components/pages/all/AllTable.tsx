@@ -8,11 +8,11 @@ import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
-import domain from "../../../../domain";
+import domain from "../../../domain";
 import axios from "axios";
 import { useState } from "react";
 import Modal from "react-modal";
-import EditForm from "./EditForm";
+import EditForm from "./all-table/EditForm";
 
 interface Event {
   _id: String;
