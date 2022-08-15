@@ -4,12 +4,10 @@ import "./index.css";
 import App from "./App";
 import reportWebVitals from "./reportWebVitals";
 import Modal from "react-modal";
-import { AnyAaaaRecord } from "dns";
 
-const root = ReactDOM.createRoot(
-  document.getElementById("root") as HTMLElement
-);
-Modal.setAppElement(root as any);
+const rootElement: HTMLElement = document.getElementById("root") as HTMLElement;
+const root = ReactDOM.createRoot(rootElement);
+Modal.setAppElement(rootElement);
 root.render(
   <React.StrictMode>
     <App />

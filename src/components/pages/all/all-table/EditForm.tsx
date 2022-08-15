@@ -9,28 +9,89 @@ import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
 import domain from "../../../../domain";
 import Axios from "axios";
-import { Widgets } from "@mui/icons-material";
 import { Store } from "react-notifications-component";
 import defaultSettings from "../../../../config/notificationDefaultSettings";
 
-export default function EditForm(props: { closeEditForm: Function }) {
-  const [itemType, setItemType] = useState("");
-  const [savingStatus, setSavingStatus] = useState("Save");
+interface Event {
+  _id: String;
+  title: String;
+  description: String;
+  beginningTime: Date;
+  endingTime: Date;
+  color: String;
+  invitedGuests: String;
+  location: String;
+  estimatedTime: Date;
+}
 
-  const [title, setTitle] = useState("");
-  const [description, setDescription] = useState("");
-  const [estimatedTime, setEstimatedTime] = useState("");
-  const [status, setStatus] = useState("");
-  const [priority, setPriority] = useState("");
-  const [beginningTime, setBeginningTime] = useState("");
-  const [endingTime, setEndingTime] = useState("");
-  const [color, setColor] = useState("");
-  const [invitedGuests, setInvitedGuests] = useState("");
-  const [location, setLocation] = useState("");
-  const [review, setReview] = useState("");
-  const [timeSpent, setTimeSpent] = useState(0);
-  const [untilDate, setUntilDate] = useState("");
-  const [notificationTime, setNotificationTime] = useState("");
+interface Task {
+  _id: String;
+  title: String;
+  description: String;
+  estimatedTime: Date;
+  status: String;
+  priority: String;
+  review: String;
+  timeSpent: number;
+  location: string;
+  notificationTime: Date;
+}
+
+export default function EditForm(props: {
+  closeEditForm: Function;
+  type: string;
+  item: {} | Task | Event;
+}) {
+  const [itemType, setItemType] = useState(props.type);
+  const [savingStatus, setSavingStatus] = useState("Save");
+  const [title, setTitle] = useState(
+    props.type === "Event"
+      ? (props.item as Event).title
+      : (props.item as Task).title
+  );
+  const [description, setDescription] = useState(
+    props.type === "Event"
+      ? (props.item as Event).description
+      : (props.item as Task).description
+  );
+  const [estimatedTime, setEstimatedTime] = useState(
+    props.type === "Event"
+      ? ((props.item as Event).estimatedTime as Date | "")
+      : ((props.item as Task).estimatedTime as Date | "")
+  );
+  const [status, setStatus] = useState(
+    props.type === "Task" && (props.item as Task).status
+  );
+  const [priority, setPriority] = useState(
+    props.type === "Task" && (props.item as Task).priority
+  );
+  const [beginningTime, setBeginningTime] = useState(
+    props.type === "Event" ? (props.item as Event).beginningTime : ""
+  );
+  const [endingTime, setEndingTime] = useState(
+    props.type === "Event" ? (props.item as Event).endingTime : ""
+  );
+  const [color, setColor] = useState(
+    props.type === "Event" && (props.item as Event).color
+  );
+  const [invitedGuests, setInvitedGuests] = useState(
+    props.type === "Event" && (props.item as Event).invitedGuests
+  );
+  const [location, setLocation] = useState(
+    props.type === "Event" && (props.item as Event).location
+  );
+  const [review, setReview] = useState(
+    props.type === "Task" && (props.item as Task).review
+  );
+  const [timeSpent, setTimeSpent] = useState(
+    props.type === "Task" && (props.item as Task).timeSpent
+  );
+  const [untilDate, setUntilDate] = useState(
+    props.type === "Task" && (props.item as Task).location
+  );
+  const [notificationTime, setNotificationTime] = useState(
+    props.type === "Task" ? (props.item as Task).notificationTime : ""
+  );
 
   const save = () => {
     setSavingStatus("Saving...");
@@ -54,7 +115,7 @@ export default function EditForm(props: { closeEditForm: Function }) {
             location,
             estimatedTime,
           };
-    Axios.post(domain + "save" + itemType, { dataToSave })
+    Axios.put(domain + "save" + itemType, { dataToSave })
       .then((res) => {
         if (res.status === 200) props.closeEditForm();
       })
@@ -76,7 +137,6 @@ export default function EditForm(props: { closeEditForm: Function }) {
       <div className="selectors">
         <StyledEngineProvider injectFirst>
           <br />
-
           <Typography variant="h2" component="h2">
             Edit:
           </Typography>
@@ -114,7 +174,6 @@ export default function EditForm(props: { closeEditForm: Function }) {
                 onChange={(e) => setEstimatedTime(e || "")}
                 renderInput={(params) => <TextField {...params} />}
               />
-
               <br />
               <TextField
                 required

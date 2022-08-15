@@ -33,13 +33,19 @@ interface Task {
   estimatedTime: Date;
   status: String;
   priority: String;
+  review: String;
+  timeSpent: number;
+  location: string;
+  notificationTime: Date;
 }
 
 export default function AllTable(props: {
   all: false | { tasks: false | Task[]; events: false | Event[] };
   setAll: Function;
+  type: string;
 }) {
   const [isEditFormOpen, setIsEditFormOpen] = useState(false);
+  const [editedItem, seteditedItem] = useState({ type: "", theItem: {} });
 
   const openEditForm = () => {
     setIsEditFormOpen(true);
@@ -49,6 +55,16 @@ export default function AllTable(props: {
     setIsEditFormOpen(false);
   };
   const edit = (type: string, index: number) => {
+    type === "Task" &&
+      seteditedItem({
+        type,
+        theItem: props.all && props.all.tasks && props.all.tasks[index],
+      });
+    type === "Event" &&
+      seteditedItem({
+        type,
+        theItem: props.all && props.all.events && props.all.events[index],
+      });
     openEditForm();
   };
 
@@ -92,16 +108,21 @@ export default function AllTable(props: {
           },
         }}
       >
-        <EditForm closeEditForm={closeEditForm} />
+        <EditForm
+          closeEditForm={closeEditForm}
+          type={editedItem.type}
+          item={editedItem.theItem}
+        />
       </Modal>
       <TableContainer component={Paper}>
         <Table>
           <TableHead>
             <TableRow>
               <TableCell sx={{ textAlign: "center" }}>Type</TableCell>
-              <TableCell sx={{ textAlign: "center" }}>Priority</TableCell>
+              {props.type !== "events" && (
+                <TableCell sx={{ textAlign: "center" }}>Priority</TableCell>
+              )}
               <TableCell sx={{ textAlign: "center" }}>Title</TableCell>
-              <TableCell sx={{ textAlign: "center" }}>Other</TableCell>
               <TableCell sx={{ textAlign: "center" }}>Actions</TableCell>
             </TableRow>
           </TableHead>
@@ -113,16 +134,14 @@ export default function AllTable(props: {
                   props.all.events.length > 0 &&
                   props.all.events.map((event: Event, i: number) => (
                     <TableRow key={i}>
-                      <TableCell sx={{ textAlign: "center" }}></TableCell>
+                      <TableCell sx={{ textAlign: "center" }}>Event</TableCell>
                       <TableCell sx={{ textAlign: "center" }}>
                         {event.title}
                       </TableCell>
-                      <TableCell sx={{ textAlign: "center" }}></TableCell>
-                      <TableCell sx={{ textAlign: "center" }}></TableCell>
                       <TableCell sx={{ textAlign: "center" }}>
                         <Button
                           onClick={() => {
-                            edit("events", i);
+                            edit("Event", i);
                           }}
                         >
                           ✏️
@@ -148,11 +167,10 @@ export default function AllTable(props: {
                       <TableCell sx={{ textAlign: "center" }}>
                         {task.title}
                       </TableCell>
-                      <TableCell sx={{ textAlign: "center" }}></TableCell>
                       <TableCell sx={{ textAlign: "center" }}>
                         <Button
                           onClick={() => {
-                            edit("tasks", i);
+                            edit("Task", i);
                           }}
                         >
                           ✏️

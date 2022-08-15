@@ -24,6 +24,10 @@ interface Task {
   estimatedTime: Date;
   status: String;
   priority: String;
+  review: String;
+  timeSpent: number;
+  location: string;
+  notificationTime: Date;
 }
 
 export default function All(props: { type: string; time: string }) {
@@ -51,7 +55,7 @@ export default function All(props: { type: string; time: string }) {
       <br />
       <QuickFilters />
       <br />
-      <AllTable all={filteredAll} setAll={setAll} />
+      <AllTable all={filteredAll} setAll={setAll} type={props.type} />
       <br />
       <Create />
     </div>
