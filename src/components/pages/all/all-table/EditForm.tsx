@@ -115,21 +115,44 @@ export default function EditForm(props: {
             location,
             estimatedTime,
           };
-    Axios.put(domain + "save" + itemType, { dataToSave })
-      .then((res) => {
-        if (res.status === 200) props.closeEditForm();
+    props.type === "Task" &&
+      Axios.put(domain + "save" + itemType, {
+        id: (props.item as Task)._id,
+        dataToSave,
       })
-      .catch((err) => {
-        debugger;
-        setSavingStatus("Save");
-        Store.removeAllNotifications();
-        Store.addNotification({
-          title: "Error!",
-          message: "code " + err.message,
-          type: "danger",
-          ...defaultSettings,
+        .then((res) => {
+          if (res.status === 200) props.closeEditForm();
+        })
+        .catch((err) => {
+          debugger;
+          setSavingStatus("Save");
+          Store.removeAllNotifications();
+          Store.addNotification({
+            title: "Error!",
+            message: "code " + err.message,
+            type: "danger",
+            ...defaultSettings,
+          });
         });
-      });
+    props.type === "Event" &&
+      Axios.put(domain + "save" + itemType, {
+        id: (props.item as Event)._id,
+        dataToSave,
+      })
+        .then((res) => {
+          if (res.status === 200) props.closeEditForm();
+        })
+        .catch((err) => {
+          debugger;
+          setSavingStatus("Save");
+          Store.removeAllNotifications();
+          Store.addNotification({
+            title: "Error!",
+            message: "code " + err.message,
+            type: "danger",
+            ...defaultSettings,
+          });
+        });
   };
 
   return (
