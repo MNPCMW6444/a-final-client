@@ -7,44 +7,23 @@ import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
-import domain from "../../../domain";
+import domain from "../../config/domain";
 import axios from "axios";
 import { useState } from "react";
 import Modal from "react-modal";
-import EditForm from "./generic-page-table/EditForm";
+import EditForm from "../EditForm/EditForm";
+import { Event, Task } from "../../interfaces/dataTypesInterfaces";
 
-interface Event {
-  _id: String;
-  title: String;
-  description: String;
-  beginningTime: Date;
-  endingTime: Date;
-  color: String;
-  invitedGuests: String;
-  location: String;
-  estimatedTime: Date;
-}
-
-interface Task {
-  _id: String;
-  title: String;
-  description: String;
-  estimatedTime: Date;
-  status: String;
-  priority: String;
-  review: String;
-  timeSpent: number;
-  location: string;
-  notificationTime: Date;
-}
-
-export default function GenericTable(props: {
-  all: false | { tasks: false | Task[]; events: false | Event[] };
-  setAll: Function;
+const GenericTable = (props: {
+  allData: false | { tasks: false | Task[]; events: false | Event[] };
+  setAllData: Function;
   type: string;
-}) {
-  const [isEditFormOpen, setIsEditFormOpen] = useState(false);
-  const [editedItem, seteditedItem] = useState({ type: "", theItem: {} });
+}): JSX.Element => {
+  const [isEditFormOpen, setIsEditFormOpen] = useState<boolean>(false);
+  const [editedItem, seteditedItem] = useState<{ type: string; theItem: {} }>({
+    type: "",
+    theItem: {},
+  });
 
   const openEditForm = () => {
     setIsEditFormOpen(true);
@@ -57,43 +36,45 @@ export default function GenericTable(props: {
     type === "Task" &&
       seteditedItem({
         type,
-        theItem: props.all && props.all.tasks && props.all.tasks[index],
+        theItem:
+          props.allData && props.allData.tasks && props.allData.tasks[index],
       });
     type === "Event" &&
       seteditedItem({
         type,
-        theItem: props.all && props.all.events && props.all.events[index],
+        theItem:
+          props.allData && props.allData.events && props.allData.events[index],
       });
     openEditForm();
   };
 
   const remove = async (type: string, index: number) => {
     if (type === "events")
-      props.setAll({
+      props.setAllData({
         events: (
           await axios.delete(
             domain +
               "events/" +
-              (props.all as { events: Event[] }).events[index]._id
+              (props.allData as { events: Event[] }).events[index]._id
           )
         ).data,
-        tasks: (props.all as { tasks: Task[] }).tasks,
+        tasks: (props.allData as { tasks: Task[] }).tasks,
       });
     if (type === "tasks")
-      props.setAll({
+      props.setAllData({
         tasks: (
           await axios.delete(
             domain +
               "tasks/" +
-              (props.all as { tasks: Task[] }).tasks[index]._id
+              (props.allData as { tasks: Task[] }).tasks[index]._id
           )
         ).data,
-        events: (props.all as { events: Event[] }).events,
+        events: (props.allData as { events: Event[] }).events,
       });
   };
 
   return (
-    <div className="allTable">
+    <div className="allDataTable">
       <Modal
         isOpen={isEditFormOpen}
         onRequestClose={closeEditForm}
@@ -127,11 +108,11 @@ export default function GenericTable(props: {
           </TableHead>
 
           <TableBody>
-            {typeof props.all === "object" ? (
+            {typeof props.allData === "object" ? (
               <>
-                {props.all.events &&
-                  props.all.events.length > 0 &&
-                  props.all.events.map((event: Event, i: number) => (
+                {props.allData.events &&
+                  props.allData.events.length > 0 &&
+                  props.allData.events.map((event: Event, i: number) => (
                     <TableRow key={i}>
                       <TableCell sx={{ textAlign: "center" }}>Event</TableCell>
                       <TableCell sx={{ textAlign: "center" }}>
@@ -155,9 +136,9 @@ export default function GenericTable(props: {
                       </TableCell>
                     </TableRow>
                   ))}
-                {props.all.tasks &&
-                  props.all.tasks.length > 0 &&
-                  props.all.tasks.map((task: Task, i: number) => (
+                {props.allData.tasks &&
+                  props.allData.tasks.length > 0 &&
+                  props.allData.tasks.map((task: Task, i: number) => (
                     <TableRow key={i}>
                       <TableCell sx={{ textAlign: "center" }}>Task</TableCell>
                       <TableCell sx={{ textAlign: "center" }}>
@@ -184,10 +165,10 @@ export default function GenericTable(props: {
                       </TableCell>
                     </TableRow>
                   ))}
-                {props.all.tasks &&
-                  props.all.tasks.length === 0 &&
-                  props.all.events &&
-                  props.all.events.length === 0 && (
+                {props.allData.tasks &&
+                  props.allData.tasks.length === 0 &&
+                  props.allData.events &&
+                  props.allData.events.length === 0 && (
                     <TableRow>
                       <TableCell colSpan={5}>
                         No data matches the search
@@ -205,4 +186,6 @@ export default function GenericTable(props: {
       </TableContainer>
     </div>
   );
-}
+};
+
+export default GenericTable;

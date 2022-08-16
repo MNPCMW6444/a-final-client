@@ -34,10 +34,10 @@ const theme = createTheme({
   },
 });
 
-export default function Selectors(props: {
+const Selectors = (props: {
   itemType: string;
   setItemType: Dispatch<SetStateAction<string>>;
-}) {
+}): JSX.Element => {
   return (
     <ThemeProvider theme={theme}>
       <Stack direction="row" gap={0.1}>
@@ -60,4 +60,6 @@ export default function Selectors(props: {
       </Stack>
     </ThemeProvider>
   );
-}
+};
+
+export default Selectors;

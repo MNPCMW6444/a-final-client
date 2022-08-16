@@ -1,11 +1,10 @@
 import { ReactNotifications } from "react-notifications-component";
 import "react-notifications-component/dist/theme.css";
-import PageRouter from "./components/PageRouter";
-import BlueLogo from "./components/sidebarComponents/BlueLogo";
-import ApplicationTitle from "./components/sidebarComponents/ApplicationTitle";
-import Clock from "./components/sidebarComponents/Clock";
+import CalanderRouter from "./components/CalendarRouter/CalendarRouter";
+import Clock from "./components/Clock/Clock";
 import Grid from "@mui/material/Grid";
-import { createTheme, ThemeProvider } from "@mui/material";
+import { Box, createTheme, ThemeProvider, Typography } from "@mui/material";
+import BT from "./assets/BT.png";
 
 const { Sidebar, SidebarItem } = require("react-responsive-sidebar");
 
@@ -17,11 +16,23 @@ function App() {
         direction="column"
         justifyContent="space-between"
         alignItems="center"
-        height="40vh"
+        height="40%"
       >
-        <Clock />
-        <ApplicationTitle />
-        <BlueLogo />
+        <Clock size="h6" />
+        <Typography variant="h4" component="h4">
+          Blue Calendar
+        </Typography>
+        <Box
+          component="img"
+          sx={{
+            height: { xs: "28vw" },
+            width: { xs: "28vw" },
+            maxHeight: { xs: "250px" },
+            maxWidth: { xs: "250px" },
+          }}
+          alt="Blue Torch Logo"
+          src={BT}
+        />
       </Grid>
     </SidebarItem>,
     <SidebarItem href="/">Today</SidebarItem>,
@@ -30,14 +41,12 @@ function App() {
   ];
 
   return (
-    <>
-      <ThemeProvider theme={createTheme()}>
-        <ReactNotifications />
-        <Sidebar content={pages} background={"orange"} color={"blue"}>
-          <PageRouter />
-        </Sidebar>
-      </ThemeProvider>
-    </>
+    <ThemeProvider theme={createTheme()}>
+      <ReactNotifications />
+      <Sidebar content={pages} background={"orange"} color={"blue"}>
+        <CalanderRouter />
+      </Sidebar>
+    </ThemeProvider>
   );
 }
 

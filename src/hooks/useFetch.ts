@@ -1,76 +1,49 @@
-import { useState, useEffect } from "react";
-
-import Axios, { CancelTokenSource } from "axios";
-import domain from "../domain";
+import { useEffect, useState } from "react";
+import Axios, { AxiosError, CancelTokenSource } from "axios";
+import domain from "../config/domain";
 import { Store } from "react-notifications-component";
+import defaultNotificationSettings from "../config/notificationDefaultSettings";
 
-import defaultSettings from "../config/notificationDefaultSettings";
-
-export default (endpoit: string, params: {}, dependecies: []): any => {
+export default (endpoint: string, params: {}, dependencies: []): any => {
   let isFetching = false;
 
-  const [data, setData] = useState("loading...");
+  const [data, setData] = useState<{}>({});
 
-  const getAll = async (source: CancelTokenSource) => {
+  const getData = async (source: CancelTokenSource) => {
     isFetching = true;
-    Store.removeAllNotifications();
-    Store.addNotification({
-      title: "Connecting to Server",
-      message: "Trying for 3 seconds to fetch data",
-      type: "info",
-
-      ...defaultSettings,
-    });
-    const promise = Axios.get(domain + endpoit, {
-      ...params,
-      cancelToken: source.token,
-    });
-    promise.then((res) => {
-      setData(res.data);
-      Store.removeAllNotifications();
+    let res;
+    try {
+      res = (
+        await Axios.get(domain + endpoint, {
+          ...params,
+          cancelToken: source.token,
+        })
+      ).data;
+    } catch (err) {
+      isFetching = false;
+      Store.addNotification({
+        title: "Error",
+        message: (err as AxiosError).message,
+        type: "danger",
+        ...defaultNotificationSettings,
+      });
+    }
+    if (isFetching) {
+      isFetching = false;
+      setData(res);
       Store.addNotification({
         title: "Success",
         message: "Data was fetched from the server",
         type: "success",
-
-        ...defaultSettings,
+        ...defaultNotificationSettings,
       });
-      isFetching = false;
-    });
-    promise.catch((err) => {
-      if (err.message !== "canceled") {
-        Store.removeAllNotifications();
-        Store.addNotification({
-          title: "Error",
-          message: err.message,
-          type: "danger",
-
-          ...defaultSettings,
-        });
-      }
-      isFetching = false;
-    });
+    }
   };
 
   useEffect(() => {
     const source = Axios.CancelToken.source();
-    getAll(source);
-    return () => {
-      setTimeout(() => {
-        if (isFetching) {
-          source.cancel();
-          Store.removeAllNotifications();
-          Store.addNotification({
-            title: "Error!",
-            message: "Connection to server Timeout",
-            type: "danger",
+    getData(source);
+  }, dependencies);
 
-            ...defaultSettings,
-          });
-          isFetching = false;
-        }
-      }, 3000);
-    };
-  }, [...dependecies]);
   return [data, setData];
 };

@@ -1,10 +1,10 @@
 import { useState } from "react";
 import Button from "@mui/material/Button";
 import Modal from "react-modal";
-import CreateForm from "./create/CreateForm";
+import CreateForm from "../CreateForm/CreateForm";
 
-export default function Create() {
-  const [isCreateFormOpen, setIsCreateFormOpen] = useState(false);
+const Create = (): JSX.Element => {
+  const [isCreateFormOpen, setIsCreateFormOpen] = useState<boolean>(false);
 
   const openCreateForm = () => {
     setIsCreateFormOpen(true);
@@ -36,4 +36,6 @@ export default function Create() {
       </Modal>
     </div>
   );
-}
+};
+
+export default Create;

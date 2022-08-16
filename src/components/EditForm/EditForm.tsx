@@ -7,90 +7,66 @@ import FormControl from "@mui/material/FormControl";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
-import domain from "../../../../domain";
+import domain from "../../config/domain";
 import Axios from "axios";
 import { Store } from "react-notifications-component";
-import defaultSettings from "../../../../config/notificationDefaultSettings";
+import defaultSettings from "../../config/notificationDefaultSettings";
+import { Event, Task } from "../../interfaces/dataTypesInterfaces";
 
-interface Event {
-  _id: String;
-  title: String;
-  description: String;
-  beginningTime: Date;
-  endingTime: Date;
-  color: String;
-  invitedGuests: String;
-  location: String;
-  estimatedTime: Date;
-}
-
-interface Task {
-  _id: String;
-  title: String;
-  description: String;
-  estimatedTime: Date;
-  status: String;
-  priority: String;
-  review: String;
-  timeSpent: number;
-  location: string;
-  notificationTime: Date;
-}
-
-export default function EditForm(props: {
+const EditForm = (props: {
   closeEditForm: Function;
   type: string;
   item: {} | Task | Event;
-}) {
-  const [itemType, setItemType] = useState(props.type);
-  const [savingStatus, setSavingStatus] = useState("Save");
-  const [title, setTitle] = useState(
+}): JSX.Element => {
+  const itemType = useState<string>(props.type)[0];
+  const [savingStatus, setSavingStatus] = useState<string>("Save");
+  const [title, setTitle] = useState<string>(
     props.type === "Event"
       ? (props.item as Event).title
       : (props.item as Task).title
   );
-  const [description, setDescription] = useState(
+  const [description, setDescription] = useState<string>(
     props.type === "Event"
       ? (props.item as Event).description
       : (props.item as Task).description
   );
-  const [estimatedTime, setEstimatedTime] = useState(
+  const [estimatedTime, setEstimatedTime] = useState<Date | null>(
     props.type === "Event"
-      ? ((props.item as Event).estimatedTime as Date | "")
-      : ((props.item as Task).estimatedTime as Date | "")
+      ? (props.item as Event).estimatedTime
+      : (props.item as Task).estimatedTime
   );
-  const [status, setStatus] = useState(
+  const [status, setStatus] = useState<string | false>(
     props.type === "Task" && (props.item as Task).status
   );
-  const [priority, setPriority] = useState(
+  const [priority, setPriority] = useState<string | false>(
     props.type === "Task" && (props.item as Task).priority
   );
-  const [beginningTime, setBeginningTime] = useState(
-    props.type === "Event" ? (props.item as Event).beginningTime : ""
+  const [beginningTime, setBeginningTime] = useState<Date | false | null>(
+    props.type === "Event" && (props.item as Event).beginningTime
   );
-  const [endingTime, setEndingTime] = useState(
-    props.type === "Event" ? (props.item as Event).endingTime : ""
+  const [endingTime, setEndingTime] = useState<Date | false | null>(
+    props.type === "Event" && (props.item as Event).endingTime
   );
-  const [color, setColor] = useState(
+  const [color, setColor] = useState<string | false>(
     props.type === "Event" && (props.item as Event).color
   );
-  const [invitedGuests, setInvitedGuests] = useState(
+  const [invitedGuests, setInvitedGuests] = useState<string | false>(
     props.type === "Event" && (props.item as Event).invitedGuests
   );
-  const [location, setLocation] = useState(
+  const [location, setLocation] = useState<string | false>(
     props.type === "Event" && (props.item as Event).location
   );
-  const [review, setReview] = useState(
+  const [review, setReview] = useState<string | false>(
     props.type === "Task" && (props.item as Task).review
   );
-  const [timeSpent, setTimeSpent] = useState(
+  const [timeSpent, setTimeSpent] = useState<number | false>(
     props.type === "Task" && (props.item as Task).timeSpent
   );
-  const [untilDate, setUntilDate] = useState(
+  const [untilDate, setUntilDate] = useState<string | false>(
     props.type === "Task" && (props.item as Task).location
   );
-  const [notificationTime, setNotificationTime] = useState(
-    props.type === "Task" ? (props.item as Task).notificationTime : ""
+  const [notificationTime, setNotificationTime] = useState<Date | false | null>(
+    props.type === "Task" && (props.item as Task).notificationTime
   );
 
   const save = () => {
@@ -194,7 +170,7 @@ export default function EditForm(props: {
               <DatePicker
                 label="Estimated time"
                 value={estimatedTime}
-                onChange={(e) => setEstimatedTime(e || "")}
+                onChange={(e) => setEstimatedTime(e)}
                 renderInput={(params) => <TextField {...params} />}
               />
               <br />
@@ -280,14 +256,14 @@ export default function EditForm(props: {
               <DatePicker
                 label="Beginning time"
                 value={beginningTime}
-                onChange={(e) => setBeginningTime(e || "")}
+                onChange={(e) => setBeginningTime(e)}
                 renderInput={(params) => <TextField {...params} />}
               />
               <br />
               <DatePicker
                 label="ending time"
                 value={endingTime}
-                onChange={(e) => setEndingTime(e || "")}
+                onChange={(e) => setEndingTime(e)}
                 renderInput={(params) => <TextField {...params} />}
               />
               <br />
@@ -322,7 +298,7 @@ export default function EditForm(props: {
               <DatePicker
                 label="Notification time"
                 value={notificationTime}
-                onChange={(e) => setNotificationTime(e || "")}
+                onChange={(e) => setNotificationTime(e)}
                 renderInput={(params) => <TextField {...params} />}
               />
               <br />
@@ -337,4 +313,6 @@ export default function EditForm(props: {
       </LocalizationProvider>
     </div>
   );
-}
+};
+
+export default EditForm;
