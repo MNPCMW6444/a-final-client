@@ -1,6 +1,5 @@
-import React from "react";
 import BT from "../../assets/BT.png";
-import "./blueStyles.css";
+import "./logoStyles.css";
 export default function BlueLogo() {
   return (
     <div className="logo">

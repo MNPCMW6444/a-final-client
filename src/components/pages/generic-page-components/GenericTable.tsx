@@ -1,4 +1,3 @@
-//import { Table, Thead, Tbody, Tr, Th, TableCell } from "react-super-responsive-table";
 import "react-super-responsive-table/dist/SuperResponsiveTableStyle.css";
 import Button from "@mui/material/Button";
 import Table from "@mui/material/Table";
@@ -12,7 +11,7 @@ import domain from "../../../domain";
 import axios from "axios";
 import { useState } from "react";
 import Modal from "react-modal";
-import EditForm from "./all-table/EditForm";
+import EditForm from "./generic-page-table/EditForm";
 
 interface Event {
   _id: String;
@@ -39,7 +38,7 @@ interface Task {
   notificationTime: Date;
 }
 
-export default function AllTable(props: {
+export default function GenericTable(props: {
   all: false | { tasks: false | Task[]; events: false | Event[] };
   setAll: Function;
   type: string;

@@ -1,5 +1,5 @@
-import All from "./All";
+import GenericPage from "./GenericPage";
 
 export default function Tasks() {
-  return <All type="tasks" time="all" />;
+  return <GenericPage type="tasks" time="all" />;
 }

@@ -1,5 +1,5 @@
-import All from "./All";
+import GenericPage from "./GenericPage";
 
 export default function Today() {
-  return <All type="all" time="today" />;
+  return <GenericPage type="all" time="today" />;
 }

@@ -1,13 +1,11 @@
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
-import All from "./pages/All";
 import Today from "./pages/Today";
 import Tasks from "./pages/Tasks";
 import Events from "./pages/Events";
-import "./Body.css";
 
-export default function Body() {
+export default function PageRouter() {
   return (
-    <div className="body">
+    <>
       <Router>
         <Routes>
           <Route path="/" element={<Today />} />
@@ -15,6 +13,6 @@ export default function Body() {
           <Route path="/events" element={<Events />} />
         </Routes>
       </Router>
-    </div>
+    </>
   );
 }

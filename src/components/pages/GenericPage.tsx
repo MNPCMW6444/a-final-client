@@ -1,8 +1,9 @@
 import { useState } from "react";
-import Search from "./all/Search";
-import AllTable from "./all/AllTable";
-import Create from "./all/Create";
+import Search from "./generic-page-components/Search";
+import AllTable from "./generic-page-components/GenericTable";
+import Create from "./generic-page-components/Create";
 import useFetch from "../../hooks/useFetch";
+import { Grid } from "@mui/material";
 
 interface Event {
   _id: String;
@@ -29,7 +30,7 @@ interface Task {
   notificationTime: Date;
 }
 
-export default function All(props: { type: string; time: string }) {
+export default function GenericPage(props: { type: string; time: string }) {
   const [query, setQuery] = useState("");
   const [all, setAll]: [{ events: Event[]; tasks: Task[] }, Function] =
     useFetch(props.type + "-" + props.time, {}, []);
@@ -49,13 +50,25 @@ export default function All(props: { type: string; time: string }) {
   };
 
   return (
-    <div>
-      <Search setQuery={setQuery} />
-      <br />
-      <br />
-      <AllTable all={filteredAll} setAll={setAll} type={props.type} />
-      <br />
-      <Create />
-    </div>
+    <Grid
+      container
+      direction="row"
+      justifyContent="center"
+      width="100%"
+      height="80%"
+    >
+      <Grid
+        container
+        direction="column"
+        justifyContent="space-around"
+        alignItems="center"
+        height="100%"
+        width="70%"
+      >
+        <Search setQuery={setQuery} />
+        <AllTable all={filteredAll} setAll={setAll} type={props.type} />
+        <Create />
+      </Grid>
+    </Grid>
   );
 }

@@ -1,5 +1,5 @@
-import All from "./All";
+import GenericPage from "./GenericPage";
 
 export default function Events() {
-  return <All type="events" time="all" />;
+  return <GenericPage type="events" time="all" />;
 }
