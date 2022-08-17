@@ -5,7 +5,11 @@ import useFetch from "../../hooks/useFetch";
 import { Grid, TextField } from "@mui/material";
 import { Event, Task } from "../../interfaces/dataTypesInterfaces";
 
-const GenericPage = (props: { type: string; time: string }): JSX.Element => {
+const GenericPage = (props: {
+  openModal: Function;
+  type: string;
+  time: string;
+}) => {
   const [query, setQuery] = useState<string>("");
   const [allData, setAllData]: [{ events: Event[]; tasks: Task[] }, Function] =
     useFetch(props.type + "-" + props.time, {}, []);
@@ -54,8 +58,9 @@ const GenericPage = (props: { type: string; time: string }): JSX.Element => {
           allData={filteredAllData}
           setAllData={setAllData}
           type={props.type}
+          openModal={props.openModal}
         />
-        <Create />
+        <Create openModal={props.openModal} />
       </Grid>
     </Grid>
   );

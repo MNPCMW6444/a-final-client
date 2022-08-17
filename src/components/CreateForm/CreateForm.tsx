@@ -14,7 +14,7 @@ import { Store } from "react-notifications-component";
 import defaultSettings from "../../config/notificationDefaultSettings";
 import Grid from "@mui/material/Grid";
 
-const CreateForm = (props: { closeCreateForm: Function }): JSX.Element => {
+const CreateForm = (props: { closeCreateForm: Function }) => {
   const [itemType, setItemType] = useState<string>("");
   const [savingStatus, setSavingStatus] = useState<string>("Save");
   const [title, setTitle] = useState<string>("");

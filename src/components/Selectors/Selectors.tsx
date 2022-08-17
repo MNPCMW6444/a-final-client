@@ -37,7 +37,7 @@ const theme = createTheme({
 const Selectors = (props: {
   itemType: string;
   setItemType: Dispatch<SetStateAction<string>>;
-}): JSX.Element => {
+}) => {
   return (
     <ThemeProvider theme={theme}>
       <Stack direction="row" gap={0.1}>

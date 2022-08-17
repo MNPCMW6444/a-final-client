@@ -5,6 +5,10 @@ import Clock from "./components/Clock/Clock";
 import Grid from "@mui/material/Grid";
 import { Box, createTheme, ThemeProvider, Typography } from "@mui/material";
 import BT from "./assets/BT.png";
+import Modal from "react-modal";
+import { useState } from "react";
+import CreateForm from "./components/CreateForm/CreateForm";
+import EditForm from "./components/EditForm/EditForm";
 
 const { Sidebar, SidebarItem } = require("react-responsive-sidebar");
 
@@ -40,11 +44,50 @@ function App() {
     <SidebarItem href="/events">All Events</SidebarItem>,
   ];
 
+  const [isCreateFormOpen, setIsCreateFormOpen] = useState<boolean>(false);
+  const [editedItem, setEditedItem] = useState<{ type: string; theItem: {} }>({
+    type: "",
+    theItem: {},
+  });
+
+  const openModal = (editedItem: { type: string; theItem: {} }): boolean => {
+    setIsCreateFormOpen(true);
+    setEditedItem(editedItem);
+    return true;
+  };
+
+  const closeModal = () => {
+    setIsCreateFormOpen(false);
+  };
+
   return (
     <ThemeProvider theme={createTheme()}>
+      <Modal
+        isOpen={isCreateFormOpen}
+        onRequestClose={closeModal}
+        contentLabel="Create Form"
+        style={{
+          content: {
+            top: "10vh",
+            left: "10vw",
+            right: "10vw",
+            bottom: "10vh",
+          },
+        }}
+      >
+        {editedItem.type ? (
+          <EditForm
+            closeEditForm={closeModal}
+            type={editedItem.type}
+            item={editedItem.theItem}
+          />
+        ) : (
+          <CreateForm closeCreateForm={closeModal} />
+        )}
+      </Modal>
       <ReactNotifications />
       <Sidebar content={pages} background={"orange"} color={"blue"}>
-        <CalanderRouter />
+        <CalanderRouter openModal={openModal} />
       </Sidebar>
     </ThemeProvider>
   );

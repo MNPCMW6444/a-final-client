@@ -17,7 +17,7 @@ const EditForm = (props: {
   closeEditForm: Function;
   type: string;
   item: {} | Task | Event;
-}): JSX.Element => {
+}) => {
   const itemType = useState<string>(props.type)[0];
   const [savingStatus, setSavingStatus] = useState<string>("Save");
   const [title, setTitle] = useState<string>(

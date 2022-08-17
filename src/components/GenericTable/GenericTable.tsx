@@ -10,42 +10,42 @@ import Paper from "@mui/material/Paper";
 import domain from "../../config/domain";
 import axios from "axios";
 import { useState } from "react";
-import Modal from "react-modal";
-import EditForm from "../EditForm/EditForm";
 import { Event, Task } from "../../interfaces/dataTypesInterfaces";
 
 const GenericTable = (props: {
   allData: false | { tasks: false | Task[]; events: false | Event[] };
   setAllData: Function;
   type: string;
-}): JSX.Element => {
-  const [isEditFormOpen, setIsEditFormOpen] = useState<boolean>(false);
+  openModal: Function;
+}) => {
   const [editedItem, seteditedItem] = useState<{ type: string; theItem: {} }>({
     type: "",
     theItem: {},
   });
 
-  const openEditForm = () => {
-    setIsEditFormOpen(true);
-  };
-
-  const closeEditForm = () => {
-    setIsEditFormOpen(false);
-  };
   const edit = (type: string, index: number) => {
     type === "Task" &&
+      props.openModal({
+        type,
+        theItem:
+          props.allData && props.allData.tasks && props.allData.tasks[index],
+      }) &&
       seteditedItem({
         type,
         theItem:
           props.allData && props.allData.tasks && props.allData.tasks[index],
       });
     type === "Event" &&
+      props.openModal({
+        type,
+        theItem:
+          props.allData && props.allData.events && props.allData.events[index],
+      }) &&
       seteditedItem({
         type,
         theItem:
           props.allData && props.allData.events && props.allData.events[index],
       });
-    openEditForm();
   };
 
   const remove = async (type: string, index: number) => {
@@ -75,25 +75,6 @@ const GenericTable = (props: {
 
   return (
     <div className="allDataTable">
-      <Modal
-        isOpen={isEditFormOpen}
-        onRequestClose={closeEditForm}
-        contentLabel="Edit Form"
-        style={{
-          content: {
-            top: "10vh",
-            left: "10vw",
-            right: "10vw",
-            bottom: "10vh",
-          },
-        }}
-      >
-        <EditForm
-          closeEditForm={closeEditForm}
-          type={editedItem.type}
-          item={editedItem.theItem}
-        />
-      </Modal>
       <TableContainer component={Paper}>
         <Table>
           <TableHead>
