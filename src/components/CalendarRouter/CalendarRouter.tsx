@@ -1,8 +1,7 @@
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import GenericPage from "../GenericPage/GenericPage";
 
-const CalendarRouter = (): JSX.Element => {
-  return (
+const CalendarRouter = () =>
     <Router>
       <Routes>
         <Route path="/" element={<GenericPage type="all" time="today" />} />
@@ -15,8 +14,6 @@ const CalendarRouter = (): JSX.Element => {
           element={<GenericPage type="events" time="all" />}
         />
       </Routes>
-    </Router>
-  );
-};
+    </Router>;
 
 export default CalendarRouter;

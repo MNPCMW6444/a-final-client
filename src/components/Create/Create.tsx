@@ -3,7 +3,7 @@ import Button from "@mui/material/Button";
 import Modal from "react-modal";
 import CreateForm from "../CreateForm/CreateForm";
 
-const Create = (): JSX.Element => {
+const Create = () => {
   const [isCreateFormOpen, setIsCreateFormOpen] = useState<boolean>(false);
 
   const openCreateForm = () => {
@@ -15,7 +15,7 @@ const Create = (): JSX.Element => {
   };
 
   return (
-    <div>
+    <>
       <Button variant="contained" onClick={openCreateForm}>
         Create a New Item
       </Button>
@@ -34,7 +34,7 @@ const Create = (): JSX.Element => {
       >
         <CreateForm closeCreateForm={closeCreateForm} />
       </Modal>
-    </div>
+    </>
   );
 };
 
