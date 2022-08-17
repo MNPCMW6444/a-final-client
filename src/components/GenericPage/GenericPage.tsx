@@ -1,8 +1,7 @@
 import { useState } from "react";
 import GenericTable from "../GenericTable/GenericTable";
-import Create from "../Create/Create";
 import useFetch from "../../hooks/useFetch";
-import { Grid, TextField } from "@mui/material";
+import { Button, Grid, TextField } from "@mui/material";
 import { Event, Task } from "../../interfaces/dataTypesInterfaces";
 
 const GenericPage = (props: {
@@ -60,7 +59,12 @@ const GenericPage = (props: {
           type={props.type}
           openModal={props.openModal}
         />
-        <Create openModal={props.openModal} />
+        <Button
+          variant="contained"
+          onClick={() => props.openModal({ type: "", theItem: {} })}
+        >
+          Create a New Item
+        </Button>
       </Grid>
     </Grid>
   );
