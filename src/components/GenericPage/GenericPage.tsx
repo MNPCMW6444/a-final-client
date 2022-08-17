@@ -1,33 +1,23 @@
-import { useState } from "react";
+import React, { useState } from "react";
 import GenericTable from "../GenericTable/GenericTable";
 import useFetch from "../../hooks/useFetch";
 import { Button, Grid, TextField } from "@mui/material";
-import { Event, Task } from "../../interfaces/dataTypesInterfaces";
+import { Item } from "../../interfaces/dataTypesInterfaces";
 
 const GenericPage = (props: {
-  openModal: Function;
+  openModal: (editedItem: Item) => boolean;
   type: string;
   time: string;
 }) => {
   const [query, setQuery] = useState<string>("");
-  const [allData, setAllData]: [{ events: Event[]; tasks: Task[] }, Function] =
-    useFetch(props.type + "-" + props.time, {}, []);
-  const filteredAllData = typeof allData === "object" && {
-    events:
-      allData.events &&
-      allData.events instanceof Array &&
-      allData.events.length > 0 &&
-      allData.events.filter(
-        (event: Event) => event.title.includes(query) || !query
-      ),
-    tasks:
-      allData.tasks &&
-      allData.tasks instanceof Array &&
-      allData.tasks.length > 0 &&
-      allData.tasks.filter(
-        (task: Task) => task.title.includes(query) || !query
-      ),
-  };
+  const [allData, setAllData]: [
+    Item[],
+    React.Dispatch<React.SetStateAction<Item[]>>
+  ] = useFetch(props.type + "-" + props.time, {}, []);
+  const filteredAllData =
+    allData &&
+    allData.length > 0 &&
+    allData.filter((item) => item.title.includes(query) || !query);
 
   return (
     <Grid
@@ -59,10 +49,7 @@ const GenericPage = (props: {
           type={props.type}
           openModal={props.openModal}
         />
-        <Button
-          variant="contained"
-          onClick={() => props.openModal({ type: "", theItem: {} })}
-        >
+        <Button variant="contained" onClick={() => props.openModal({} as Item)}>
           Create a New Item
         </Button>
       </Grid>

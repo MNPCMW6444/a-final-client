@@ -9,6 +9,7 @@ import Modal from "react-modal";
 import { useState } from "react";
 import CreateForm from "./components/CreateForm/CreateForm";
 import EditForm from "./components/EditForm/EditForm";
+import { Item } from "./interfaces/dataTypesInterfaces";
 
 const { Sidebar, SidebarItem } = require("react-responsive-sidebar");
 
@@ -45,12 +46,9 @@ function App() {
   ];
 
   const [isCreateFormOpen, setIsCreateFormOpen] = useState<boolean>(false);
-  const [editedItem, setEditedItem] = useState<{ type: string; theItem: {} }>({
-    type: "",
-    theItem: {},
-  });
+  const [editedItem, setEditedItem] = useState<Item>();
 
-  const openModal = (editedItem: { type: string; theItem: {} }): boolean => {
+  const openModal = (editedItem:Item): boolean => {
     setIsCreateFormOpen(true);
     setEditedItem(editedItem);
     return true;
@@ -75,11 +73,10 @@ function App() {
           },
         }}
       >
-        {editedItem.type ? (
+        {editedItem ? (
           <EditForm
             closeEditForm={closeModal}
-            type={editedItem.type}
-            item={editedItem.theItem}
+            item={editedItem}
           />
         ) : (
           <CreateForm closeCreateForm={closeModal} />

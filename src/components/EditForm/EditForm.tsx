@@ -1,4 +1,4 @@
-import { useState } from "react";
+/* import { useState } from "react";
 import TextField from "@mui/material/TextField";
 import Typography from "@mui/material/Typography";
 import { StyledEngineProvider } from "@mui/material/styles";
@@ -15,7 +15,6 @@ import { Event, Task } from "../../interfaces/dataTypesInterfaces";
 
 const EditForm = (props: {
   closeEditForm: Function;
-  type: string;
   item: {} | Task | Event;
 }) => {
   const itemType = useState<string>(props.type)[0];
@@ -316,3 +315,15 @@ const EditForm = (props: {
 };
 
 export default EditForm;
+ */
+
+import React from 'react'
+
+export default function EditForm(props: {
+  closeEditForm: Function;
+  item: {}  | Event;
+}) {
+  return (
+    <div>EditForm</div>
+  )
+}
