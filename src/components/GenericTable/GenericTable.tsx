@@ -35,11 +35,11 @@ const GenericTable = (props: {
         <Table>
           <TableHead>
             <TableRow>
+              {
+                Object.keys(props.allData)
+              }
               <TableCell sx={{ textAlign: "center" }}>Title</TableCell>
-              <TableCell sx={{ textAlign: "center" }}>Description</TableCell>
-              <TableCell sx={{ textAlign: "center" }}>Location</TableCell>
-              <TableCell sx={{ textAlign: "center" }}>Estimated Time</TableCell>
-              <TableCell sx={{ textAlign: "center" }}>Actions</TableCell>
+
             </TableRow>
           </TableHead>
           <TableBody>
