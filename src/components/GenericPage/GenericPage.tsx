@@ -1,8 +1,9 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import GenericTable from "../GenericTable/GenericTable";
-import useFetch from "../../hooks/useFetch";
+//import useFetch from "../../hooks/useFetch";
 import { Button, Grid, TextField } from "@mui/material";
-import { Item } from "../../interfaces/dataTypesInterfaces";
+import { Item } from "../../types/dataTypesInterfaces";
+import data from "../../assets/mock.json";
 
 const GenericPage = (props: {
   openModal: (editedItem: Item) => boolean;
@@ -10,11 +11,11 @@ const GenericPage = (props: {
   time: string;
 }) => {
   const [query, setQuery] = useState<string>("");
-  const [allData, setAllData]: [
-    Item[],
-    React.Dispatch<React.SetStateAction<Item[]>>
-  ] = useFetch(props.type + "-" + props.time, {}, []);
-  const filteredAllData =
+  const [allData, setAllData] = useState<Item[]>([
+    ...data.events,
+    ...data.tasks,
+  ]);
+  const filteredData =
     allData &&
     allData.length > 0 &&
     allData.filter((item) => item.title.includes(query) || !query);
@@ -44,7 +45,7 @@ const GenericPage = (props: {
           onChange={(e) => setQuery(e.target.value)}
         />
         <GenericTable
-          allData={filteredAllData}
+          allData={filteredData}
           setAllData={setAllData}
           type={props.type}
           openModal={props.openModal}

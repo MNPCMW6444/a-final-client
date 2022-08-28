@@ -1,5 +1,5 @@
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
-import { Item } from "../../interfaces/dataTypesInterfaces";
+import { Item } from "../../types/dataTypesInterfaces";
 import GenericPage from "../GenericPage/GenericPage";
 
 const CalendarRouter = (props: {

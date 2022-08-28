@@ -3,9 +3,13 @@ import Axios, { AxiosError, CancelTokenSource } from "axios";
 import domain from "../config/domain";
 import { Store } from "react-notifications-component";
 import defaultNotificationSettings from "../config/notificationDefaultSettings";
-import { Item } from "../interfaces/dataTypesInterfaces";
+import { Item } from "../types/dataTypesInterfaces";
 
-export default (endpoint: string, params: {}, dependencies: []): [Item[], React.Dispatch<React.SetStateAction<Item[]>>] => {
+export default (
+  endpoint: string,
+  params: {},
+  dependencies: []
+): [Item[], React.Dispatch<React.SetStateAction<Item[]>>] => {
   let isFetching = false;
 
   const [data, setData] = useState<Item[]>([]);

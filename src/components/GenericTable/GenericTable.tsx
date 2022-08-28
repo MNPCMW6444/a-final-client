@@ -9,23 +9,23 @@ import Paper from "@mui/material/Paper";
 import domain from "../../config/domain";
 import axios from "axios";
 import { useState } from "react";
-import { Item } from "../../interfaces/dataTypesInterfaces";
+import { Event, Task } from "../../types/dataTypesInterfaces";
 import Button from "@mui/material/Button";
 import { Typography } from "@mui/material";
 
 const GenericTable = (props: {
-  allData: false | Item[];
+  allData: any;
   type: string;
-  setAllData: React.Dispatch<React.SetStateAction<Item[]>>;
-  openModal: (editedItem: Item) => boolean;
+  setAllData: React.Dispatch<React.SetStateAction<any[]>>;
+  openModal: (editedItem: any) => boolean;
 }) => {
-  const [editedItem, seteditedItem] = useState<Item>();
-  const edit = (value: Item) => {
+  const [editedItem, setEditedItem] = useState<any>();
+  const edit = (value: any) => {
     props.openModal(value);
-    seteditedItem(value);
+    setEditedItem(value);
   };
 
-  const remove = async (value: Item) => {
+  const remove = async (value: any) => {
     props.setAllData((await axios.delete(domain + "all/" + value._id)).data);
   };
 
@@ -35,11 +35,8 @@ const GenericTable = (props: {
         <Table>
           <TableHead>
             <TableRow>
-              {
-                Object.keys(props.allData)
-              }
+              {Object.keys(props.allData)}
               <TableCell sx={{ textAlign: "center" }}>Title</TableCell>
-
             </TableRow>
           </TableHead>
           <TableBody>
@@ -47,7 +44,7 @@ const GenericTable = (props: {
               props.allData.length > 0 &&
               props.allData.map((item) => (
                 <TableRow>
-                  {Object.entries(item).map(
+                  {Object.entries(any).map(
                     ([key, value]) =>
                       key === "description" && (
                         <TableCell sx={{ textAlign: "center" }}>
@@ -59,14 +56,14 @@ const GenericTable = (props: {
                     <TableCell sx={{ textAlign: "center" }}>
                       <Button
                         onClick={() => {
-                          edit(item);
+                          edit(any);
                         }}
                       >
                         ✏️
                       </Button>
                       <Button
                         onClick={() => {
-                          remove(item);
+                          remove(any);
                         }}
                       >
                         🗑️
