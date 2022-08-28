@@ -1,33 +1,24 @@
 interface Event {
-  id: number;
-  description: string;
-  location: string;
-  estimatedTime: Date;
+  id: string;
   title: string;
-  status: string;
-  priority: string;
-  review: string;
-  timeSpent: number;
-  notificationTime: Date;
-  untilDate: Date;
-  beginningTime: Date;
-  endingTime: Date;
+  description: string;
+  beginningTime: string;
+  endingTime: string;
   color: string;
   invitedGuests: string[];
+  notificationTime: string;
 }
 
 interface Task {
-  id: number;
-  description: string;
-  location: string;
-  estimatedTime: Date;
+  id: string;
   title: string;
+  description: string;
+  estimatedTime: string;
   status: string;
   priority: string;
   review: string;
-  timeSpent: number;
-  notificationTime: Date;
-  untilDate: Date;
+  timeSpent: string;
+  untilDate: string;
 }
 
 export type { Event, Task };

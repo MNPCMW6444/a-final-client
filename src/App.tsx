@@ -7,9 +7,6 @@ import { Box, createTheme, ThemeProvider, Typography } from "@mui/material";
 import BT from "./assets/BT.png";
 import Modal from "react-modal";
 import { useState } from "react";
-import CreateForm from "./components/CreateForm/CreateForm";
-import EditForm from "./components/EditForm/EditForm";
-import { Item } from "./types/dataTypesInterfaces";
 
 const { Sidebar, SidebarItem } = require("react-responsive-sidebar");
 
@@ -46,9 +43,9 @@ function App() {
   ];
 
   const [isCreateFormOpen, setIsCreateFormOpen] = useState<boolean>(false);
-  const [editedItem, setEditedItem] = useState<Item>();
+  const [editedItem, setEditedItem] = useState<any>();
 
-  const openModal = (editedItem: Item): boolean => {
+  const openModal = (editedItem: any): boolean => {
     setIsCreateFormOpen(true);
     setEditedItem(editedItem);
     return true;
@@ -73,11 +70,11 @@ function App() {
           },
         }}
       >
-        {editedItem ? (
+        {/*  {editedItem ? (
           <EditForm closeEditForm={closeModal} item={editedItem} />
         ) : (
           <CreateForm closeCreateForm={closeModal} />
-        )}
+        )} */}
       </Modal>
       <ReactNotifications />
       <Sidebar content={pages} background={"orange"} color={"blue"}>

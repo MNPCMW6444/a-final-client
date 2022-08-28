@@ -12,6 +12,7 @@ import { useState } from "react";
 import { Event, Task } from "../../types/dataTypesInterfaces";
 import Button from "@mui/material/Button";
 import { Typography } from "@mui/material";
+import mockData from "../../assets/mock.json";
 
 const GenericTable = (props: {
   allData: any;
@@ -29,6 +30,8 @@ const GenericTable = (props: {
     props.setAllData((await axios.delete(domain + "all/" + value._id)).data);
   };
 
+  const allData: (Event | Task)[] = [...mockData.events, ...mockData.tasks];
+
   return (
     <div className="allDataTable">
       <TableContainer component={Paper}>
@@ -39,49 +42,7 @@ const GenericTable = (props: {
               <TableCell sx={{ textAlign: "center" }}>Title</TableCell>
             </TableRow>
           </TableHead>
-          <TableBody>
-            {props.allData ? (
-              props.allData.length > 0 &&
-              props.allData.map((item) => (
-                <TableRow>
-                  {Object.entries(any).map(
-                    ([key, value]) =>
-                      key === "description" && (
-                        <TableCell sx={{ textAlign: "center" }}>
-                          {value}
-                        </TableCell>
-                      )
-                  )}
-                  <TableCell sx={{ textAlign: "center" }}>
-                    <TableCell sx={{ textAlign: "center" }}>
-                      <Button
-                        onClick={() => {
-                          edit(any);
-                        }}
-                      >
-                        ✏️
-                      </Button>
-                      <Button
-                        onClick={() => {
-                          remove(any);
-                        }}
-                      >
-                        🗑️
-                      </Button>
-                    </TableCell>
-                  </TableCell>
-                </TableRow>
-              ))
-            ) : (
-              <TableRow>
-                <TableCell colSpan={5}>
-                  <Typography variant="h6">
-                    No data exists or matches the search
-                  </Typography>
-                </TableCell>
-              </TableRow>
-            )}
-          </TableBody>
+          <TableBody></TableBody>
         </Table>
       </TableContainer>
     </div>

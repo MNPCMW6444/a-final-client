@@ -1,10 +1,7 @@
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
-import { Item } from "../../types/dataTypesInterfaces";
 import GenericPage from "../GenericPage/GenericPage";
 
-const CalendarRouter = (props: {
-  openModal: (editedItem: Item) => boolean;
-}) => (
+const CalendarRouter = (props: { openModal: (editedItem: any) => boolean }) => (
   <Router>
     <Routes>
       <Route

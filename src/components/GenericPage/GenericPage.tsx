@@ -2,23 +2,19 @@ import { useState } from "react";
 import GenericTable from "../GenericTable/GenericTable";
 //import useFetch from "../../hooks/useFetch";
 import { Button, Grid, TextField } from "@mui/material";
-import { Item } from "../../types/dataTypesInterfaces";
 import data from "../../assets/mock.json";
 
 const GenericPage = (props: {
-  openModal: (editedItem: Item) => boolean;
+  openModal: (editedItem: any) => boolean;
   type: string;
   time: string;
 }) => {
   const [query, setQuery] = useState<string>("");
-  const [allData, setAllData] = useState<Item[]>([
-    ...data.events,
-    ...data.tasks,
-  ]);
+  const [allData, setAllData] = useState<any>([...data.events, ...data.tasks]);
   const filteredData =
     allData &&
     allData.length > 0 &&
-    allData.filter((item) => item.title.includes(query) || !query);
+    allData.filter((item: any) => item.title.includes(query) || !query);
 
   return (
     <Grid
@@ -50,7 +46,7 @@ const GenericPage = (props: {
           type={props.type}
           openModal={props.openModal}
         />
-        <Button variant="contained" onClick={() => props.openModal({} as Item)}>
+        <Button variant="contained" onClick={() => props.openModal({} as any)}>
           Create a New Item
         </Button>
       </Grid>
