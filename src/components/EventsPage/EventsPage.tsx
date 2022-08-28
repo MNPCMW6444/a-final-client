@@ -38,12 +38,15 @@ const EventsPage = (props: {
         />
       </Grid>
       <Grid item>
-        <GenericTable
-          allData={filteredData}
-          setAllData={setAllData}
-          type={"events"}
-          openModal={props.openModal}
-        />
+        {/*   <GenericTable
+          headers={{
+            id: "ID",
+            title: "Title",
+            description: "Description",
+          }}
+          items={filteredData || []}
+          customRenderers={{}}
+        /> */}
       </Grid>
       <Grid item>
         <Button variant="contained" onClick={() => props.openModal({} as any)}>

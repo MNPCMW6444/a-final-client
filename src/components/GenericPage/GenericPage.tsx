@@ -42,10 +42,13 @@ const GenericPage = (props: {
       </Grid>
       <Grid item>
         <GenericTable
-          allData={filteredData}
-          setAllData={setAllData}
-          type={props.type}
-          openModal={props.openModal}
+          headers={{
+            id: "ID",
+            title: "Title",
+            description: "Description",
+          }}
+          items={filteredData || []}
+          customRenderers={{}}
         />
       </Grid>
       <Grid item>
