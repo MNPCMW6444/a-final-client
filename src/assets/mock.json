@@ -8,7 +8,9 @@
       "endingTime": "1997-04-28T13:30:00.045Z",
       "color": "Blue",
       "invitedGuests": ["", ""],
-      "notificationTime": "1997-04-28T11:30:00.045Z"
+      "notificationTime": "1997-04-28T11:30:00.045Z",
+
+      "status": "----"
     },
     {
       "id": "2",
@@ -18,7 +20,9 @@
       "endingTime": "2020-01-01T09:30:00.045Z",
       "color": "Red",
       "invitedGuests": ["Team Leader"],
-      "notificationTime": "2020-01-01T08:45:00.045Z"
+      "notificationTime": "2020-01-01T08:45:00.045Z",
+
+      "status": "----"
     }
   ],
   "tasks": [
@@ -27,6 +31,8 @@
       "title": "To praise Shperling",
       "description": "Tell your team leader that he is the best team leader you've ever had",
       "estimatedTime": "3d",
+
+      "invitedGuests": ["", ""],
       "status": "Open",
       "priority": "High",
       "review": "not yet",
@@ -38,6 +44,8 @@
       "title": "To finish this sub-task",
       "description": "Finish this subtask in your training program",
       "estimatedTime": "1w",
+
+      "invitedGuests": ["", ""],
       "status": "In Progress",
       "priority": "Medium",
       "review": "not yet",
@@ -49,6 +57,8 @@
       "title": "Have a break",
       "description": "Tell your team leader that he is the best team leader you've ever had",
       "estimatedTime": "0.5h",
+
+      "invitedGuests": ["", ""],
       "status": "Close",
       "priority": "Low",
       "review": "The break you took was 30 minutes and 2 seconds, so you have to work 2 more seconds at the end of the day",

@@ -1,5 +1,7 @@
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import GenericPage from "../GenericPage/GenericPage";
+import TasksPage from "../TasksPage/TasksPage";
+import EventsPage from "../EventsPage/EventsPage";
 
 const CalendarRouter = (props: { openModal: (editedItem: any) => boolean }) => (
   <Router>
@@ -13,13 +15,13 @@ const CalendarRouter = (props: { openModal: (editedItem: any) => boolean }) => (
       <Route
         path="/tasks"
         element={
-          <GenericPage openModal={props.openModal} type="tasks" time="all" />
+          <TasksPage openModal={props.openModal} type="tasks" time="all" />
         }
       />
       <Route
         path="/events"
         element={
-          <GenericPage openModal={props.openModal} type="events" time="all" />
+          <EventsPage openModal={props.openModal} type="events" time="all" />
         }
       />
     </Routes>

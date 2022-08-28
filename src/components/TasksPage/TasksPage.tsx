@@ -5,18 +5,15 @@ import { Button, Grid, TextField } from "@mui/material";
 import data from "../../assets/mock.json";
 import { Task, Event } from "../../types/dataTypesInterfaces";
 
-const GenericPage = (props: {
+const TasksPage = (props: {
   openModal: (editedItem: any) => boolean;
   type: string;
   time: string;
 }) => {
   const [query, setQuery] = useState<string>("");
-  const [allData, setAllData] = useState<(Event | Task)[]>([
-    ...data.events,
-    ...data.tasks,
-  ]);
+  const [allData, setAllData] = useState<Task[]>(data.tasks);
 
-  const filteredData: false | (Event | Task)[] =
+  const filteredData: false | Task[] =
     allData &&
     allData.length > 0 &&
     allData.filter((item: any) => item.title.includes(query) || !query);
@@ -44,7 +41,7 @@ const GenericPage = (props: {
         <GenericTable
           allData={filteredData}
           setAllData={setAllData}
-          type={props.type}
+          type={"tasks"}
           openModal={props.openModal}
         />
       </Grid>
@@ -57,4 +54,4 @@ const GenericPage = (props: {
   );
 };
 
-export default GenericPage;
+export default TasksPage;

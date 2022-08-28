@@ -10,12 +10,9 @@ import domain from "../../config/domain";
 import axios from "axios";
 import { useState } from "react";
 import { Event, Task } from "../../types/dataTypesInterfaces";
-import Button from "@mui/material/Button";
-import { Typography } from "@mui/material";
-import mockData from "../../assets/mock.json";
 
 const GenericTable = (props: {
-  allData: any;
+  allData: false | (Event | Task)[];
   type: string;
   setAllData: React.Dispatch<React.SetStateAction<any[]>>;
   openModal: (editedItem: any) => boolean;
@@ -30,19 +27,29 @@ const GenericTable = (props: {
     props.setAllData((await axios.delete(domain + "all/" + value._id)).data);
   };
 
-  const allData: (Event | Task)[] = [...mockData.events, ...mockData.tasks];
-
   return (
     <div className="allDataTable">
       <TableContainer component={Paper}>
         <Table>
           <TableHead>
             <TableRow>
-              {Object.keys(props.allData)}
-              <TableCell sx={{ textAlign: "center" }}>Title</TableCell>
+              {props.allData &&
+                Object.keys({
+                  ...(props.type === "events" && props.allData[0]),
+                  ...(props.type === "tasks" && props.allData[3]),
+                }).map((header) => <TableCell>{header}</TableCell>)}
             </TableRow>
           </TableHead>
-          <TableBody></TableBody>
+          <TableBody>
+            {props.allData &&
+              props.allData.map((row) => (
+                <TableRow>
+                  {Object.values(row).map((value) => (
+                    <TableCell>{value}</TableCell>
+                  ))}
+                </TableRow>
+              ))}
+          </TableBody>
         </Table>
       </TableContainer>
     </div>
