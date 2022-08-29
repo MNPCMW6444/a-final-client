@@ -1,14 +1,16 @@
+import { TableHead, TableRow } from "@mui/material";
+
 type ColumnDefinitionType = {
   key: string;
   header: string;
 };
-type TableHeaderProps<T, K extends keyof T> = {
+type GenericTableHeadProps<T, K extends keyof T> = {
   columns: Array<ColumnDefinitionType>;
 };
 
-const TableHeader = <T, K extends keyof T>({
+const GenericTableHead = <T, K extends keyof T>({
   columns,
-}: TableHeaderProps<T, K>): JSX.Element => {
+}: GenericTableHeadProps<T, K>): JSX.Element => {
   const headers = columns.map((column, index) => {
     const style = {
       borderBottom: "2px solid black",
@@ -22,10 +24,10 @@ const TableHeader = <T, K extends keyof T>({
   });
 
   return (
-    <thead>
-      <tr>{headers}</tr>
-    </thead>
+    <TableHead>
+      <TableRow>{headers}</TableRow>
+    </TableHead>
   );
 };
 
-export default TableHeader;
+export default GenericTableHead;

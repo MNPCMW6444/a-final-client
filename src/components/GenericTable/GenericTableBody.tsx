@@ -1,3 +1,4 @@
+import TableBody from "@mui/material/TableBody";
 import TableCell from "@mui/material/TableCell";
 import TableRow from "@mui/material/TableRow";
 
@@ -7,7 +8,7 @@ type ColumnDefinitionType = {
   width?: number;
 };
 
-type TableRowsProps<T, K extends keyof T> = {
+type GenericTableBodyProps<T, K extends keyof T> = {
   data: Array<T>;
   columns: Array<ColumnDefinitionType>;
 };
@@ -16,10 +17,10 @@ const style = {
   border: "1px solid black",
 };
 
-const TableRows = <T, K extends keyof T>({
+const GenericTableBody = <T, K extends keyof T>({
   data,
   columns,
-}: TableRowsProps<T, K>): JSX.Element => {
+}: GenericTableBodyProps<T, K>): JSX.Element => {
   const rows = data.map((row, index) => {
     return (
       <TableRow key={`row-${index}`}>
@@ -34,7 +35,7 @@ const TableRows = <T, K extends keyof T>({
     );
   });
 
-  return <tbody>{rows}</tbody>;
+  return <TableBody>{rows}</TableBody>;
 };
 
-export default TableRows;
+export default GenericTableBody;

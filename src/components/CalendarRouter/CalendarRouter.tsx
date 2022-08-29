@@ -1,26 +1,20 @@
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
-import GenericPage from "../GenericPage/GenericPage";
+import TodayPage from "../TodayPage/TodayPage";
+import EventsPage from "../EventsPage/EventsPage";
+import TasksPage from "../TasksPage/TasksPage";
 
 const CalendarRouter = (props: { openModal: (editedItem: any) => boolean }) => (
   <Router>
     <Routes>
-      <Route
-        path="/"
-        element={
-          <GenericPage openModal={props.openModal} type="all" time="today" />
-        }
-      />
+      <Route path="/" element={<TodayPage openModal={props.openModal} />} />
       <Route
         path="/tasks"
-        element={
-          <GenericPage openModal={props.openModal} type="tasks" time="all" />
-        }
+        element={<TasksPage openModal={props.openModal} />}
       />
+
       <Route
         path="/events"
-        element={
-          <GenericPage openModal={props.openModal} type="events" time="all" />
-        }
+        element={<EventsPage openModal={props.openModal} />}
       />
     </Routes>
   </Router>
