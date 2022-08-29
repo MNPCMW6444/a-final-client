@@ -1,24 +1,25 @@
-interface Event {
+interface Item {
   id: string;
   title: string;
   description: string;
+}
+
+interface Event extends Item {
   beginningTime: string;
   endingTime: string;
   color: string;
-  invitedGuests: string[];
-  notificationTime: string;
+  location?: string;
+  invitedGuests?: string[];
+  notificationTime?: string;
 }
 
-interface Task {
-  id: string;
-  title: string;
-  description: string;
+interface Task extends Item {
   estimatedTime: string;
   status: string;
   priority: string;
-  review: string;
-  timeSpent: string;
-  untilDate: string;
+  review?: string;
+  timeSpent?: string;
+  untilDate?: string;
 }
 
 export type { Event, Task };

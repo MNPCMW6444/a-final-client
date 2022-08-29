@@ -1,9 +1,9 @@
 import { useState } from "react";
-import GenericTable from "../GenericTable/GenericTable";
 //import useFetch from "../../hooks/useFetch";
 import { Button, Grid, TextField } from "@mui/material";
 import data from "../../assets/mock.json";
 import { Task, Event } from "../../types/dataTypesInterfaces";
+import Table from "../GenericTable/Table";
 
 const GenericPage = (props: {
   openModal: (editedItem: any) => boolean;
@@ -41,14 +41,20 @@ const GenericPage = (props: {
         />
       </Grid>
       <Grid item>
-        <GenericTable
-          headers={{
-            id: "ID",
-            title: "Title",
-            description: "Description",
-          }}
-          items={filteredData || []}
-          customRenderers={{}}
+        <Table
+          data={filteredData || []}
+          columns={[
+            {
+              key: "id",
+              header: "Id",
+              width: 150,
+            },
+            {
+              key: "title",
+              header: "title",
+              width: 150,
+            },
+          ]}
         />
       </Grid>
       <Grid item>

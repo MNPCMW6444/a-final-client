@@ -1,5 +1,5 @@
 import { useState } from "react";
-import GenericTable from "../GenericTable/GenericTable";
+import GenericTable from "../GenericTable/Table";
 //import useFetch from "../../hooks/useFetch";
 import { Button, Grid, TextField } from "@mui/material";
 import data from "../../assets/mock.json";
