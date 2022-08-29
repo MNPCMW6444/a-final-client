@@ -1,5 +1,4 @@
 import { useState } from "react";
-//import useFetch from "../../hooks/useFetch";
 import { Button, Grid, TextField } from "@mui/material";
 import data from "../../assets/mock.json";
 import { Task, Event } from "../../types/dataTypesInterfaces";
@@ -41,19 +40,58 @@ const GenericPage = (props: {
         />
       </Grid>
       <Grid item>
-        <Table
-          data={filteredData || []}
-          columns={[
-            {
-              key: "id",
-              header: "Id",
-            },
-            {
-              key: "title",
-              header: "title",
-            },
-          ]}
-        />
+        {props.time === "today" ? (
+          <Table
+            data={filteredData || []}
+            columns={[
+              {
+                key: "title",
+                header: "Title",
+              },
+              {
+                key: "priority",
+                header: "priority",
+              },
+              {
+                key: "description",
+                header: "Description",
+              },
+            ]}
+          />
+        ) : props.type === "tasks" ? (
+          <Table
+            data={filteredData || []}
+            columns={[
+              {
+                key: "title",
+                header: "Title",
+              },
+
+              {
+                key: "description",
+                header: "Description",
+              },
+            ]}
+          />
+        ) : (
+          <Table
+            data={filteredData || []}
+            columns={[
+              {
+                key: "title",
+                header: "Title",
+              },
+              {
+                key: "priority",
+                header: "priority",
+              },
+              {
+                key: "description",
+                header: "Description",
+              },
+            ]}
+          />
+        )}
       </Grid>
       <Grid item>
         <Button variant="contained" onClick={() => props.openModal({} as any)}>

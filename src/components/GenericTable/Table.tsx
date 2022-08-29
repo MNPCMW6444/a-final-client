@@ -1,5 +1,6 @@
 import TableHeader from "./TableHeader";
 import TableRows from "./TableRows";
+import MuiTable from "@mui/material/Table";
 
 type ColumnDefinitionType = {
   key: string;
@@ -19,10 +20,10 @@ const Table = <T, K extends keyof T>({
   data,
   columns,
 }: TableProps<T, K>): JSX.Element => (
-  <table style={style}>
+  <MuiTable style={style}>
     <TableHeader columns={columns} />
     <TableRows data={data} columns={columns} />
-  </table>
+  </MuiTable>
 );
 
 export default Table;

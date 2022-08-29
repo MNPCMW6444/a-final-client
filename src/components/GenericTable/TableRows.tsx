@@ -1,3 +1,6 @@
+import TableCell from "@mui/material/TableCell";
+import TableRow from "@mui/material/TableRow";
+
 type ColumnDefinitionType = {
   key: string;
   header: string;
@@ -19,15 +22,15 @@ const TableRows = <T, K extends keyof T>({
 }: TableRowsProps<T, K>): JSX.Element => {
   const rows = data.map((row, index) => {
     return (
-      <tr key={`row-${index}`}>
+      <TableRow key={`row-${index}`}>
         {columns.map((column, index2) => {
           return (
-            <td key={`cell-${index2}`} style={style}>
-              {(row as any)[column.key] + ""}
-            </td>
+            <TableCell key={`cell-${index2}`} style={style}>
+              {(row as any)[column.key] || "-"}
+            </TableCell>
           );
         })}
-      </tr>
+      </TableRow>
     );
   });
 
