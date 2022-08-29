@@ -1,10 +1,9 @@
-type ColumnDefinitionType<T, K extends keyof T> = {
-  key: K;
+type ColumnDefinitionType = {
+  key: string;
   header: string;
-  width?: number;
 };
 type TableHeaderProps<T, K extends keyof T> = {
-  columns: Array<ColumnDefinitionType<T, K>>;
+  columns: Array<ColumnDefinitionType>;
 };
 
 const TableHeader = <T, K extends keyof T>({
@@ -12,7 +11,6 @@ const TableHeader = <T, K extends keyof T>({
 }: TableHeaderProps<T, K>): JSX.Element => {
   const headers = columns.map((column, index) => {
     const style = {
-      width: column.width ?? 100, // 100 is our default value if width is not defined
       borderBottom: "2px solid black",
     };
 

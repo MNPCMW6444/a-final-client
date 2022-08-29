@@ -1,15 +1,14 @@
 import TableHeader from "./TableHeader";
 import TableRows from "./TableRows";
 
-type ColumnDefinitionType<T, K extends keyof T> = {
-  key: K;
+type ColumnDefinitionType = {
+  key: string;
   header: string;
-  width?: number;
 };
 
 type TableProps<T, K extends keyof T> = {
   data: Array<T>;
-  columns: Array<ColumnDefinitionType<T, K>>;
+  columns: Array<ColumnDefinitionType>;
 };
 
 const style = {

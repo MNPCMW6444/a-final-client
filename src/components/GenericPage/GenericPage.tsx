@@ -47,12 +47,10 @@ const GenericPage = (props: {
             {
               key: "id",
               header: "Id",
-              width: 150,
             },
             {
               key: "title",
               header: "title",
-              width: 150,
             },
           ]}
         />

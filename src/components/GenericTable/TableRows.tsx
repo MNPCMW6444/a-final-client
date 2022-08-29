@@ -1,12 +1,12 @@
-type ColumnDefinitionType<T, K extends keyof T> = {
-  key: K;
+type ColumnDefinitionType = {
+  key: string;
   header: string;
   width?: number;
 };
 
 type TableRowsProps<T, K extends keyof T> = {
   data: Array<T>;
-  columns: Array<ColumnDefinitionType<T, K>>;
+  columns: Array<ColumnDefinitionType>;
 };
 
 const style = {
@@ -23,7 +23,7 @@ const TableRows = <T, K extends keyof T>({
         {columns.map((column, index2) => {
           return (
             <td key={`cell-${index2}`} style={style}>
-              {row[column.key]}
+              {(row as any)[column.key] + ""}
             </td>
           );
         })}
