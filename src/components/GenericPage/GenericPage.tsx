@@ -1,6 +1,5 @@
 import { useState } from "react";
 import { Button, Grid, TextField } from "@mui/material";
-import data from "../../assets/mock.json";
 import { Task, Event } from "../../types/dataTypesInterfaces";
 import Table from "../GenericTable/GenericTable";
 
