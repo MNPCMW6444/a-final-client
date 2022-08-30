@@ -25,7 +25,7 @@ const GenericTableHead = <T, K extends keyof T>({
 
   return (
     <TableHead>
-      <TableRow>{headers}</TableRow>
+      <TableRow sx={{border:"2px solid gray"}}>{headers}</TableRow>
     </TableHead>
   );
 };
