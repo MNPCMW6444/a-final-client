@@ -4,12 +4,20 @@ import data from "../../assets/mock.json";
 import { Task, Event } from "../../types/dataTypesInterfaces";
 import Table from "../GenericTable/GenericTable";
 
-const GenericPage = (props: { openModal: (editedItem: any) => boolean }) => {
+type ColumnDefinitionType = {
+  key: string;
+  header: string;
+};
+
+interface GenericPageProps {
+  allData: (Event | Task)[];
+  openModal: (editedItem: any) => boolean;
+  columns: ColumnDefinitionType[];
+}
+
+const GenericPage = (props: GenericPageProps) => {
   const [query, setQuery] = useState<string>("");
-  const [allData, setAllData] = useState<(Event | Task)[]>([
-    ...data.events,
-    ...data.tasks,
-  ]);
+  const allData = props.allData;
 
   const filteredData: false | (Event | Task)[] =
     allData &&
@@ -19,7 +27,7 @@ const GenericPage = (props: { openModal: (editedItem: any) => boolean }) => {
   return (
     <Grid
       container
-      direction="row"
+      direction="column"
       justifyContent="space-around"
       width="100%"
       height="80%"
@@ -36,23 +44,7 @@ const GenericPage = (props: { openModal: (editedItem: any) => boolean }) => {
         />
       </Grid>
       <Grid item>
-        <Table
-          data={filteredData || []}
-          columns={[
-            {
-              key: "title",
-              header: "Title",
-            },
-            {
-              key: "priority",
-              header: "priority",
-            },
-            {
-              key: "description",
-              header: "Description",
-            },
-          ]}
-        />
+        <Table data={filteredData || []} columns={props.columns} />
       </Grid>
       <Grid item>
         <Button variant="contained" onClick={() => props.openModal({} as any)}>
