@@ -1,4 +1,4 @@
-import { TableHead, TableRow } from "@mui/material";
+import { TableCell, TableHead, TableRow } from "@mui/material";
 
 type ColumnDefinitionType = {
   key: string;
@@ -17,15 +17,15 @@ const GenericTableHead = <T, K extends keyof T>({
     };
 
     return (
-      <th key={`headCell-${index}`} style={style}>
+      <TableCell key={`headCell-${index}`} style={style}>
         {column.header}
-      </th>
+      </TableCell>
     );
   });
 
   return (
     <TableHead>
-      <TableRow sx={{border:"2px solid gray"}}>{headers}</TableRow>
+      <TableRow sx={{ border: "2px solid gray" }}>{headers}</TableRow>
     </TableHead>
   );
 };
