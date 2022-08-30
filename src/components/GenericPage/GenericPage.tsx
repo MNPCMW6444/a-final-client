@@ -10,19 +10,18 @@ type ColumnDefinitionType = {
 };
 
 interface GenericPageProps {
-  allData: (Event | Task)[];
+  data: (Event | Task)[];
   openModal: (editedItem: any) => boolean;
   columns: ColumnDefinitionType[];
 }
 
 const GenericPage = (props: GenericPageProps) => {
   const [query, setQuery] = useState<string>("");
-  const allData = props.allData;
 
   const filteredData: false | (Event | Task)[] =
-    allData &&
-    allData.length > 0 &&
-    allData.filter((item: any) => item.title.includes(query) || !query);
+    props.data &&
+    props.data.length > 0 &&
+    props.data.filter((item: any) => item.title.includes(query) || !query);
 
   return (
     <Grid

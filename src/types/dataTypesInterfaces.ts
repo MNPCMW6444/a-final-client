@@ -19,7 +19,7 @@ interface Task extends Item {
   priority: string;
   review?: string;
   timeSpent?: string;
-  untilDate?: string;
+  untilDate: string;
 }
 
 export type { Event, Task };

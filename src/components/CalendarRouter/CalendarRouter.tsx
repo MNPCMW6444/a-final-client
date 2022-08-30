@@ -2,8 +2,13 @@ import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import GenericPage from "../GenericPage/GenericPage";
 import data from "../../assets/mock.json";
 import { Task, Event } from "../../types/dataTypesInterfaces";
+import columnsConfig from "../../config/columns";
 
-const CalendarRouter = (props: { openModal: (editedItem: any) => boolean }) => (
+interface CalendarRouterProps {
+  openModal: (editedItem: any) => boolean;
+}
+
+const CalendarRouter = (props: CalendarRouterProps) => (
   <Router>
     <Routes>
       <Route
@@ -11,25 +16,14 @@ const CalendarRouter = (props: { openModal: (editedItem: any) => boolean }) => (
         element={
           <GenericPage
             openModal={props.openModal}
-            allData={[...data.events, ...data.tasks].filter(
-              (item) =>
-                (item as Task).untilDate === new Date().toDateString() ||
-                (item as Event).beginningTime === new Date().toDateString()
+            data={[...data.events, ...data.tasks].filter((item) =>
+              (item as Task).priority
+                ? (item as Task).untilDate.substring(0, 9) ===
+                  new Date().toISOString().substring(0, 9)
+                : (item as Event).beginningTime.substring(0, 9) ===
+                  new Date().toISOString().substring(0, 9)
             )}
-            columns={[
-              {
-                key: "title",
-                header: "Title",
-              },
-              {
-                key: "priority",
-                header: "priority",
-              },
-              {
-                key: "description",
-                header: "Description",
-              },
-            ]}
+            columns={columnsConfig.today}
           />
         }
       />
@@ -38,21 +32,8 @@ const CalendarRouter = (props: { openModal: (editedItem: any) => boolean }) => (
         element={
           <GenericPage
             openModal={props.openModal}
-            allData={data.tasks}
-            columns={[
-              {
-                key: "title",
-                header: "Title",
-              },
-              {
-                key: "priority",
-                header: "priority",
-              },
-              {
-                key: "description",
-                header: "Description",
-              },
-            ]}
+            data={data.tasks}
+            columns={columnsConfig.tasks}
           />
         }
       />
@@ -62,18 +43,8 @@ const CalendarRouter = (props: { openModal: (editedItem: any) => boolean }) => (
         element={
           <GenericPage
             openModal={props.openModal}
-            allData={data.events}
-            columns={[
-              {
-                key: "title",
-                header: "Title",
-              },
-
-              {
-                key: "description",
-                header: "Description",
-              },
-            ]}
+            data={data.events}
+            columns={columnsConfig.events}
           />
         }
       />
