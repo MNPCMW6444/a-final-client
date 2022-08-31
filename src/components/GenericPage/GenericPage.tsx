@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Button, Grid, TextField } from "@mui/material";
-import { Task, Event } from "../../types/dataTypesInterfaces";
+import { Task, Event } from "../../types/dataTypes";
 import Table from "../GenericTable/GenericTable";
 
 type ColumnDefinitionType = {

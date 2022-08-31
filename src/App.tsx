@@ -7,6 +7,7 @@ import { Box, createTheme, ThemeProvider, Typography } from "@mui/material";
 import BT from "./assets/BT.png";
 import Modal from "react-modal";
 import { useState } from "react";
+import { Item } from "./types/dataTypes";
 
 const { Sidebar, SidebarItem } = require("react-responsive-sidebar");
 
@@ -43,7 +44,7 @@ function App() {
   ];
 
   const [isCreateFormOpen, setIsCreateFormOpen] = useState<boolean>(false);
-  const [editedItem, setEditedItem] = useState<any>();
+  const [editedItem, setEditedItem] = useState<Item>();
 
   const openModal = (editedItem: any): boolean => {
     setIsCreateFormOpen(true);
@@ -60,7 +61,6 @@ function App() {
       <Modal
         isOpen={isCreateFormOpen}
         onRequestClose={closeModal}
-        contentLabel="Create Form"
         style={{
           content: {
             top: "10vh",

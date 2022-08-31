@@ -1,10 +1,10 @@
-interface Item {
+interface AbstractItem {
   id: string;
   title: string;
   description: string;
 }
 
-interface Event extends Item {
+interface Event extends AbstractItem {
   beginningTime: string;
   endingTime: string;
   color: string;
@@ -13,7 +13,7 @@ interface Event extends Item {
   notificationTime?: string;
 }
 
-interface Task extends Item {
+interface Task extends AbstractItem {
   estimatedTime: string;
   status: string;
   priority: string;
@@ -22,4 +22,6 @@ interface Task extends Item {
   untilDate: string;
 }
 
-export type { Event, Task };
+type Item = Event | Task;
+
+export type { Item, Event, Task };

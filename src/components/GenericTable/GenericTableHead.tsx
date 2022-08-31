@@ -1,9 +1,7 @@
 import { TableCell, TableHead, TableRow } from "@mui/material";
 
-type ColumnDefinitionType = {
-  key: string;
-  header: string;
-};
+import { ColumnDefinitionType } from "../../types/tableTypes";
+
 type GenericTableHeadProps<T, K extends keyof T> = {
   columns: Array<ColumnDefinitionType>;
 };

@@ -2,11 +2,7 @@ import TableBody from "@mui/material/TableBody";
 import TableCell from "@mui/material/TableCell";
 import TableRow from "@mui/material/TableRow";
 
-type ColumnDefinitionType = {
-  key: string;
-  header: string;
-  width?: number;
-};
+import { ColumnDefinitionType } from "../../types/tableTypes";
 
 type GenericTableBodyProps<T, K extends keyof T> = {
   data: Array<T>;

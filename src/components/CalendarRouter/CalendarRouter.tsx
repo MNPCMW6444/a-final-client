@@ -1,7 +1,7 @@
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import GenericPage from "../GenericPage/GenericPage";
 import data from "../../assets/mock.json";
-import { Task, Event } from "../../types/dataTypesInterfaces";
+import { Task, Event } from "../../types/dataTypes";
 import columnsConfig from "../../config/columns";
 
 interface CalendarRouterProps {

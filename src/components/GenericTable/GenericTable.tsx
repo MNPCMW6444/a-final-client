@@ -19,7 +19,7 @@ const style = {
 const GenericTable = <T, K extends keyof T>({
   data,
   columns,
-}: TableProps<T, K>): JSX.Element => (
+}: TableProps<T, K>) => (
   <Table style={style}>
     <GenericTableHead columns={columns} />
     <GenericTableBody data={data} columns={columns} />
