@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Button, Grid, TextField } from "@mui/material";
-import { Task, Event } from "../../types/dataTypes";
+import { Item } from "../../types/dataTypes";
 import Table from "../GenericTable/GenericTable";
 
 type ColumnDefinitionType = {
@@ -9,7 +9,7 @@ type ColumnDefinitionType = {
 };
 
 interface GenericPageProps {
-  data: (Event | Task)[];
+  data: Item[];
   openModal: (editedItem: any) => boolean;
   columns: ColumnDefinitionType[];
 }
@@ -17,7 +17,7 @@ interface GenericPageProps {
 const GenericPage = (props: GenericPageProps) => {
   const [query, setQuery] = useState<string>("");
 
-  const filteredData: false | (Event | Task)[] =
+  const filteredData: false | Item[] =
     props.data &&
     props.data.length > 0 &&
     props.data.filter((item: any) => item.title.includes(query) || !query);
@@ -42,7 +42,7 @@ const GenericPage = (props: GenericPageProps) => {
         />
       </Grid>
       <Grid item>
-        <Table data={filteredData || []} columns={props.columns} />
+        <Table data={filteredData || ([] as Item[])} columns={props.columns} />
       </Grid>
       <Grid item>
         <Button variant="contained" onClick={() => props.openModal({} as any)}>
