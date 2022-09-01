@@ -1,41 +1,37 @@
 import { useState } from "react";
-import GenericTable from "../GenericTable/GenericTable";
-//import useFetch from "../../hooks/useFetch";
 import { Button, Grid, TextField } from "@mui/material";
-import { Item } from "../../types/dataTypesInterfaces";
-import data from "../../assets/mock.json";
+import { Item } from "../../types/dataTypes";
+import Table from "../GenericTable/GenericTable";
 
-const GenericPage = (props: {
-  openModal: (editedItem: Item) => boolean;
-  type: string;
-  time: string;
-}) => {
+type ColumnDefinitionType = {
+  key: string;
+  header: string;
+};
+
+interface GenericPageProps {
+  data: Item[];
+  openModal: (editedItem: any) => boolean;
+  columns: ColumnDefinitionType[];
+}
+
+const GenericPage = (props: GenericPageProps) => {
   const [query, setQuery] = useState<string>("");
-  const [allData, setAllData] = useState<Item[]>([
-    ...data.events,
-    ...data.tasks,
-  ]);
-  const filteredData =
-    allData &&
-    allData.length > 0 &&
-    allData.filter((item) => item.title.includes(query) || !query);
+
+  const filteredData: false | Item[] =
+    props.data &&
+    props.data.length > 0 &&
+    props.data.filter((item: any) => item.title.includes(query) || !query);
 
   return (
     <Grid
       container
-      direction="row"
-      justifyContent="center"
+      direction="column"
+      justifyContent="space-around"
       width="100%"
       height="80%"
+      sx={{ padding: "10%" }}
     >
-      <Grid
-        container
-        direction="column"
-        justifyContent="space-around"
-        alignItems="center"
-        height="100%"
-        width="70%"
-      >
+      <Grid item>
         <TextField
           sx={{
             width: "100%",
@@ -44,13 +40,12 @@ const GenericPage = (props: {
           variant="standard"
           onChange={(e) => setQuery(e.target.value)}
         />
-        <GenericTable
-          allData={filteredData}
-          setAllData={setAllData}
-          type={props.type}
-          openModal={props.openModal}
-        />
-        <Button variant="contained" onClick={() => props.openModal({} as Item)}>
+      </Grid>
+      <Grid item>
+        <Table data={filteredData || ([] as Item[])} columns={props.columns} />
+      </Grid>
+      <Grid item>
+        <Button variant="contained" onClick={() => props.openModal({} as any)}>
           Create a New Item
         </Button>
       </Grid>

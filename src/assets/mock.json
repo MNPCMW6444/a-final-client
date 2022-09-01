@@ -4,10 +4,11 @@
       "id": "1",
       "title": "Launch break",
       "description": "Eating launch at the dinning room with my best friends :)",
-      "beginningTime": "1997-04-28T12:30:00.045Z",
+      "beginningTime": "2022-09-01T12:30:00.045Z",
       "endingTime": "1997-04-28T13:30:00.045Z",
       "color": "Blue",
-      "invitedGuests": [],
+      "location": "here",
+      "invitedGuests": ["", ""],
       "notificationTime": "1997-04-28T11:30:00.045Z"
     },
     {
@@ -17,6 +18,7 @@
       "beginningTime": "2020-01-01T09:00:00.045Z",
       "endingTime": "2020-01-01T09:30:00.045Z",
       "color": "Red",
+      "location": "there",
       "invitedGuests": ["Team Leader"],
       "notificationTime": "2020-01-01T08:45:00.045Z"
     }
@@ -29,6 +31,8 @@
       "estimatedTime": "3d",
       "status": "Open",
       "priority": "High",
+      "review": "not yet",
+      "timeSpent": "123",
       "untilDate": "2020-12-31T23:59:00.0457"
     },
     {
@@ -37,7 +41,10 @@
       "description": "Finish this subtask in your training program",
       "estimatedTime": "1w",
       "status": "In Progress",
-      "priority": "Medium"
+      "priority": "Medium",
+      "review": "not yet",
+      "timeSpent": "123",
+      "untilDate": "2020-12-28T21:59:00.0457"
     },
     {
       "id": "3",
