@@ -1,41 +1,61 @@
 export default {
   today: [
     {
-      key: "title",
-      header: "Title",
+      key: "type",
+      header: "Type",
     },
     {
       key: "priority",
-      header: "priority",
+      header: "Priority",
     },
     {
-      key: "description",
-      header: "Description",
+      key: "title",
+      header: "Title",
     },
   ],
   events: [
+    {
+      key: "color",
+      header: "Color",
+    },
     {
       key: "title",
       header: "Title",
     },
 
     {
-      key: "description",
-      header: "Description",
+      key: "beginningTime",
+      header: "From",
+    },
+    {
+      key: "endingTime",
+      header: "Until",
+    },
+    {
+      key: "location",
+      header: "Location",
     },
   ],
   tasks: [
+    {
+      key: "type",
+      header: "Type",
+    },
+    {
+      key: "priority",
+      header: "Priority",
+    },
     {
       key: "title",
       header: "Title",
     },
     {
-      key: "priority",
-      header: "priority",
+      key: "status",
+      header: "Status",
     },
     {
-      key: "description",
-      header: "Description",
+      key: "estimatedTime",
+      header: "Estimated Time",
     },
   ],
 };
