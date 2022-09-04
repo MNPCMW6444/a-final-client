@@ -54,7 +54,7 @@ const GenericTable = <T, K extends keyof T>({
                   border: "1px solid #ddd",
                 }}
               >
-                {column.header}{" "}
+                {column.header}
               </TableCell>
             ))}
           </TableRow>
@@ -95,16 +95,8 @@ const GenericTable = <T, K extends keyof T>({
                             </Grid>
                             <Grid>
                               <StyledContent>
-                                {typeof row[
-                                  otherColumnComponent.key as keyof Item
-                                ] === "object" ? (
-                                  (
-                                    row[
-                                      otherColumnComponent.key as keyof Item
-                                    ] as unknown as Date
-                                  ).toLocaleString()
-                                ) : row[otherColumnComponent.key as keyof Item]
-                                    .length > 20 ? (
+                                {row[otherColumnComponent.key as keyof Item]
+                                  .length > 20 ? (
                                   <span className="longtext">
                                     {
                                       row[
@@ -126,11 +118,7 @@ const GenericTable = <T, K extends keyof T>({
                         <Button onClick={() => deleteItem(row)}> 🗑️ </Button>
                       </>
                     ) : (
-                      (typeof content === "object"
-                        ? (content as Date).toLocaleString()
-                        : column.customRender
-                        ? column.customRender[content as keyof CustomRender]
-                        : content) || "-"
+                      content || "-"
                     )}
                   </TableCell>
                 );

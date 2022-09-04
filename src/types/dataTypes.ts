@@ -6,12 +6,12 @@ interface Item {
 }
 
 interface Event extends Item {
-  beginningTime: Date;
-  endingTime: Date;
+  beginningTime: string;
+  endingTime: string;
   color: string;
   location?: string;
   invitedGuests?: string[];
-  notificationTime?: Date;
+  notificationTime?: string;
 }
 
 interface Task extends Item {
@@ -20,7 +20,7 @@ interface Task extends Item {
   priority: string;
   review?: string;
   timeSpent?: string;
-  untilDate: Date;
+  untilDate: string;
 }
 
 export type { Item, Event, Task };
