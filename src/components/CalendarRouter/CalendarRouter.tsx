@@ -41,9 +41,9 @@ const CalendarRouter = (props: CalendarRouterProps) => (
             data={[...data.events, ...data.tasks].filter((item) =>
               (item as Task).priority
                 ? (item as Task).untilDate.substring(0, 9) ===
-                  new Date().toISOString().substring(0, 9)
+                  new Date().toLocaleString().substring(0, 9)
                 : (item as Event).beginningTime.substring(0, 9) ===
-                  new Date().toISOString().substring(0, 9)
+                  new Date().toLocaleString().substring(0, 9)
             )}
             columns={columnsConfig.today}
             otherColumn={otherColumnConfig}

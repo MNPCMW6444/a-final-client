@@ -44,17 +44,18 @@ const GenericPage = (props: GenericPageProps) => {
         }}
       >
         <Grid item>
-          <Typography>Serach: </Typography>
-        </Grid>
-        <Grid item>
           <TextField
-            sx={{
-              width: "60vw",
+            variant="filled"
+            inputProps={{
+              style: { textAlign: "center" },
             }}
             label="Search By Title"
-            variant="filled"
             onChange={(e) => setQuery(e.target.value)}
-          />{" "}
+            sx={{
+              backgroundColor: "rgba(255, 149, 0, 0.59)",
+              borderRadius: "10px",
+            }}
+          />
         </Grid>
       </Grid>
       <br />
