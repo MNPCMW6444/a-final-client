@@ -12,11 +12,14 @@ export default {
       key: "title",
       header: "Title",
     },
+    { header: "Other", key: "other" },
+    { header: "Actions", key: "actions" },
   ],
   events: [
     {
       key: "color",
       header: "Color",
+      customRender: { blue: "🔵", red: "🔴" },
     },
     {
       key: "title",
@@ -35,6 +38,7 @@ export default {
       key: "location",
       header: "Location",
     },
+    { header: "Actions", key: "actions" },
   ],
   tasks: [
     {
@@ -57,5 +61,7 @@ export default {
       key: "estimatedTime",
       header: "Estimated Time",
     },
+    { header: "Other", key: "other" },
+    { header: "Actions", key: "actions" },
   ],
 };

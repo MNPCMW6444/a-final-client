@@ -1,4 +1,5 @@
 interface Item {
+  type: string;
   id: string;
   title: string;
   description: string;

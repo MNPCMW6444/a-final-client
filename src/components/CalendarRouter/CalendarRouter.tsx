@@ -3,28 +3,31 @@ import GenericPage from "../GenericPage/GenericPage";
 import jsonData from "../../assets/mock.json";
 import { Task, Event, Item } from "../../types/dataTypes";
 import columnsConfig from "../../config/columns";
+import otherColumnConfig from "../../config/otherColumn";
 
 interface CalendarRouterProps {
-  openModal: (editedItem: any) => boolean;
+  openModal: (editedItem: Item) => boolean;
 }
 
 const jsonEvents = jsonData.events;
 const jsonTasks = jsonData.tasks;
-let parsedEvents: any[];
+let parsedEvents: Event[];
 parsedEvents = jsonEvents.map((event: any) => {
   event.beginningTime = new Date(event.beginningTime);
   event.endingTime = new Date(event.endingTime);
   event.notificationDate = new Date(event.notificationDate);
+  event.type = "Event";
   return event;
 });
-let parsedTasks: any[];
+let parsedTasks: Task[];
 parsedTasks = jsonTasks.map((task: any) => {
   task.untilDate = new Date(task.untilDate);
+  task.type = "Task";
   return task;
 });
 const data = {
-  events: jsonEvents as Item[],
-  tasks: jsonTasks as Item[],
+  events: parsedEvents as Event[],
+  tasks: parsedTasks as Task[],
 };
 
 const CalendarRouter = (props: CalendarRouterProps) => (
@@ -45,6 +48,7 @@ const CalendarRouter = (props: CalendarRouterProps) => (
                   new Date().toISOString().substring(0, 9)
             )}
             columns={columnsConfig.today}
+            otherColumn={otherColumnConfig}
           />
         }
       />
@@ -55,6 +59,7 @@ const CalendarRouter = (props: CalendarRouterProps) => (
             openModal={props.openModal}
             data={data.tasks}
             columns={columnsConfig.tasks}
+            otherColumn={otherColumnConfig}
           />
         }
       />
@@ -66,6 +71,7 @@ const CalendarRouter = (props: CalendarRouterProps) => (
             openModal={props.openModal}
             data={data.events}
             columns={columnsConfig.events}
+            otherColumn={otherColumnConfig}
           />
         }
       />

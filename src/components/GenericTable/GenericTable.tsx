@@ -1,20 +1,41 @@
-import { PropaneTankRounded } from "@mui/icons-material";
+import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
+import Grid from "@mui/material/Grid";
+import { styled } from "@mui/material/styles";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
 import TableCell from "@mui/material/TableCell";
 import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
-import { Item, Event } from "../../types/dataTypes";
-import { ColumnDefinitionType } from "../../types/tableTypes";
+import { Item } from "../../types/dataTypes";
+import {
+  ColumnDefinitionType,
+  OtherColumnDefinition,
+  CustomRender,
+} from "../../types/tableTypes";
 
 interface TableProps {
   data: Item[];
   columns: ColumnDefinitionType[];
+  otherColumn: OtherColumnDefinition;
 }
 
-const GenericTable = <T, K extends keyof T>({ data, columns }: TableProps) => {
+const StyledContent = styled(Box)(({ theme }) => ({
+  padding: theme.spacing(1),
+  width: "100%",
+  textAlign: "center",
+}));
+const StyledHeader = styled(Box)(({ theme }) => ({
+  textAlign: "center",
+  textDecoration: "underline",
+}));
+
+const GenericTable = <T, K extends keyof T>({
+  data,
+  columns,
+  otherColumn,
+}: TableProps) => {
   const editItem = (item: Item) => {};
   const deleteItem = (item: Item) => {};
 
@@ -26,8 +47,6 @@ const GenericTable = <T, K extends keyof T>({ data, columns }: TableProps) => {
             {columns.map((column, index) => (
               <TableCell key={`headCell-${index}`}>{column.header}</TableCell>
             ))}
-            <TableCell>Other</TableCell>
-            <TableCell>Actions</TableCell>
           </TableRow>
         </TableHead>
         <TableBody>
@@ -36,22 +55,62 @@ const GenericTable = <T, K extends keyof T>({ data, columns }: TableProps) => {
               {columns.map((column, index2) => {
                 const content = row[column.key as keyof Item];
                 return (
-                  <TableCell key={`cell-${index2}`} sx={{ color: content }}>
-                    {(column.key === "type"
-                      ? (row as Event).beginningTime
-                        ? "Event"
-                        : "Task"
-                      : typeof content === "object"
-                      ? (content as unknown as Date).toLocaleString()
-                      : content) || "-"}
+                  <TableCell key={`cell-${index2}`}>
+                    {column.key === "other" ? (
+                      <Grid
+                        container
+                        direction={"row"}
+                        wrap="nowrap"
+                        spacing={4}
+                      >
+                        {otherColumn[
+                          row[
+                            "type" as keyof Item
+                          ] as keyof OtherColumnDefinition
+                        ].map((otherColumnComponent, i) => (
+                          <Grid
+                            key={i}
+                            container
+                            item
+                            justifyContent="center"
+                            spacing={3}
+                          >
+                            <Grid item>
+                              <StyledHeader>
+                                {otherColumnComponent.header}
+                              </StyledHeader>
+                            </Grid>
+                            <Grid>
+                              <StyledContent>
+                                {typeof row[
+                                  otherColumnComponent.key as keyof Item
+                                ] === "object"
+                                  ? (
+                                      row[
+                                        otherColumnComponent.key as keyof Item
+                                      ] as unknown as Date
+                                    ).toLocaleString()
+                                  : row[otherColumnComponent.key as keyof Item]}
+                              </StyledContent>
+                            </Grid>
+                          </Grid>
+                        ))}
+                      </Grid>
+                    ) : column.key === "actions" ? (
+                      <>
+                        <Button onClick={() => editItem(row)}> ✏️ </Button>
+                        <Button onClick={() => deleteItem(row)}> 🗑️ </Button>
+                      </>
+                    ) : (
+                      (typeof content === "object"
+                        ? (content as Date).toLocaleString()
+                        : column.customRender
+                        ? column.customRender[content as keyof CustomRender]
+                        : content) || "-"
+                    )}
                   </TableCell>
                 );
               })}
-              <TableCell>{"props.other"}</TableCell>
-              <TableCell>
-                <Button onClick={() => editItem(row)}> ✏️ </Button>
-                <Button onClick={() => deleteItem(row)}> 🗑️ </Button>
-              </TableCell>
             </TableRow>
           ))}
         </TableBody>

@@ -1,17 +1,16 @@
 import { useState } from "react";
-import { Button, Grid, TextField } from "@mui/material";
+import { Button, Grid, TextField, Typography } from "@mui/material";
 import { Item } from "../../types/dataTypes";
 import Table from "../GenericTable/GenericTable";
-
-type ColumnDefinitionType = {
-  key: string;
-  header: string;
-};
-
+import {
+  ColumnDefinitionType,
+  OtherColumnDefinition,
+} from "../../types/tableTypes";
 interface GenericPageProps {
   data: Item[];
   openModal: (editedItem: any) => boolean;
   columns: ColumnDefinitionType[];
+  otherColumn: OtherColumnDefinition;
 }
 
 const GenericPage = (props: GenericPageProps) => {
@@ -31,18 +30,38 @@ const GenericPage = (props: GenericPageProps) => {
       height="80%"
       sx={{ padding: "10%" }}
     >
-      <Grid item>
-        <TextField
-          sx={{
-            width: "100%",
-          }}
-          label="Search By Title"
-          variant="standard"
-          onChange={(e) => setQuery(e.target.value)}
-        />
+      <Grid
+        container
+        item
+        direction="row"
+        justifyContent="center"
+        alignItems="center"
+        spacing={2}
+        sx={{
+          width: "100%",
+        }}
+      >
+        <Grid item>
+          <Typography>Serach: </Typography>
+        </Grid>
+
+        <Grid item>
+          <TextField
+            sx={{
+              width: "60vw",
+            }}
+            label="Search By Title"
+            variant="filled"
+            onChange={(e) => setQuery(e.target.value)}
+          />{" "}
+        </Grid>
       </Grid>
       <Grid item>
-        <Table data={filteredData || ([] as Item[])} columns={props.columns} />
+        <Table
+          data={filteredData || ([] as Item[])}
+          columns={props.columns}
+          otherColumn={props.otherColumn}
+        />
       </Grid>
       <Grid item>
         <Button variant="contained" onClick={() => props.openModal({} as any)}>
