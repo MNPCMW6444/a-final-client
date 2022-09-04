@@ -4,8 +4,8 @@
       "id": "1",
       "title": "Launch break",
       "description": "Eating launch at the dinning room with my best friends :)",
-      "beginningTime": "2022-09-01T12:30:00.045Z",
-      "endingTime": "1997-04-28T13:30:00.045Z",
+      "beginningTime": "2022-09-04T12:30:00.045Z",
+      "endingTime": "2022-09-04T13:30:00.045Z",
       "color": "Blue",
       "location": "here",
       "invitedGuests": ["", ""],
@@ -33,7 +33,7 @@
       "priority": "High",
       "review": "not yet",
       "timeSpent": "123",
-      "untilDate": "2020-12-31T23:59:00.0457"
+      "untilDate": "2022-09-04T23:59:00.0457"
     },
     {
       "id": "2",
