@@ -19,7 +19,7 @@ export default {
     {
       key: "color",
       header: "Color",
-      customRender: { blue: "🔵", red: "🔴" },
+      customRender: { Blue: "🔵", Red: "🔴" },
     },
     {
       key: "title",

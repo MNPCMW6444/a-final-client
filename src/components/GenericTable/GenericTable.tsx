@@ -54,6 +54,7 @@ const GenericTable = <T, K extends keyof T>({
             <TableRow key={`row-${index}`}>
               {columns.map((column, index2) => {
                 const content = row[column.key as keyof Item];
+                debugger;
                 return (
                   <TableCell key={`cell-${index2}`}>
                     {column.key === "other" ? (

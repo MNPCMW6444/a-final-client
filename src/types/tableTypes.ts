@@ -9,8 +9,8 @@ interface OtherColumnDefinition {
 }
 
 interface CustomRender {
-  red: string;
-  blue: string;
+  Red: string;
+  Blue: string;
 }
 
 export type { ColumnDefinitionType, OtherColumnDefinition, CustomRender };
