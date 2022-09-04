@@ -1,3 +1,4 @@
+import "./tableStyle.css";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import Grid from "@mui/material/Grid";
@@ -41,11 +42,20 @@ const GenericTable = <T, K extends keyof T>({
 
   return (
     <TableContainer>
-      <Table aria-label="simple table">
+      <Table aria-label="simple table" sx={{ borderCollapse: "collapse" }}>
         <TableHead>
           <TableRow>
             {columns.map((column, index) => (
-              <TableCell key={`headCell-${index}`}>{column.header}</TableCell>
+              <TableCell
+                key={`headCell-${index}`}
+                sx={{
+                  textAlign: "center",
+                  backgroundColor: "orange",
+                  border: "1px solid #ddd",
+                }}
+              >
+                {column.header}{" "}
+              </TableCell>
             ))}
           </TableRow>
         </TableHead>
@@ -54,9 +64,11 @@ const GenericTable = <T, K extends keyof T>({
             <TableRow key={`row-${index}`}>
               {columns.map((column, index2) => {
                 const content = row[column.key as keyof Item];
-                debugger;
                 return (
-                  <TableCell key={`cell-${index2}`}>
+                  <TableCell
+                    key={`cell-${index2}`}
+                    style={{ border: "1px solid #ddd" }}
+                  >
                     {column.key === "other" ? (
                       <Grid
                         container
@@ -85,13 +97,24 @@ const GenericTable = <T, K extends keyof T>({
                               <StyledContent>
                                 {typeof row[
                                   otherColumnComponent.key as keyof Item
-                                ] === "object"
-                                  ? (
+                                ] === "object" ? (
+                                  (
+                                    row[
+                                      otherColumnComponent.key as keyof Item
+                                    ] as unknown as Date
+                                  ).toLocaleString()
+                                ) : row[otherColumnComponent.key as keyof Item]
+                                    .length > 20 ? (
+                                  <span className="longtext">
+                                    {
                                       row[
                                         otherColumnComponent.key as keyof Item
-                                      ] as unknown as Date
-                                    ).toLocaleString()
-                                  : row[otherColumnComponent.key as keyof Item]}
+                                      ]
+                                    }
+                                  </span>
+                                ) : (
+                                  row[otherColumnComponent.key as keyof Item]
+                                )}
                               </StyledContent>
                             </Grid>
                           </Grid>

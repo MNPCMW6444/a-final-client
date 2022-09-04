@@ -1,0 +1,15 @@
+.longtext {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: inline-block;
+  width: 100px;
+}
+
+.longtext:hover {
+  overflow: scroll;
+  white-space: normal;
+  text-overflow: unset;
+  display: block;
+  width: 100px;
+}

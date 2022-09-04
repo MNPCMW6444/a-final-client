@@ -25,10 +25,12 @@ const GenericPage = (props: GenericPageProps) => {
     <Grid
       container
       direction="column"
-      justifyContent="space-around"
+      justifyContent="space-between"
+      alignItems="center"
       width="100%"
       height="80%"
       sx={{ padding: "10%" }}
+      wrap="nowrap"
     >
       <Grid
         container
@@ -44,7 +46,6 @@ const GenericPage = (props: GenericPageProps) => {
         <Grid item>
           <Typography>Serach: </Typography>
         </Grid>
-
         <Grid item>
           <TextField
             sx={{
@@ -56,13 +57,17 @@ const GenericPage = (props: GenericPageProps) => {
           />{" "}
         </Grid>
       </Grid>
-      <Grid item>
+      <br />
+      <Grid item sx={{ width: "100%" }}>
         <Table
           data={filteredData || ([] as Item[])}
           columns={props.columns}
           otherColumn={props.otherColumn}
         />
       </Grid>
+      <br />
+
+      <br />
       <Grid item>
         <Button variant="contained" onClick={() => props.openModal({} as any)}>
           Create a New Item
