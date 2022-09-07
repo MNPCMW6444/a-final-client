@@ -14,7 +14,7 @@ import { tableCellSx, tableSx } from "./genericTableSxs";
 interface TableProps {
   data: Item[];
   columns: Map<string, string>;
-  otherColumn: Map<string, string>;
+  otherColumn: Map<string, Map<string, string>>;
 }
 
 const GenericTable = ({ data, columns, otherColumn }: TableProps) => {
@@ -52,10 +52,13 @@ const GenericTable = ({ data, columns, otherColumn }: TableProps) => {
                           wrap="nowrap"
                           spacing={4}
                         >
-                          {Array.from(otherColumn, ([key, header]) => ({
-                            key,
-                            header,
-                          })).map((otherColumnComponent, i) => (
+                          {Array.from(
+                            otherColumn.get(row.type) as Map<string, string>,
+                            ([key, header]) => ({
+                              key,
+                              header,
+                            })
+                          ).map((otherColumnMap, i) => (
                             <Grid
                               key={i}
                               container
@@ -65,22 +68,18 @@ const GenericTable = ({ data, columns, otherColumn }: TableProps) => {
                             >
                               <Grid item>
                                 <StyledHeader>
-                                  {otherColumnComponent.header}
+                                  {otherColumnMap.header}
                                 </StyledHeader>
                               </Grid>
                               <Grid>
                                 <StyledContent>
-                                  {row[otherColumnComponent.key as keyof Item]
+                                  {row[otherColumnMap.key as keyof Item]
                                     .length > 20 ? (
                                     <span className="longtext">
-                                      {
-                                        row[
-                                          otherColumnComponent.key as keyof Item
-                                        ]
-                                      }
+                                      {row[otherColumnMap.key as keyof Item]}
                                     </span>
                                   ) : (
-                                    row[otherColumnComponent.key as keyof Item]
+                                    row[otherColumnMap.key as keyof Item]
                                   )}
                                 </StyledContent>
                               </Grid>

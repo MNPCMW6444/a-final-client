@@ -8,7 +8,7 @@ interface GenericPageProps {
   data: Item[];
   openModal: (editedItem: any) => boolean;
   columns: Map<string, string>;
-  otherColumn: Map<string, string>;
+  otherColumn: Map<string, Map<string,string>>;
   query: string;
 }
 
