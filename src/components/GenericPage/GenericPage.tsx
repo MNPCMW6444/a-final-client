@@ -17,6 +17,7 @@ interface GenericPageProps {
   openModal: (editedItem: any) => boolean;
   columns: Map<string, string>;
   otherColumn: OtherColumnDefinition;
+  query: string;
 }
 
 const GenericPage = ({
@@ -24,8 +25,8 @@ const GenericPage = ({
   openModal,
   columns,
   otherColumn,
+  query,
 }: GenericPageProps) => {
-  const [query, setQuery] = useState<string>("");
   const [paddingLeft, setPaddingLeft] = useState<number>(
     window.innerWidth > 600 ? 240 : 0
   );
@@ -60,19 +61,7 @@ const GenericPage = ({
         alignItems="center"
         spacing={2}
         sx={innerGridSx}
-      >
-        <Grid item>
-          <TextField
-            variant="filled"
-            inputProps={{
-              style: { textAlign: "center" },
-            }}
-            label="Search By Title"
-            onChange={(e) => setQuery(e.target.value)}
-            sx={textFieldSx}
-          />
-        </Grid>
-      </Grid>
+      ></Grid>
       <br />
       <Grid item sx={gridSx}>
         <Table

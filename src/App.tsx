@@ -11,6 +11,7 @@ import CalendarRouter from "./components/CalendarRouter/CalendarRouter";
 function App() {
   const [isCreateFormOpen, setIsCreateFormOpen] = useState<boolean>(false);
   const [editedItem, setEditedItem] = useState<Item>();
+  const [query, setQuery] = useState<string>("");
 
   const openModal = (editedItem: any): boolean => {
     setIsCreateFormOpen(true);
@@ -43,8 +44,8 @@ function App() {
         )} */}
       </Modal>
       <ReactNotifications />
-      <MainAppBar />
-      <CalendarRouter openModal={openModal} />
+      <MainAppBar setQuery={setQuery} />
+      <CalendarRouter openModal={openModal} query={query} />
     </ThemeProvider>
   );
 }

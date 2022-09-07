@@ -62,7 +62,10 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
   },
 }));
 
-export default function ResponsiveDrawer() {
+interface ResponsiveDrawerProps {
+  setQuery: React.Dispatch<React.SetStateAction<string>>;
+}
+export default function ResponsiveDrawer({ setQuery }: ResponsiveDrawerProps) {
   const [mobileOpen, setMobileOpen] = React.useState(false);
 
   const handleDrawerToggle = () => {
@@ -153,6 +156,7 @@ export default function ResponsiveDrawer() {
             <StyledInputBase
               placeholder="Search…"
               inputProps={{ "aria-label": "search" }}
+              onChange={(e) => setQuery(e.target.value)}
             />
           </Search>
           <Box sx={{ flexGrow: 1 }} />
