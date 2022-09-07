@@ -91,7 +91,7 @@ export default function ResponsiveDrawer() {
       </Grid>
       <Divider />
       <List>
-        <Link href="/today">
+        <Link href="/">
           <ListItem key={"Today"} disablePadding>
             <ListItemButton>
               <ListItemText primary={"Today"} />

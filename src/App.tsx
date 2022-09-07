@@ -6,6 +6,7 @@ import { useState } from "react";
 import { Item } from "./types/dataTypes";
 
 import MainAppBar from "./MainDrawer";
+import CalendarRouter from "./components/CalendarRouter/CalendarRouter";
 
 function App() {
   const [isCreateFormOpen, setIsCreateFormOpen] = useState<boolean>(false);
@@ -43,6 +44,7 @@ function App() {
       </Modal>
       <ReactNotifications />
       <MainAppBar />
+      <CalendarRouter openModal={openModal} />
     </ThemeProvider>
   );
 }

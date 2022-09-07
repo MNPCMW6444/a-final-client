@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Button, Grid, TextField } from "@mui/material";
 import { Item, Task } from "../../types/dataTypes";
 import Table from "../GenericTable/GenericTable";
@@ -26,11 +26,20 @@ const GenericPage = ({
   otherColumn,
 }: GenericPageProps) => {
   const [query, setQuery] = useState<string>("");
+  const [paddingLeft, setPaddingLeft] = useState<number>(
+    window.innerWidth > 600 ? 240 : 0
+  );
 
   const filteredData: false | Item[] =
     data &&
     data.length > 0 &&
     data.filter((item: any) => item.title.includes(query) || !query);
+
+  useEffect(() => {
+    window.addEventListener("resize", () =>
+      setPaddingLeft(window.innerWidth > 600 ? 240 : 0)
+    );
+  });
 
   return (
     <Grid
@@ -40,7 +49,7 @@ const GenericPage = ({
       alignItems="center"
       width="100%"
       height="80%"
-      sx={outerGridSx}
+      sx={{ ...outerGridSx, paddingLeft: "calc(" + paddingLeft + "px + 5%)" }}
       wrap="nowrap"
     >
       <Grid

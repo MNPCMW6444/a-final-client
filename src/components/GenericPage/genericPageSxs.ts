@@ -1,4 +1,6 @@
-const outerGridSx = { padding: "10%" };
+const outerGridSx = {
+  padding: "5%",
+};
 
 const innerGridSx = {
   width: "100%",
