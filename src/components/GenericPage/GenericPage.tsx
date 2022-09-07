@@ -6,6 +6,12 @@ import {
   ColumnDefinitionType,
   OtherColumnDefinition,
 } from "../../types/tableTypes";
+import {
+  innerGridSx,
+  outerGridSx,
+  textFieldSx,
+  gridSx,
+} from "./genericPageSxs";
 interface GenericPageProps {
   data: Item[];
   openModal: (editedItem: any) => boolean;
@@ -29,7 +35,7 @@ const GenericPage = (props: GenericPageProps) => {
       alignItems="center"
       width="100%"
       height="80%"
-      sx={{ padding: "10%" }}
+      sx={outerGridSx}
       wrap="nowrap"
     >
       <Grid
@@ -39,9 +45,7 @@ const GenericPage = (props: GenericPageProps) => {
         justifyContent="center"
         alignItems="center"
         spacing={2}
-        sx={{
-          width: "100%",
-        }}
+        sx={innerGridSx}
       >
         <Grid item>
           <TextField
@@ -51,15 +55,12 @@ const GenericPage = (props: GenericPageProps) => {
             }}
             label="Search By Title"
             onChange={(e) => setQuery(e.target.value)}
-            sx={{
-              backgroundColor: "rgba(255, 149, 0, 0.59)",
-              borderRadius: "10px",
-            }}
+            sx={textFieldSx}
           />
         </Grid>
       </Grid>
       <br />
-      <Grid item sx={{ width: "100%" }}>
+      <Grid item sx={gridSx}>
         <Table
           data={filteredData || ([] as Item[])}
           columns={props.columns}

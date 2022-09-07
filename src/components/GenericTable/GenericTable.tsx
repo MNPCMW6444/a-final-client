@@ -1,8 +1,6 @@
 import "./tableStyle.css";
-import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import Grid from "@mui/material/Grid";
-import { styled } from "@mui/material/styles";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
 import TableCell from "@mui/material/TableCell";
@@ -14,6 +12,8 @@ import {
   ColumnDefinitionType,
   OtherColumnDefinition,
 } from "../../types/tableTypes";
+import { StyledContent, StyledHeader } from "./styledComponents";
+import { tableCellSx, tableSx } from "./genericTableSxs";
 
 interface TableProps {
   data: Item[];
@@ -21,34 +21,16 @@ interface TableProps {
   otherColumn: OtherColumnDefinition;
 }
 
-const StyledContent = styled(Box)(({ theme }) => ({
-  padding: theme.spacing(1),
-  width: "100%",
-  textAlign: "center",
-}));
-
-const StyledHeader = styled(Box)(({ theme }) => ({
-  textAlign: "center",
-  textDecoration: "underline",
-}));
-
 const GenericTable = ({ data, columns, otherColumn }: TableProps) => {
   const editItem = (item: Item) => {};
   const deleteItem = (item: Item) => {};
   return (
     <TableContainer>
-      <Table aria-label="simple table" sx={{ borderCollapse: "collapse" }}>
+      <Table aria-label="simple table" sx={tableSx}>
         <TableHead>
           <TableRow>
             {columns.map((column, index) => (
-              <TableCell
-                key={`headCell-${index}`}
-                sx={{
-                  textAlign: "center",
-                  backgroundColor: "orange",
-                  border: "1px solid #ddd",
-                }}
-              >
+              <TableCell key={`headCell-${index}`} sx={tableCellSx}>
                 {column.header}
               </TableCell>
             ))}

@@ -8,6 +8,7 @@ import BT from "./assets/BT.png";
 import Modal from "react-modal";
 import { useState } from "react";
 import { Item } from "./types/dataTypes";
+import { boxSx } from "./appSxs";
 
 const { Sidebar, SidebarItem } = require("react-responsive-sidebar");
 
@@ -25,17 +26,7 @@ function App() {
         <Typography variant="h4" component="h4">
           Blue Calendar
         </Typography>
-        <Box
-          component="img"
-          sx={{
-            height: { xs: "28vw" },
-            width: { xs: "28vw" },
-            maxHeight: { xs: "250px" },
-            maxWidth: { xs: "250px" },
-          }}
-          alt="Blue Torch Logo"
-          src={BT}
-        />
+        <Box component="img" sx={boxSx} alt="Blue Torch Logo" src={BT} />
       </Grid>
     </SidebarItem>,
     <SidebarItem href="/">Today</SidebarItem>,
