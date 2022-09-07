@@ -13,7 +13,6 @@ import { Item } from "../../types/dataTypes";
 import {
   ColumnDefinitionType,
   OtherColumnDefinition,
-  CustomRender,
 } from "../../types/tableTypes";
 
 interface TableProps {
@@ -27,19 +26,15 @@ const StyledContent = styled(Box)(({ theme }) => ({
   width: "100%",
   textAlign: "center",
 }));
+
 const StyledHeader = styled(Box)(({ theme }) => ({
   textAlign: "center",
   textDecoration: "underline",
 }));
 
-const GenericTable = <T, K extends keyof T>({
-  data,
-  columns,
-  otherColumn,
-}: TableProps) => {
+const GenericTable = ({ data, columns, otherColumn }: TableProps) => {
   const editItem = (item: Item) => {};
   const deleteItem = (item: Item) => {};
-
   return (
     <TableContainer>
       <Table aria-label="simple table" sx={{ borderCollapse: "collapse" }}>
