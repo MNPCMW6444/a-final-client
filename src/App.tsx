@@ -1,41 +1,13 @@
 import { ReactNotifications } from "react-notifications-component";
 import "react-notifications-component/dist/theme.css";
-import CalanderRouter from "./components/CalendarRouter/CalendarRouter";
-import Clock from "./components/Clock/Clock";
-import Grid from "@mui/material/Grid";
-import { Box, createTheme, ThemeProvider, Typography } from "@mui/material";
-import BT from "./assets/BT.png";
+import { createTheme, ThemeProvider } from "@mui/material";
 import Modal from "react-modal";
 import { useState } from "react";
 import { Item } from "./types/dataTypes";
-import { boxSx } from "./appSxs";
 
 import MainAppBar from "./MainDrawer";
 
-const { Sidebar, SidebarItem } = require("react-responsive-sidebar");
-
 function App() {
-  /* const pages = [
-    <SidebarItem>
-      <Grid
-        container
-        direction="column"
-        justifyContent="space-between"
-        alignItems="center"
-        height="40%"
-      >
-        <Clock size="h6" />
-        <Typography variant="h4" component="h4">
-          Blue Calendar
-        </Typography>
-        <Box component="img" sx={boxSx} alt="Blue Torch Logo" src={BT} />
-      </Grid>
-    </SidebarItem>,
-    <SidebarItem href="/">Today</SidebarItem>,
-    <SidebarItem href="/tasks">All Tasks</SidebarItem>,
-    <SidebarItem href="/events">All Events</SidebarItem>,
-  ]; */
-
   const [isCreateFormOpen, setIsCreateFormOpen] = useState<boolean>(false);
   const [editedItem, setEditedItem] = useState<Item>();
 
@@ -71,9 +43,6 @@ function App() {
       </Modal>
       <ReactNotifications />
       <MainAppBar />
-      {/*  <Sidebar content={pages} background={"orange"} color={"blue"}>
-        <CalanderRouter openModal={openModal} />
-      </Sidebar> */}
     </ThemeProvider>
   );
 }
