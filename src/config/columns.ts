@@ -1,86 +1,27 @@
 const columnMap = new Map();
-columnMap.set("today", [
-  {
-    key: "type",
-    header: "Type",
-  },
-  {
-    key: "priority",
-    header: "Priority",
-  },
-  {
-    key: "title",
-    header: "Title",
-  },
-  { header: "Other", key: "other" },
-  { header: "Actions", key: "actions" },
-]);
-
-columnMap.set("today", [
-  {
-    key: "type",
-    header: "Type",
-  },
-  {
-    key: "priority",
-    header: "Priority",
-  },
-  {
-    key: "title",
-    header: "Title",
-  },
-  { header: "Other", key: "other" },
-  { header: "Actions", key: "actions" },
-]);
-
-columnMap.set("events", [
-  {
-    key: "color",
-    header: "Color",
-  },
-  {
-    key: "title",
-    header: "Title",
-  },
-
-  {
-    key: "beginningTime",
-    header: "From",
-  },
-  {
-    key: "endingTime",
-    header: "Until",
-  },
-  {
-    key: "location",
-    header: "Location",
-  },
-  { header: "Actions", key: "actions" },
-]);
-
-columnMap.set("tasks", [
-  {
-    key: "type",
-    header: "Type",
-  },
-  {
-    key: "priority",
-    header: "Priority",
-  },
-  {
-    key: "title",
-    header: "Title",
-  },
-  {
-    key: "status",
-    header: "Status",
-  },
-  {
-    key: "estimatedTime",
-    header: "Estimated Time",
-  },
-  { header: "Other", key: "other" },
-  { header: "Actions", key: "actions" },
-]);
+const todayMap = new Map();
+todayMap.set("type", "Type");
+todayMap.set("priority", "Priorty");
+todayMap.set("title", "Title");
+todayMap.set("other", "Other");
+todayMap.set("actions", "Actions");
+columnMap.set("today", todayMap);
+const tasksMap = new Map();
+tasksMap.set("type", "Type");
+tasksMap.set("priority", "Priorty");
+tasksMap.set("title", "Title");
+tasksMap.set("status", "Status");
+tasksMap.set("estimatedTime", "Estimated Time");
+tasksMap.set("other", "Other");
+tasksMap.set("actions", "Actions");
+columnMap.set("tasks", tasksMap);
+const eventsMap = new Map();
+eventsMap.set("color", "Color");
+eventsMap.set("title", "Title");
+eventsMap.set("beginningTime", "From");
+eventsMap.set("endingTime", "Until");
+eventsMap.set("location", "Location");
+eventsMap.set("actions", "Actions");
+columnMap.set("events", eventsMap);
 
 export default columnMap;

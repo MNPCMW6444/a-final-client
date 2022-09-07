@@ -15,7 +15,7 @@ import {
 interface GenericPageProps {
   data: Item[];
   openModal: (editedItem: any) => boolean;
-  columns: ColumnDefinitionType[];
+  columns: Map<string, string>;
   otherColumn: OtherColumnDefinition;
 }
 
