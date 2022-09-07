@@ -154,7 +154,7 @@ export default function ResponsiveDrawer({ setQuery }: ResponsiveDrawerProps) {
               <SearchIcon />
             </SearchIconWrapper>
             <StyledInputBase
-              placeholder="Search…"
+              placeholder="Search By Title..."
               inputProps={{ "aria-label": "search" }}
               onChange={(e) => setQuery(e.target.value)}
             />
