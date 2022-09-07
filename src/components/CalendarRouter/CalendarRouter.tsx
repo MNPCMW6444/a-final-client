@@ -4,7 +4,6 @@ import jsonData from "../../assets/mock.json";
 import { Task, Event, Item } from "../../types/dataTypes";
 import columnsConfig from "../../config/columns";
 import otherColumnConfig from "../../config/otherColumn";
-import { BreakfastDiningOutlined } from "@mui/icons-material";
 
 interface CalendarRouterProps {
   openModal: (editedItem: Item) => boolean;
@@ -69,7 +68,7 @@ const CalendarRouter = (props: CalendarRouterProps) => (
           <GenericPage
             openModal={props.openModal}
             data={[...data.events, ...data.tasks].filter((item) =>
-              (item as Task).priority
+              item.type === "Task"
                 ? (item as Task).untilDate.substring(0, 9) ===
                   new Date().toLocaleString().substring(0, 9)
                 : (item as Event).beginningTime.substring(0, 9) ===

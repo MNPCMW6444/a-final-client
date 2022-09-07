@@ -71,7 +71,7 @@ const GenericPage = (props: GenericPageProps) => {
 
       <br />
       <Grid item>
-        <Button variant="contained" onClick={() => props.openModal({} as any)}>
+        <Button variant="contained" onClick={() => props.openModal({})}>
           Create a New Item
         </Button>
       </Grid>
