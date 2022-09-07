@@ -1,7 +1,6 @@
 interface ColumnDefinitionType {
   key: string;
   header: string;
-  customRender?: CustomRender;
 }
 interface OtherColumnDefinition {
   Task: ColumnDefinitionType[];

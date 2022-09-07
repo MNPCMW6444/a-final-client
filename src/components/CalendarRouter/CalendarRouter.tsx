@@ -24,7 +24,7 @@ const CalendarRouter = (props: CalendarRouterProps) => (
                 : (item as Event).beginningTime.substring(0, 9) ===
                   new Date().toLocaleString().substring(0, 9)
             )}
-            columns={columnsConfig.today}
+            columns={columnsConfig.get("today")}
             otherColumn={otherColumnConfig}
           />
         }
@@ -35,7 +35,7 @@ const CalendarRouter = (props: CalendarRouterProps) => (
           <GenericPage
             openModal={props.openModal}
             data={data.tasks}
-            columns={columnsConfig.tasks}
+            columns={columnsConfig.get("tasks")}
             otherColumn={otherColumnConfig}
           />
         }
@@ -47,7 +47,7 @@ const CalendarRouter = (props: CalendarRouterProps) => (
           <GenericPage
             openModal={props.openModal}
             data={data.events}
-            columns={columnsConfig.events}
+            columns={columnsConfig.get("events")}
             otherColumn={otherColumnConfig}
           />
         }
