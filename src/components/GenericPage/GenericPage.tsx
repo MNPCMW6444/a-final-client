@@ -8,7 +8,7 @@ interface GenericPageProps {
   data: Item[];
   openModal: (editedItem: any) => boolean;
   columns: Map<string, string>;
-  otherColumn: Map<string, Map<string,string>>;
+  otherColumn: Map<string, Map<string, string>>;
   query: string;
 }
 
@@ -41,8 +41,10 @@ const GenericPage = ({
       justifyContent="space-between"
       alignItems="center"
       width="100%"
-      height="80%"
-      sx={{ ...outerGridSx, paddingLeft: "calc(" + paddingLeft + "px + 5%)" }}
+      sx={{
+        ...outerGridSx,
+        paddingLeft: "calc(" + paddingLeft + "px + 5%)",
+      }}
       wrap="nowrap"
     >
       <Grid

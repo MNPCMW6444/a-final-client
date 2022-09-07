@@ -62,6 +62,12 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
   },
 }));
 
+const linkSx = {
+  textDecoration: "unset",
+  color: "black",
+  fontWeight: 900,
+};
+
 interface ResponsiveDrawerProps {
   setQuery: React.Dispatch<React.SetStateAction<string>>;
 }
@@ -94,21 +100,21 @@ export default function ResponsiveDrawer({ setQuery }: ResponsiveDrawerProps) {
       </Grid>
       <Divider />
       <List>
-        <Link href="/">
+        <Link href="/" sx={linkSx}>
           <ListItem key={"Today"} disablePadding>
             <ListItemButton>
               <ListItemText primary={"Today"} />
             </ListItemButton>
           </ListItem>
         </Link>
-        <Link href="/events">
+        <Link href="/events" sx={linkSx}>
           <ListItem key={"Events"} disablePadding>
             <ListItemButton>
               <ListItemText primary={"All Events"} />
             </ListItemButton>
           </ListItem>
         </Link>
-        <Link href="/tasks">
+        <Link href="/tasks" sx={linkSx}>
           <ListItem key={"Tasks"} disablePadding>
             <ListItemButton>
               <ListItemText primary={"All Tasks"} />
@@ -131,35 +137,42 @@ export default function ResponsiveDrawer({ setQuery }: ResponsiveDrawerProps) {
         }}
       >
         <Toolbar>
-          <IconButton
-            color="inherit"
-            aria-label="open drawer"
-            edge="start"
-            onClick={handleDrawerToggle}
-            sx={{ mr: 2, display: { sm: "none" } }}
-          >
-            <MenuIcon />
-          </IconButton>
-
-          <Typography
-            variant="h6"
-            noWrap
-            component="div"
-            sx={{ display: { xs: "none", sm: "block" } }}
-          >
-            BlueCalendar
-          </Typography>
-          <Search>
-            <SearchIconWrapper>
-              <SearchIcon />
-            </SearchIconWrapper>
-            <StyledInputBase
-              placeholder="Search By Title..."
-              inputProps={{ "aria-label": "search" }}
-              onChange={(e) => setQuery(e.target.value)}
-            />
-          </Search>
-          <Box sx={{ flexGrow: 1 }} />
+          <Grid container direction="row" justifyContent="space-between">
+            <Grid item>
+              <IconButton
+                color="inherit"
+                aria-label="open drawer"
+                edge="start"
+                onClick={handleDrawerToggle}
+                sx={{ mr: 2, display: { sm: "none" } }}
+              >
+                <MenuIcon />
+              </IconButton>
+            </Grid>
+            <Grid item>
+              <Typography
+                variant="h6"
+                noWrap
+                component="div"
+                sx={{ display: { xs: "none", sm: "block" } }}
+              >
+                Blue Calendar
+              </Typography>
+            </Grid>
+            <Grid item>
+              <Search>
+                <SearchIconWrapper>
+                  <SearchIcon />
+                </SearchIconWrapper>
+                <StyledInputBase
+                  placeholder="Search By Title..."
+                  inputProps={{ "aria-label": "search" }}
+                  onChange={(e) => setQuery(e.target.value)}
+                />
+              </Search>
+            </Grid>
+            <Grid item flexGrow={0.5}></Grid>{" "}
+          </Grid>
         </Toolbar>
       </AppBar>
       <Box

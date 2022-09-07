@@ -1,8 +1,8 @@
 const otherColumnMap = new Map();
 const eventMap = new Map();
-eventMap.set("beginningTime", "From");
-eventMap.set("endingTime", "Until");
-eventMap.set("location", "Location");
+eventMap.set("beginningTime", "From:");
+eventMap.set("endingTime", "Until:");
+eventMap.set("location", "Location:");
 const taskMap = new Map();
 taskMap.set("review", "Review:");
 taskMap.set("status", "Status:");

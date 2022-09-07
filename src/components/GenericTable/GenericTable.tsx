@@ -1,4 +1,3 @@
-import "./tableStyle.css";
 import Button from "@mui/material/Button";
 import Grid from "@mui/material/Grid";
 import Table from "@mui/material/Table";
@@ -9,7 +8,15 @@ import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import { Item } from "../../types/dataTypes";
 import { StyledContent, StyledHeader } from "./styledComponents";
-import { tableCellSx, tableSx } from "./genericTableSxs";
+import {
+  tableCellSx,
+  tableHeaderSx,
+  tableSx,
+  longTextStyle,
+  longTextStyleHover,
+} from "./genericTableSxs";
+import { useState } from "react";
+import { Properties } from "csstype";
 
 interface TableProps {
   data: Item[];
@@ -18,6 +25,7 @@ interface TableProps {
 }
 
 const GenericTable = ({ data, columns, otherColumn }: TableProps) => {
+  const [hoveringLongText, setHoveringLongText] = useState<boolean>(false);
   const editItem = (item: Item) => {};
   const deleteItem = (item: Item) => {};
   return (
@@ -27,7 +35,7 @@ const GenericTable = ({ data, columns, otherColumn }: TableProps) => {
           <TableRow>
             {Array.from(columns, ([key, header]) => ({ key, header })).map(
               (column, index) => (
-                <TableCell key={`headCell-${index}`} sx={tableCellSx}>
+                <TableCell key={`headCell-${index}`} sx={tableHeaderSx}>
                   {column.header}
                 </TableCell>
               )
@@ -44,48 +52,93 @@ const GenericTable = ({ data, columns, otherColumn }: TableProps) => {
                     <TableCell
                       key={`cell-${innerIndex}`}
                       style={{ border: "1px solid #ddd" }}
+                      sx={tableCellSx}
                     >
                       {column.key === "other" ? (
-                        <Grid
-                          container
-                          direction={"row"}
-                          wrap="nowrap"
-                          spacing={4}
-                        >
-                          {Array.from(
-                            otherColumn.get(row.type) as Map<string, string>,
-                            ([key, header]) => ({
-                              key,
-                              header,
-                            })
-                          ).map((otherColumnMap, i) => (
-                            <Grid
-                              key={i}
-                              container
-                              item
-                              justifyContent="center"
-                              spacing={3}
-                            >
-                              <Grid item>
-                                <StyledHeader>
-                                  {otherColumnMap.header}
-                                </StyledHeader>
+                        <>
+                          <Grid
+                            container
+                            direction="row"
+                            wrap="nowrap"
+                            spacing={4}
+                            alignItems="center"
+                          >
+                            {Array.from(
+                              otherColumn.get(row.type) as Map<string, string>,
+                              ([key, header]) => ({
+                                key,
+                                header,
+                              })
+                            ).map((otherColumnMap, i) => (
+                              <Grid
+                                key={i}
+                                container
+                                item
+                                justifyContent="center"
+                                spacing={0}
+                                direction="row"
+                              >
+                                <Grid item>
+                                  <StyledHeader>
+                                    {otherColumnMap.header}
+                                  </StyledHeader>
+                                </Grid>
                               </Grid>
-                              <Grid>
-                                <StyledContent>
-                                  {row[otherColumnMap.key as keyof Item]
-                                    .length > 20 ? (
-                                    <span className="longtext">
-                                      {row[otherColumnMap.key as keyof Item]}
-                                    </span>
-                                  ) : (
-                                    row[otherColumnMap.key as keyof Item]
-                                  )}
-                                </StyledContent>
+                            ))}
+                          </Grid>
+                          <Grid
+                            container
+                            direction={"row"}
+                            wrap="nowrap"
+                            spacing={4}
+                            alignItems="center"
+                          >
+                            {Array.from(
+                              otherColumn.get(row.type) as Map<string, string>,
+                              ([key, header]) => ({
+                                key,
+                                header,
+                              })
+                            ).map((otherColumnMap, i) => (
+                              <Grid
+                                key={i}
+                                container
+                                item
+                                justifyContent="center"
+                                spacing={0}
+                                direction="column"
+                              >
+                                <Grid>
+                                  <StyledContent>
+                                    {row[otherColumnMap.key as keyof Item]
+                                      .length > 20 ? (
+                                      <span
+                                        style={
+                                          (hoveringLongText
+                                            ? longTextStyleHover
+                                            : longTextStyle) as Properties<
+                                            string | number,
+                                            string & {}
+                                          >
+                                        }
+                                        onMouseEnter={() =>
+                                          setHoveringLongText(true)
+                                        }
+                                        onMouseLeave={() =>
+                                          setHoveringLongText(false)
+                                        }
+                                      >
+                                        {row[otherColumnMap.key as keyof Item]}
+                                      </span>
+                                    ) : (
+                                      row[otherColumnMap.key as keyof Item]
+                                    )}
+                                  </StyledContent>
+                                </Grid>
                               </Grid>
-                            </Grid>
-                          ))}
-                        </Grid>
+                            ))}
+                          </Grid>
+                        </>
                       ) : column.key === "actions" ? (
                         <>
                           <Button onClick={() => editItem(row)}> ✏️ </Button>
