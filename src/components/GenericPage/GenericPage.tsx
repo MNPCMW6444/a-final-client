@@ -2,21 +2,13 @@ import { useEffect, useState } from "react";
 import { Button, Grid, TextField } from "@mui/material";
 import { Item, Task } from "../../types/dataTypes";
 import Table from "../GenericTable/GenericTable";
-import {
-  ColumnDefinitionType,
-  OtherColumnDefinition,
-} from "../../types/tableTypes";
-import {
-  innerGridSx,
-  outerGridSx,
-  textFieldSx,
-  gridSx,
-} from "./genericPageSxs";
+
+import { innerGridSx, outerGridSx, gridSx } from "./genericPageSxs";
 interface GenericPageProps {
   data: Item[];
   openModal: (editedItem: any) => boolean;
   columns: Map<string, string>;
-  otherColumn: OtherColumnDefinition;
+  otherColumn: Map<string, string>;
   query: string;
 }
 

@@ -8,18 +8,13 @@ import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import { Item } from "../../types/dataTypes";
-import {
-  ColumnDefinitionType,
-  OtherColumnDefinition,
-} from "../../types/tableTypes";
 import { StyledContent, StyledHeader } from "./styledComponents";
 import { tableCellSx, tableSx } from "./genericTableSxs";
-import { ContentCopy } from "@mui/icons-material";
 
 interface TableProps {
   data: Item[];
   columns: Map<string, string>;
-  otherColumn: OtherColumnDefinition;
+  otherColumn: Map<string, string>;
 }
 
 const GenericTable = ({ data, columns, otherColumn }: TableProps) => {
@@ -57,11 +52,10 @@ const GenericTable = ({ data, columns, otherColumn }: TableProps) => {
                           wrap="nowrap"
                           spacing={4}
                         >
-                          {otherColumn[
-                            row[
-                              "type" as keyof Item
-                            ] as keyof OtherColumnDefinition
-                          ].map((otherColumnComponent, i) => (
+                          {Array.from(otherColumn, ([key, header]) => ({
+                            key,
+                            header,
+                          })).map((otherColumnComponent, i) => (
                             <Grid
                               key={i}
                               container
