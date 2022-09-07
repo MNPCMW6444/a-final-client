@@ -4,6 +4,7 @@ import jsonData from "../../assets/mock.json";
 import { Task, Event, Item } from "../../types/dataTypes";
 import columnsConfig from "../../config/columns";
 import otherColumnConfig from "../../config/otherColumn";
+import { BreakfastDiningOutlined } from "@mui/icons-material";
 
 interface CalendarRouterProps {
   openModal: (editedItem: Item) => boolean;
@@ -16,6 +17,35 @@ parsedEvents = jsonEvents.map((event: any) => {
   event.beginningTime = new Date(event.beginningTime).toLocaleString();
   event.endingTime = new Date(event.endingTime).toLocaleString();
   event.notificationDate = new Date(event.notificationDate).toLocaleString();
+  switch (event.color) {
+    case "Red":
+      event.color = "🔴";
+      break;
+    case "Orange":
+      event.color = "🟠";
+      break;
+    case "Yellow":
+      event.color = "🟡";
+      break;
+    case "Green":
+      event.color = "🟢";
+      break;
+    case "Blue":
+      event.color = "🔵";
+      break;
+    case "Purple":
+      event.color = "🟣";
+      break;
+    case "Black":
+      event.color = "⚫️";
+      break;
+    case "White":
+      event.color = "⚪️";
+      break;
+    case "Brown":
+      event.color = "🟤";
+      break;
+  }
   event.type = "Event";
   return event;
 });
