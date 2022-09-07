@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Button, Grid, TextField } from "@mui/material";
-import { Item } from "../../types/dataTypes";
+import { Item, Task } from "../../types/dataTypes";
 import Table from "../GenericTable/GenericTable";
 import {
   ColumnDefinitionType,
@@ -19,13 +19,18 @@ interface GenericPageProps {
   otherColumn: OtherColumnDefinition;
 }
 
-const GenericPage = (props: GenericPageProps) => {
+const GenericPage = ({
+  data,
+  openModal,
+  columns,
+  otherColumn,
+}: GenericPageProps) => {
   const [query, setQuery] = useState<string>("");
 
   const filteredData: false | Item[] =
-    props.data &&
-    props.data.length > 0 &&
-    props.data.filter((item: any) => item.title.includes(query) || !query);
+    data &&
+    data.length > 0 &&
+    data.filter((item: any) => item.title.includes(query) || !query);
 
   return (
     <Grid
@@ -63,15 +68,15 @@ const GenericPage = (props: GenericPageProps) => {
       <Grid item sx={gridSx}>
         <Table
           data={filteredData || ([] as Item[])}
-          columns={props.columns}
-          otherColumn={props.otherColumn}
+          columns={columns}
+          otherColumn={otherColumn}
         />
       </Grid>
       <br />
 
       <br />
       <Grid item>
-        <Button variant="contained" onClick={() => props.openModal({})}>
+        <Button variant="contained" onClick={() => openModal({})}>
           Create a New Item
         </Button>
       </Grid>

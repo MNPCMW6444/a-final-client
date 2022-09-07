@@ -10,10 +10,12 @@ import { useState } from "react";
 import { Item } from "./types/dataTypes";
 import { boxSx } from "./appSxs";
 
+import MainAppBar from "./MainDrawer";
+
 const { Sidebar, SidebarItem } = require("react-responsive-sidebar");
 
 function App() {
-  const pages = [
+  /* const pages = [
     <SidebarItem>
       <Grid
         container
@@ -32,7 +34,7 @@ function App() {
     <SidebarItem href="/">Today</SidebarItem>,
     <SidebarItem href="/tasks">All Tasks</SidebarItem>,
     <SidebarItem href="/events">All Events</SidebarItem>,
-  ];
+  ]; */
 
   const [isCreateFormOpen, setIsCreateFormOpen] = useState<boolean>(false);
   const [editedItem, setEditedItem] = useState<Item>();
@@ -68,9 +70,10 @@ function App() {
         )} */}
       </Modal>
       <ReactNotifications />
-      <Sidebar content={pages} background={"orange"} color={"blue"}>
+      <MainAppBar />
+      {/*  <Sidebar content={pages} background={"orange"} color={"blue"}>
         <CalanderRouter openModal={openModal} />
-      </Sidebar>
+      </Sidebar> */}
     </ThemeProvider>
   );
 }
