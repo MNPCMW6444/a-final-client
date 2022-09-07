@@ -10,6 +10,7 @@ const tableCellSx = {
   border: "1px solid #ddd",
   color: "black",
   textAlign: "center",
+  padding: "5px",
 };
 
 const longTextStyle = {

@@ -122,7 +122,6 @@ export default function ResponsiveDrawer({ setQuery }: ResponsiveDrawerProps) {
           </ListItem>
         </Link>
       </List>
-      <Divider />
     </div>
   );
 

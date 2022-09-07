@@ -60,7 +60,6 @@ const GenericTable = ({ data, columns, otherColumn }: TableProps) => {
                             container
                             direction="row"
                             wrap="nowrap"
-                            spacing={4}
                             alignItems="center"
                           >
                             {Array.from(
@@ -75,10 +74,9 @@ const GenericTable = ({ data, columns, otherColumn }: TableProps) => {
                                 container
                                 item
                                 justifyContent="center"
-                                spacing={0}
                                 direction="row"
                               >
-                                <Grid item>
+                                <Grid item sx={{ width: "100px" }}>
                                   <StyledHeader>
                                     {otherColumnMap.header}
                                   </StyledHeader>
@@ -90,7 +88,6 @@ const GenericTable = ({ data, columns, otherColumn }: TableProps) => {
                             container
                             direction={"row"}
                             wrap="nowrap"
-                            spacing={4}
                             alignItems="center"
                           >
                             {Array.from(
@@ -108,7 +105,7 @@ const GenericTable = ({ data, columns, otherColumn }: TableProps) => {
                                 spacing={0}
                                 direction="column"
                               >
-                                <Grid>
+                                <Grid sx={{ width: "100px" }}>
                                   <StyledContent>
                                     {row[otherColumnMap.key as keyof Item]
                                       .length > 20 ? (
