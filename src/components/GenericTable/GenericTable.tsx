@@ -40,11 +40,11 @@ const GenericTable = ({ data, columns, otherColumn }: TableProps) => {
           </TableRow>
         </TableHead>
         <TableBody>
-          {Array.from(columns, ([key, header]) => ({ key, header })).map(
-            (row, index) => (
-              <TableRow key={`row-${index}`}>
-                {Array.from(columns).map((column, innerIndex) => {
-                  const content = row[column.key as keyof ColumnDefinitionType];
+          {data.map((row: Item, index: number) => (
+            <TableRow key={`row-${index}`}>
+              {Array.from(columns, ([key, header]) => ({ key, header })).map(
+                (column, innerIndex) => {
+                  const content = row[column.key as keyof Item];
                   return (
                     <TableCell
                       key={`cell-${innerIndex}`}
@@ -103,10 +103,10 @@ const GenericTable = ({ data, columns, otherColumn }: TableProps) => {
                       )}
                     </TableCell>
                   );
-                })}
-              </TableRow>
-            )
-          )}
+                }
+              )}
+            </TableRow>
+          ))}
         </TableBody>
       </Table>
     </TableContainer>
