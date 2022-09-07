@@ -1,9 +1,9 @@
 import { useEffect, useState } from "react";
-import { Button, Grid, TextField } from "@mui/material";
-import { Item, Task } from "../../types/dataTypes";
+import { Button, Grid } from "@mui/material";
+import { Item } from "../../types/dataTypes";
 import Table from "../GenericTable/GenericTable";
 
-import { innerGridSx, outerGridSx, gridSx } from "./genericPageSxs";
+import { outerGridSx, tableItemSx } from "./genericPageSxs";
 interface GenericPageProps {
   data: Item[];
   openModal: (editedItem: any) => boolean;
@@ -38,7 +38,6 @@ const GenericPage = ({
     <Grid
       container
       direction="column"
-      justifyContent="space-between"
       alignItems="center"
       width="100%"
       sx={{
@@ -47,25 +46,13 @@ const GenericPage = ({
       }}
       wrap="nowrap"
     >
-      <Grid
-        container
-        item
-        direction="row"
-        justifyContent="center"
-        alignItems="center"
-        spacing={2}
-        sx={innerGridSx}
-      ></Grid>
-      <br />
-      <Grid item sx={gridSx}>
+      <Grid item sx={tableItemSx}>
         <Table
           data={filteredData || ([] as Item[])}
           columns={columns}
           otherColumn={otherColumn}
         />
       </Grid>
-      <br />
-
       <br />
       <Grid item>
         <Button variant="contained" onClick={() => openModal({})}>

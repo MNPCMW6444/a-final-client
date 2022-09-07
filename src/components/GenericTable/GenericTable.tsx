@@ -70,20 +70,22 @@ const GenericTable = ({ data, columns, otherColumn }: TableProps) => {
                               })
                             ).map((otherColumnMap, i) => (
                               <Grid
-                                key={i}
-                                container
                                 item
-                                justifyContent="center"
-                                direction="row"
+                                key={i}
+                                sx={{
+                                  width: "104px",
+                                  paddingLeft: "5px",
+                                  paddingRight: "5px",
+                                  height: "10px",
+                                }}
                               >
-                                <Grid item sx={{ width: "100px" }}>
-                                  <StyledHeader>
-                                    {otherColumnMap.header}
-                                  </StyledHeader>
-                                </Grid>
+                                <StyledHeader>
+                                  {otherColumnMap.header}
+                                </StyledHeader>
                               </Grid>
                             ))}
                           </Grid>
+                          <br />
                           <Grid
                             container
                             direction={"row"}
@@ -98,40 +100,43 @@ const GenericTable = ({ data, columns, otherColumn }: TableProps) => {
                               })
                             ).map((otherColumnMap, i) => (
                               <Grid
-                                key={i}
-                                container
                                 item
-                                justifyContent="center"
-                                spacing={0}
+                                container
                                 direction="column"
+                                justifyContent="center"
+                                alignItems="center"
+                                key={i}
+                                sx={{
+                                  width: "104px",
+                                  paddingLeft: "5px",
+                                  paddingRight: "5px",
+                                }}
                               >
-                                <Grid sx={{ width: "100px" }}>
-                                  <StyledContent>
-                                    {row[otherColumnMap.key as keyof Item]
-                                      .length > 20 ? (
-                                      <span
-                                        style={
-                                          (hoveringLongText
-                                            ? longTextStyleHover
-                                            : longTextStyle) as Properties<
-                                            string | number,
-                                            string & {}
-                                          >
-                                        }
-                                        onMouseEnter={() =>
-                                          setHoveringLongText(true)
-                                        }
-                                        onMouseLeave={() =>
-                                          setHoveringLongText(false)
-                                        }
-                                      >
-                                        {row[otherColumnMap.key as keyof Item]}
-                                      </span>
-                                    ) : (
-                                      row[otherColumnMap.key as keyof Item]
-                                    )}
-                                  </StyledContent>
-                                </Grid>
+                                <StyledContent>
+                                  {row[otherColumnMap.key as keyof Item]
+                                    .length > 20 ? (
+                                    <span
+                                      style={
+                                        (hoveringLongText
+                                          ? longTextStyleHover
+                                          : longTextStyle) as Properties<
+                                          string | number,
+                                          string & {}
+                                        >
+                                      }
+                                      onMouseEnter={() =>
+                                        setHoveringLongText(true)
+                                      }
+                                      onMouseLeave={() =>
+                                        setHoveringLongText(false)
+                                      }
+                                    >
+                                      {row[otherColumnMap.key as keyof Item]}
+                                    </span>
+                                  ) : (
+                                    row[otherColumnMap.key as keyof Item]
+                                  )}
+                                </StyledContent>
                               </Grid>
                             ))}
                           </Grid>

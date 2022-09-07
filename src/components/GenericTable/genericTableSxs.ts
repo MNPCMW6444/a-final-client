@@ -10,7 +10,8 @@ const tableCellSx = {
   border: "1px solid #ddd",
   color: "black",
   textAlign: "center",
-  padding: "5px",
+  paddingLeft: "5px",
+  paddingRight: "5px",
 };
 
 const longTextStyle = {
@@ -18,7 +19,7 @@ const longTextStyle = {
   overflow: "hidden",
   textOverflow: "ellipsis",
   display: "inline-block",
-  width: "100px",
+  width: "104px",
 };
 
 const longTextStyleHover = {
@@ -26,7 +27,7 @@ const longTextStyleHover = {
   whiteSpace: "normal",
   textOverflow: "unset",
   display: "block",
-  width: "100px",
+  width: "104px",
 };
 
 const tableSx = {
