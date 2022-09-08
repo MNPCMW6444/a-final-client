@@ -44,7 +44,7 @@ function App() {
         )} */}
       </Modal>
       <ReactNotifications />
-      <AppFrame setQuery={setQuery} />
+      <AppFrame query={query} setQuery={setQuery} />
       <CalendarRouter openModal={openModal} query={query} />
     </ThemeProvider>
   );

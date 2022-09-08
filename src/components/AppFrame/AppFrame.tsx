@@ -11,14 +11,12 @@ import ListItemText from "@mui/material/ListItemText";
 import MenuIcon from "@mui/icons-material/Menu";
 import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
-import SearchBar from "material-ui-search-bar";
-import { styled, alpha } from "@mui/material/styles";
-import InputBase from "@mui/material/InputBase";
 import Grid from "@mui/material/Grid";
 import Clock from "../Clock/Clock";
 import React from "react";
-import BT from "./assets/BT.png";
+import BT from "../../assets/BT.png";
 import Link from "@mui/material/Link";
+import SearchBar from "@mkyy/mui-search-bar";
 
 const drawerWidth = 240;
 
@@ -29,45 +27,6 @@ const boxSx = {
   maxWidth: { xs: "250px" },
 };
 
-const Search = styled("div")(({ theme }) => ({
-  position: "relative",
-  borderRadius: theme.shape.borderRadius,
-  backgroundColor: alpha(theme.palette.common.white, 0.15),
-  "&:hover": {
-    backgroundColor: alpha(theme.palette.common.white, 0.25),
-  },
-  marginRight: theme.spacing(2),
-  marginLeft: 0,
-  width: "100%",
-  [theme.breakpoints.up("sm")]: {
-    marginLeft: theme.spacing(3),
-    width: "auto",
-  },
-}));
-
-const SearchIconWrapper = styled("div")(({ theme }) => ({
-  padding: theme.spacing(0, 2),
-  height: "100%",
-  position: "absolute",
-  pointerEvents: "none",
-  display: "flex",
-  alignItems: "center",
-  justifyContent: "center",
-}));
-
-const StyledInputBase = styled(InputBase)(({ theme }) => ({
-  color: "inherit",
-  "& .MuiInputBase-input": {
-    padding: theme.spacing(1, 1, 1, 0),
-    paddingLeft: `calc(1em + ${theme.spacing(4)})`,
-    transition: theme.transitions.create("width"),
-    width: "100%",
-    [theme.breakpoints.up("md")]: {
-      width: "20ch",
-    },
-  },
-}));
-
 const linkSx = {
   textDecoration: "unset",
   color: "black",
@@ -76,8 +35,9 @@ const linkSx = {
 
 interface AppFrameProps {
   setQuery: React.Dispatch<React.SetStateAction<string>>;
+  query: string;
 }
-export default function AppFrame({ setQuery }: AppFrameProps) {
+export default function AppFrame({ query, setQuery }: AppFrameProps) {
   const [mobileOpen, setMobileOpen] = React.useState(false);
 
   const handleDrawerToggle = () => {
@@ -167,7 +127,9 @@ export default function AppFrame({ setQuery }: AppFrameProps) {
             <Grid item>
               <SearchBar
                 placeholder="Search By Title..."
-                onChange={(searchVal: string) => setQuery(searchVal)}
+                value={query}
+                style={{ color: "black" }}
+                onChange={(e) => setQuery(e.target.value)}
               />
             </Grid>
             <Grid item flexGrow={0.5}></Grid>{" "}
