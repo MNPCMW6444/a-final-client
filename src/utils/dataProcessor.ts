@@ -1,7 +1,16 @@
 import rawData from "../assets/mock.json";
 import { Task, Event } from "../types/dataTypes";
-import { colorMap } from "../components/CalendarRouter/dataProcessorUtils/maps";
-/* todo move to util*/
+
+const colorMap = new Map();
+colorMap.set("Red", "🔴");
+colorMap.set("Orange", "🟠");
+colorMap.set("Yellow", "🟡");
+colorMap.set("Green", "🟢");
+colorMap.set("Blue", "🔵");
+colorMap.set("Purple", "🟣");
+colorMap.set("Black", "⚫️");
+colorMap.set("White", "⚪️");
+colorMap.set("Brown", "🟤");
 
 const jsonEvents = rawData.events;
 const jsonTasks = rawData.tasks;
