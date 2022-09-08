@@ -2,7 +2,7 @@ import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import { Task, Event, Item } from "../../types/dataTypes";
 import columnsConfig from "../../config/columns";
 import { data } from "../../utils/dataProcessor";
-import GenericPage from "../GenericPage/GenericPage";
+import GenericPage from "../GenericTable/GenericTable";
 
 interface CalendarRouterProps {
   openModal: (editedItem: Item) => boolean;
