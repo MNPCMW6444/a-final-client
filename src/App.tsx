@@ -5,7 +5,7 @@ import Modal from "react-modal";
 import { useState } from "react";
 import { Item } from "./types/dataTypes";
 
-import MainAppBar from "./components/MainDrawer/MainDrawer";
+import AppFrame from "./components/AppFrame/AppFrame";
 import CalendarRouter from "./components/CalendarRouter/CalendarRouter";
 
 function App() {
@@ -44,7 +44,7 @@ function App() {
         )} */}
       </Modal>
       <ReactNotifications />
-      <MainAppBar setQuery={setQuery} />
+      <AppFrame setQuery={setQuery} />
       <CalendarRouter openModal={openModal} query={query} />
     </ThemeProvider>
   );

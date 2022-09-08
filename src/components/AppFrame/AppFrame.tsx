@@ -74,10 +74,10 @@ const linkSx = {
   fontWeight: 900,
 };
 
-interface ResponsiveDrawerProps {
+interface AppFrameProps {
   setQuery: React.Dispatch<React.SetStateAction<string>>;
 }
-export default function ResponsiveDrawer({ setQuery }: ResponsiveDrawerProps) {
+export default function AppFrame({ setQuery }: AppFrameProps) {
   const [mobileOpen, setMobileOpen] = React.useState(false);
 
   const handleDrawerToggle = () => {
