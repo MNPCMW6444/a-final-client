@@ -5,7 +5,7 @@ import Modal from "react-modal";
 import { useState } from "react";
 import { Item } from "./types/dataTypes";
 
-import MainAppBar from "./MainDrawer";
+import MainAppBar from "./components/MainDrawer/MainDrawer";
 import CalendarRouter from "./components/CalendarRouter/CalendarRouter";
 
 function App() {

@@ -15,7 +15,7 @@ import SearchBar from "material-ui-search-bar";
 import { styled, alpha } from "@mui/material/styles";
 import InputBase from "@mui/material/InputBase";
 import Grid from "@mui/material/Grid";
-import Clock from "./components/Clock/Clock";
+import Clock from "../Clock/Clock";
 import React from "react";
 import BT from "./assets/BT.png";
 import Link from "@mui/material/Link";
