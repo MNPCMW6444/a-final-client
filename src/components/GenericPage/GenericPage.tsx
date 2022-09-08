@@ -3,8 +3,6 @@ import { Button, Grid } from "@mui/material";
 import { Item } from "../../types/dataTypes";
 import Table from "../GenericTable/GenericTable";
 
-import { outerGridSx, tableItemSx } from "./genericPageSxs";
-
 interface GenericPageProps {
   data: Item[];
   openModal: (editedItem: any) => boolean;
@@ -14,12 +12,14 @@ interface GenericPageProps {
 
 // todo merge with generic table
 
-const GenericPage = ({
-  data,
-  openModal,
-  columns,
-  query,
-}: GenericPageProps) => {
+const outerGridSx = {
+  overflow: "hidden",
+  paddingRight: "5%",
+};
+
+const tableItemSx = { width: "100%", maxHeight: "70vh", overflowY: "scroll" };
+
+const GenericPage = ({ data, openModal, columns, query }: GenericPageProps) => {
   const [paddingLeft, setPaddingLeft] = useState<number>(
     window.innerWidth > 600 ? 240 : 0
   );
@@ -48,10 +48,7 @@ const GenericPage = ({
       wrap="nowrap"
     >
       <Grid item sx={tableItemSx}>
-        <Table
-          data={filteredData || ([] as Item[])}
-          columns={columns}
-        />
+        <Table data={filteredData || ([] as Item[])} columns={columns} />
       </Grid>
       <br />
       <Grid item>

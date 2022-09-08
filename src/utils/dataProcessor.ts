@@ -1,6 +1,6 @@
-import rawData from "../../assets/mock.json";
-import { Task, Event } from "../../types/dataTypes";
-import { colorMap } from "./dataProcessorUtils/maps";
+import rawData from "../assets/mock.json";
+import { Task, Event } from "../types/dataTypes";
+import { colorMap } from "../components/CalendarRouter/dataProcessorUtils/maps";
 /* todo move to util*/
 
 const jsonEvents = rawData.events;

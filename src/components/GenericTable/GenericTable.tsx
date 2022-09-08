@@ -7,22 +7,60 @@ import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import { Item } from "../../types/dataTypes";
-import { StyledContent, StyledHeader } from "./styledComponents";
-import {
-  tableCellSx,
-  tableHeaderSx,
-  tableSx,
-  longTextStyle,
-  longTextStyleHover,
-} from "./genericTableSxs";
 import { useState } from "react";
 import { Properties } from "csstype";
 import otherColumn from "../../config/otherColumn";
+import { blue } from "@mui/material/colors";
+import styled from "@emotion/styled";
+import Box from "@mui/material/Box";
 
 interface TableProps {
   data: Item[];
   columns: Map<string, string>;
 }
+
+const tableHeaderSx = {
+  textAlign: "center",
+  backgroundColor: blue[600],
+  border: "1px solid #ddd",
+  color: "white",
+};
+
+const tableCellSx = {
+  backgroundColor: "#AACCFF",
+  border: "1px solid #ddd",
+  color: "black",
+  textAlign: "center",
+  paddingLeft: "5px",
+  paddingRight: "5px",
+};
+
+const longTextStyle = {
+  whiteSpace: "nowrap",
+  overflow: "hidden",
+  textOverflow: "ellipsis",
+  display: "inline-block",
+  width: "104px",
+};
+
+const longTextStyleHover = {
+  overflow: "scroll",
+  whiteSpace: "normal",
+  textOverflow: "unset",
+  display: "block",
+  width: "104px",
+};
+
+const tableSx = {
+  borderCollapse: "collapse",
+};
+
+const StyledContent = styled(Box)(({ theme }) => ({}));
+
+const StyledHeader = styled(Box)(() => ({
+  textDecoration: "underline",
+  fontWeight: 500,
+}));
 
 const GenericTable = ({ data, columns }: TableProps) => {
   const [hoveringLongText, setHoveringLongText] = useState<boolean>(false);
@@ -33,7 +71,7 @@ const GenericTable = ({ data, columns }: TableProps) => {
       <Table aria-label="simple table" sx={tableSx}>
         <TableHead>
           <TableRow>
-            {Array.from(columns, ([_, header]) => ({header })).map(
+            {Array.from(columns, ([_, header]) => ({ header })).map(
               (column, index) => (
                 <TableCell key={`headCell-${index}`} sx={tableHeaderSx}>
                   {column.header}

@@ -1,7 +1,7 @@
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import { Task, Event, Item } from "../../types/dataTypes";
 import columnsConfig from "../../config/columns";
-import { data } from "./dataProcessor";
+import { data } from "../../utils/dataProcessor";
 import GenericPage from "../GenericPage/GenericPage";
 
 interface CalendarRouterProps {
@@ -9,7 +9,7 @@ interface CalendarRouterProps {
   query: string;
 }
 
-const CalendarRouter = ({openModal, query}: CalendarRouterProps) => (
+const CalendarRouter = ({ openModal, query }: CalendarRouterProps) => (
   <Router>
     <Routes>
       <Route
