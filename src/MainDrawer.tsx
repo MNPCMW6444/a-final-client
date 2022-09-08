@@ -12,7 +12,6 @@ import MenuIcon from "@mui/icons-material/Menu";
 import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
 import SearchIcon from "@mui/icons-material/Search";
-import { boxSx } from "./appSxs";
 import { styled, alpha } from "@mui/material/styles";
 import InputBase from "@mui/material/InputBase";
 import Grid from "@mui/material/Grid";
@@ -22,6 +21,13 @@ import BT from "./assets/BT.png";
 import Link from "@mui/material/Link";
 
 const drawerWidth = 240;
+
+const boxSx = {
+  height: { xs: "28vw" },
+  width: { xs: "28vw" },
+  maxHeight: { xs: "250px" },
+  maxWidth: { xs: "250px" },
+};
 
 const Search = styled("div")(({ theme }) => ({
   position: "relative",
