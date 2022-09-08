@@ -2,7 +2,7 @@ import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import { Task, Event, Item } from "../../types/dataTypes";
 import columnsConfig from "../../config/columns";
 import { data } from "../../utils/dataProcessor";
-import GenericPage from "../GenericTable/GenericTable";
+import GenericTable from "../GenericTable/GenericTable";
 
 interface CalendarRouterProps {
   openModal: (editedItem: Item) => boolean;
@@ -15,7 +15,7 @@ const CalendarRouter = ({ openModal, query }: CalendarRouterProps) => (
       <Route
         path="/"
         element={
-          <GenericPage
+          <GenericTable
             query={query}
             openModal={openModal}
             data={[...data.events, ...data.tasks].filter((item: Item) =>
@@ -32,7 +32,7 @@ const CalendarRouter = ({ openModal, query }: CalendarRouterProps) => (
       <Route
         path="/tasks"
         element={
-          <GenericPage
+          <GenericTable
             query={query}
             openModal={openModal}
             data={data.tasks}
@@ -43,7 +43,7 @@ const CalendarRouter = ({ openModal, query }: CalendarRouterProps) => (
       <Route
         path="/events"
         element={
-          <GenericPage
+          <GenericTable
             query={query}
             openModal={openModal}
             data={data.events}
