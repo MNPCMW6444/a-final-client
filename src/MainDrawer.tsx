@@ -11,7 +11,7 @@ import ListItemText from "@mui/material/ListItemText";
 import MenuIcon from "@mui/icons-material/Menu";
 import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
-import SearchIcon from "@mui/icons-material/Search";
+import SearchBar from "material-ui-search-bar";
 import { styled, alpha } from "@mui/material/styles";
 import InputBase from "@mui/material/InputBase";
 import Grid from "@mui/material/Grid";
@@ -165,16 +165,10 @@ export default function ResponsiveDrawer({ setQuery }: ResponsiveDrawerProps) {
               </Typography>
             </Grid>
             <Grid item>
-              <Search>
-                <SearchIconWrapper>
-                  <SearchIcon />
-                </SearchIconWrapper>
-                <StyledInputBase
-                  placeholder="Search By Title..."
-                  inputProps={{ "aria-label": "search" }}
-                  onChange={(e) => setQuery(e.target.value)}
-                />
-              </Search>
+              <SearchBar
+                placeholder="Search By Title..."
+                onChange={(searchVal: string) => setQuery(searchVal)}
+              />
             </Grid>
             <Grid item flexGrow={0.5}></Grid>{" "}
           </Grid>
