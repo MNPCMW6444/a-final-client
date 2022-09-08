@@ -17,14 +17,14 @@ import {
 } from "./genericTableSxs";
 import { useState } from "react";
 import { Properties } from "csstype";
+import otherColumn from "../../config/otherColumn";
 
 interface TableProps {
   data: Item[];
   columns: Map<string, string>;
-  otherColumn: Map<string, Map<string, string>>;
 }
 
-const GenericTable = ({ data, columns, otherColumn }: TableProps) => {
+const GenericTable = ({ data, columns }: TableProps) => {
   const [hoveringLongText, setHoveringLongText] = useState<boolean>(false);
   const editItem = (item: Item) => {};
   const deleteItem = (item: Item) => {};
@@ -33,7 +33,7 @@ const GenericTable = ({ data, columns, otherColumn }: TableProps) => {
       <Table aria-label="simple table" sx={tableSx}>
         <TableHead>
           <TableRow>
-            {Array.from(columns, ([key, header]) => ({ key, header })).map(
+            {Array.from(columns, ([_, header]) => ({header })).map(
               (column, index) => (
                 <TableCell key={`headCell-${index}`} sx={tableHeaderSx}>
                   {column.header}
@@ -48,6 +48,7 @@ const GenericTable = ({ data, columns, otherColumn }: TableProps) => {
               {Array.from(columns, ([key, header]) => ({ key, header })).map(
                 (column, innerIndex) => {
                   const content = row[column.key as keyof Item];
+
                   return (
                     <TableCell
                       key={`cell-${innerIndex}`}

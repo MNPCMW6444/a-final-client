@@ -4,19 +4,20 @@ import { Item } from "../../types/dataTypes";
 import Table from "../GenericTable/GenericTable";
 
 import { outerGridSx, tableItemSx } from "./genericPageSxs";
+
 interface GenericPageProps {
   data: Item[];
   openModal: (editedItem: any) => boolean;
   columns: Map<string, string>;
-  otherColumn: Map<string, Map<string, string>>;
   query: string;
 }
+
+// todo merge with generic table
 
 const GenericPage = ({
   data,
   openModal,
   columns,
-  otherColumn,
   query,
 }: GenericPageProps) => {
   const [paddingLeft, setPaddingLeft] = useState<number>(
@@ -29,9 +30,9 @@ const GenericPage = ({
     data.filter((item: any) => item.title.includes(query) || !query);
 
   useEffect(() => {
-    window.addEventListener("resize", () =>
-      setPaddingLeft(window.innerWidth > 600 ? 240 : 0)
-    );
+    // window.addEventListener("resize", () =>
+    //   setPaddingLeft(window.innerWidth > 600 ? 240 : 0)
+    // );
   });
 
   return (
@@ -50,7 +51,6 @@ const GenericPage = ({
         <Table
           data={filteredData || ([] as Item[])}
           columns={columns}
-          otherColumn={otherColumn}
         />
       </Grid>
       <br />

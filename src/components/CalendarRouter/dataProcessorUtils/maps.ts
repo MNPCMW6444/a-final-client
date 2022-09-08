@@ -10,3 +10,5 @@ colorMap.set("White", "⚪️");
 colorMap.set("Brown", "🟤");
 
 export { colorMap };
+
+// todo move to used file

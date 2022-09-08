@@ -1,7 +1,6 @@
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import { Task, Event, Item } from "../../types/dataTypes";
 import columnsConfig from "../../config/columns";
-import otherColumnConfig from "../../config/otherColumn";
 import { data } from "./dataProcessor";
 import GenericPage from "../GenericPage/GenericPage";
 
@@ -10,15 +9,15 @@ interface CalendarRouterProps {
   query: string;
 }
 
-const CalendarRouter = (props: CalendarRouterProps) => (
+const CalendarRouter = ({openModal, query}: CalendarRouterProps) => (
   <Router>
     <Routes>
       <Route
         path="/"
         element={
           <GenericPage
-            query={props.query}
-            openModal={props.openModal}
+            query={query}
+            openModal={openModal}
             data={[...data.events, ...data.tasks].filter((item: Item) =>
               item.type === "Task"
                 ? (item as Task).untilDate.substring(0, 9) ===
@@ -27,7 +26,6 @@ const CalendarRouter = (props: CalendarRouterProps) => (
                   new Date().toLocaleString().substring(0, 9)
             )}
             columns={columnsConfig.get("today")}
-            otherColumn={otherColumnConfig}
           />
         }
       />
@@ -35,11 +33,10 @@ const CalendarRouter = (props: CalendarRouterProps) => (
         path="/tasks"
         element={
           <GenericPage
-            query={props.query}
-            openModal={props.openModal}
+            query={query}
+            openModal={openModal}
             data={data.tasks}
             columns={columnsConfig.get("tasks")}
-            otherColumn={otherColumnConfig}
           />
         }
       />
@@ -47,11 +44,10 @@ const CalendarRouter = (props: CalendarRouterProps) => (
         path="/events"
         element={
           <GenericPage
-            query={props.query}
-            openModal={props.openModal}
+            query={query}
+            openModal={openModal}
             data={data.events}
             columns={columnsConfig.get("events")}
-            otherColumn={otherColumnConfig}
           />
         }
       />

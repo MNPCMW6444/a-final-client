@@ -1,10 +1,12 @@
 import rawData from "../../assets/mock.json";
 import { Task, Event } from "../../types/dataTypes";
 import { colorMap } from "./dataProcessorUtils/maps";
+/* todo move to util*/
 
 const jsonEvents = rawData.events;
 const jsonTasks = rawData.tasks;
 let parsedEvents: Event[];
+
 parsedEvents = jsonEvents.map((event: any) => {
   event.beginningTime =
     new Date(event.beginningTime).toLocaleDateString() +

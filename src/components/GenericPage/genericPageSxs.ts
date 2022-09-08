@@ -1,3 +1,5 @@
+// todo move these back to component page
+
 const outerGridSx = {
   overflow: "hidden",
   paddingRight: "5%",

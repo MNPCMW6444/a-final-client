@@ -1,6 +1,8 @@
+import {blue} from "@mui/material/colors";
+
 const tableHeaderSx = {
   textAlign: "center",
-  backgroundColor: "#0066FF",
+  backgroundColor: blue[600],
   border: "1px solid #ddd",
   color: "white",
 };
