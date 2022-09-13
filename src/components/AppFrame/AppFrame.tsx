@@ -17,6 +17,10 @@ import React from "react";
 import BT from "../../assets/BT.png";
 import Link from "@mui/material/Link";
 import SearchBar from "@mkyy/mui-search-bar";
+import CalendarRouter from "../CalendarRouter/CalendarRouter";
+import { useState } from "react";
+import Modal from "react-modal";
+import { Item } from "../../types/dataTypes";
 
 const drawerWidth = 240;
 
@@ -39,6 +43,19 @@ interface AppFrameProps {
 }
 export default function AppFrame({ query, setQuery }: AppFrameProps) {
   const [mobileOpen, setMobileOpen] = React.useState(false);
+
+  const [editedItem, setEditedItem] = useState<Item>();
+  const [isCreateFormOpen, setIsCreateFormOpen] = useState<boolean>(false);
+
+  const openModal = (editedItem: any): boolean => {
+    setIsCreateFormOpen(true);
+    setEditedItem(editedItem);
+    return true;
+  };
+
+  const closeModal = () => {
+    setIsCreateFormOpen(false);
+  };
 
   const handleDrawerToggle = () => {
     setMobileOpen(!mobileOpen);
@@ -93,6 +110,24 @@ export default function AppFrame({ query, setQuery }: AppFrameProps) {
 
   return (
     <Box sx={{ display: "flex" }}>
+      <Modal
+        isOpen={isCreateFormOpen}
+        onRequestClose={closeModal}
+        style={{
+          content: {
+            top: "10vh",
+            left: "10vw",
+            right: "10vw",
+            bottom: "10vh",
+          },
+        }}
+      >
+        {/*  {editedItem ? (
+  <EditForm closeEditForm={closeModal} item={editedItem} />
+) : (
+  <CreateForm closeCreateForm={closeModal} />
+)} */}
+      </Modal>
       <CssBaseline />
       <AppBar
         position="fixed"
@@ -176,11 +211,13 @@ export default function AppFrame({ query, setQuery }: AppFrameProps) {
         component="main"
         sx={{
           flexGrow: 1,
-          p: 3,
+          padding: "5%",
           width: { sm: `calc(100% - ${drawerWidth}px)` },
+          overflowX: "scroll",
         }}
       >
         <Toolbar />
+        <CalendarRouter openModal={openModal} query={query} />
       </Box>
     </Box>
   );

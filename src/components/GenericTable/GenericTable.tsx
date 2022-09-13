@@ -21,11 +21,8 @@ interface GenericTableProps {
   query: string;
 }
 
-// todo merge with generic table
-
 const outerGridSx = {
   overflow: "hidden",
-  padding: "5%",
 };
 
 const tableItemSx = { width: "100%", maxHeight: "70vh", overflowY: "scroll" };
