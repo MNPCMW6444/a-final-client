@@ -42,7 +42,7 @@ interface AppFrameProps {
   query: string;
 }
 export default function AppFrame({ query, setQuery }: AppFrameProps) {
-  const [mobileOpen, setMobileOpen] = React.useState(false);
+  const [mobileOpen, setMobileOpen] = useState(false);
 
   const [editedItem, setEditedItem] = useState<Item>();
   const [isCreateFormOpen, setIsCreateFormOpen] = useState<boolean>(false);
@@ -122,11 +122,11 @@ export default function AppFrame({ query, setQuery }: AppFrameProps) {
           },
         }}
       >
-        {/*  {editedItem ? (
-  <EditForm closeEditForm={closeModal} item={editedItem} />
-) : (
-  <CreateForm closeCreateForm={closeModal} />
-)} */}
+        {editedItem ? (
+          /*  <EditForm closeEditForm={closeModal} item={editedItem} /> */ <></>
+        ) : (
+          /*  <CreateForm closeCreateForm={closeModal} /> */ <></>
+        )}
       </Modal>
       <CssBaseline />
       <AppBar
