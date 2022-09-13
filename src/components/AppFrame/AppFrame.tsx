@@ -16,13 +16,13 @@ import Clock from "../Clock/Clock";
 import React from "react";
 import BT from "../../assets/BT.png";
 import Link from "@mui/material/Link";
-import SearchBar from "@mkyy/mui-search-bar";
 import CalendarRouter from "../CalendarRouter/CalendarRouter";
 import { useState } from "react";
-import Modal from "react-modal";
 import { Item } from "../../types/dataTypes";
+import SearchBar from "@mkyy/mui-search-bar";
 
 const drawerWidth = 240;
+const autoWidth = { sm: `calc(100% - ${drawerWidth}px)` };
 
 const boxSx = {
   height: { xs: "28vw" },
@@ -40,22 +40,14 @@ const linkSx = {
 interface AppFrameProps {
   setQuery: React.Dispatch<React.SetStateAction<string>>;
   query: string;
+  openModal: (editedItem: Item) => boolean;
 }
-export default function AppFrame({ query, setQuery }: AppFrameProps) {
+export default function AppFrame({
+  query,
+  setQuery,
+  openModal,
+}: AppFrameProps) {
   const [mobileOpen, setMobileOpen] = useState(false);
-
-  const [editedItem, setEditedItem] = useState<Item>();
-  const [isCreateFormOpen, setIsCreateFormOpen] = useState<boolean>(false);
-
-  const openModal = (editedItem: any): boolean => {
-    setIsCreateFormOpen(true);
-    setEditedItem(editedItem);
-    return true;
-  };
-
-  const closeModal = () => {
-    setIsCreateFormOpen(false);
-  };
 
   const handleDrawerToggle = () => {
     setMobileOpen(!mobileOpen);
@@ -108,69 +100,57 @@ export default function AppFrame({ query, setQuery }: AppFrameProps) {
     </div>
   );
 
+  const topBar = (
+    <AppBar
+      position="fixed"
+      sx={{
+        width: autoWidth,
+        ml: { sm: `${drawerWidth}px` },
+      }}
+    >
+      <Toolbar>
+        <Grid
+          container
+          direction="row"
+          justifyContent="flex-start"
+          alignItems="center"
+          wrap="nowrap"
+          spacing={5}
+        >
+          <Grid item>
+            <IconButton
+              color="inherit"
+              aria-label="open drawer"
+              edge="start"
+              onClick={handleDrawerToggle}
+              sx={{ mr: 2, display: { sm: "none" } }}
+            >
+              <MenuIcon />
+            </IconButton>
+          </Grid>
+          <Grid item>
+            <Typography variant="subtitle1" noWrap component="div">
+              Blue Calendar
+            </Typography>
+          </Grid>
+          <Grid item>
+            <SearchBar
+              placeholder="Search By Title..."
+              value={query}
+              style={{ color: "black" }}
+              width="100%"
+              onChange={(e) => setQuery(e.target.value)}
+            />
+          </Grid>
+        </Grid>
+      </Toolbar>
+    </AppBar>
+  );
+
   return (
     <Box sx={{ display: "flex" }}>
-      <Modal
-        isOpen={isCreateFormOpen}
-        onRequestClose={closeModal}
-        style={{
-          content: {
-            top: "10vh",
-            left: "10vw",
-            right: "10vw",
-            bottom: "10vh",
-          },
-        }}
-      >
-        {editedItem ? (
-          /*  <EditForm closeEditForm={closeModal} item={editedItem} /> */ <></>
-        ) : (
-          /*  <CreateForm closeCreateForm={closeModal} /> */ <></>
-        )}
-      </Modal>
       <CssBaseline />
-      <AppBar
-        position="fixed"
-        sx={{
-          width: { sm: `calc(100% - ${drawerWidth}px)` },
-          ml: { sm: `${drawerWidth}px` },
-        }}
-      >
-        <Toolbar>
-          <Grid container direction="row" justifyContent="space-between">
-            <Grid item>
-              <IconButton
-                color="inherit"
-                aria-label="open drawer"
-                edge="start"
-                onClick={handleDrawerToggle}
-                sx={{ mr: 2, display: { sm: "none" } }}
-              >
-                <MenuIcon />
-              </IconButton>
-            </Grid>
-            <Grid item>
-              <Typography
-                variant="h6"
-                noWrap
-                component="div"
-                sx={{ display: { xs: "none", sm: "block" } }}
-              >
-                Blue Calendar
-              </Typography>
-            </Grid>
-            <Grid item>
-              <SearchBar
-                placeholder="Search By Title..."
-                value={query}
-                style={{ color: "black" }}
-                onChange={(e) => setQuery(e.target.value)}
-              />
-            </Grid>
-            <Grid item flexGrow={0.5}></Grid>{" "}
-          </Grid>
-        </Toolbar>
-      </AppBar>
+      {topBar}
       <Box
         component="nav"
         sx={{ width: { sm: drawerWidth }, flexShrink: { sm: 0 } }}
@@ -212,7 +192,7 @@ export default function AppFrame({ query, setQuery }: AppFrameProps) {
         sx={{
           flexGrow: 1,
           padding: "5%",
-          width: { sm: `calc(100% - ${drawerWidth}px)` },
+          width: autoWidth,
           overflowX: "scroll",
         }}
       >
