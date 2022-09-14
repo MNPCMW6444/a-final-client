@@ -46,7 +46,7 @@ function App() {
       >
         <Fade in={isCreateFormOpen}>
           <Box sx={style}>
-            <GenericForm closeForm={closeModal} item={editedItem} />
+            <GenericForm closeForm={closeModal} item={editedItem || null} />
           </Box>
         </Fade>
       </Modal>

@@ -12,8 +12,10 @@ colorMap.set("Black", "⚫️");
 colorMap.set("White", "⚪️");
 colorMap.set("Brown", "🟤");
 
-const jsonEvents = rawData.events;
-const jsonTasks = rawData.tasks;
+const dbData = structuredClone(rawData);
+
+const jsonEvents = dbData.events;
+const jsonTasks = dbData.tasks;
 let parsedEvents: Event[];
 
 parsedEvents = jsonEvents.map((event: any) => {

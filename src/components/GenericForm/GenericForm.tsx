@@ -2,27 +2,18 @@ import Grid from "@mui/material/Grid";
 import { useState } from "react";
 import { Item, Task, Event } from "../../types/dataTypes";
 import Button from "@mui/material/Button";
+import rawData from "../../assets/mock.json";
 
 interface GenericFormProps {
   closeForm: () => void;
   item: Item | null;
-  data: any;
-  setData: React.Dispatch<any>;
 }
 
-export default function GenericForm({
-  closeForm,
-  item,
-  data,
-  setData,
-}: GenericFormProps) {
-  const tempData = structuredClone(data);
+export default function GenericForm({ closeForm, item }: GenericFormProps) {
   let originalItem = item
     ? item.type === "Task"
-      ? (tempData.tasks.filter((task: Item) => task.id === item.id)[0] as Task)
-      : (tempData.events.filter(
-          (event: Item) => event.id === item.id
-        )[0] as Event)
+      ? (rawData.tasks.filter((task) => task.id === item.id)[0] as Task)
+      : (rawData.events.filter((event) => event.id === item.id)[0] as Event)
     : ({} as Item);
 
   const [itemState, setItemState] = useState<Item>(originalItem);
@@ -46,7 +37,6 @@ export default function GenericForm({
       <Grid item>
         <Button
           onClick={() => {
-            setData(tempData);
             closeForm();
           }}
         >
