@@ -80,7 +80,7 @@ const GenericTable = ({
     data.filter((item: any) => item.title.includes(query) || !query);
 
   const [hoveringLongText, setHoveringLongText] = useState<boolean>(false);
-  const editItem = (item: Item) => {};
+
   const deleteItem = (item: Item) => {};
 
   return (
@@ -221,7 +221,7 @@ const GenericTable = ({
                             </>
                           ) : column.key === "actions" ? (
                             <>
-                              <Button onClick={() => editItem(row)}>✏️</Button>
+                              <Button onClick={() => openModal(row)}>✏️</Button>
                               <Button onClick={() => deleteItem(row)}>
                                 🗑️
                               </Button>
