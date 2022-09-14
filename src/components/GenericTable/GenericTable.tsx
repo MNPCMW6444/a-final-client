@@ -63,8 +63,6 @@ const tableSx = {
   borderCollapse: "collapse",
 };
 
-const StyledContent = styled(Box)(({ theme }) => ({}));
-
 const StyledHeader = styled(Box)(() => ({
   textDecoration: "underline",
   fontWeight: 500,
@@ -188,7 +186,7 @@ const GenericTable = ({
                                       paddingRight: "5px",
                                     }}
                                   >
-                                    <StyledContent>
+                                    <Box>
                                       {row[otherColumnMap.key as keyof Item]
                                         .length > 20 ? (
                                         <span
@@ -216,7 +214,7 @@ const GenericTable = ({
                                       ) : (
                                         row[otherColumnMap.key as keyof Item]
                                       )}
-                                    </StyledContent>
+                                    </Box>
                                   </Grid>
                                 ))}
                               </Grid>
