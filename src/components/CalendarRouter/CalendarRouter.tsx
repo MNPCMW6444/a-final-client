@@ -23,7 +23,7 @@ function ErrorFallback(
 }
 
 const CalendarRouter = ({ openModal, query }: CalendarRouterProps) => {
-  const data = useDataProcessor();
+  const data = useDataProcessor(true);
   return data ? (
     <Router>
       <ErrorBoundary FallbackComponent={ErrorFallback} onReset={() => {}}>

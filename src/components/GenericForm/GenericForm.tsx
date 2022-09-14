@@ -10,38 +10,34 @@ interface GenericFormProps {
 }
 
 export default function GenericForm({ closeForm, item }: GenericFormProps) {
-  const rawData = useDataProcessor();
-
-  let originalItem = item
-    ? item.type === "Task"
-      ? rawData &&
-        (rawData.tasks.filter((task: Item) => task.id === item.id)[0] as Task)
-      : rawData &&
-        (rawData.events.filter(
-          (event: Item) => event.id === item.id
-        )[0] as Event)
+  const rawData = useDataProcessor(false);
+  let originalItem = rawData
+    ? item
+      ? item.type === "Task"
+        ? (rawData.tasks.filter((task: Item) => task.id === item.id)[0] as Task)
+        : (rawData.events.filter(
+            (event: Item) => event.id === item.id
+          )[0] as Event)
+      : ({} as Item)
     : ({} as Item);
 
-  const [itemState, setItemState] = useState<Item>(
-    originalItem || ({} as Item)
-  );
-
+  const [itemState, setItemState] = useState<Item>(originalItem);
+  debugger;
   return (
     <Grid container direction="column" spacing={2}>
-      {itemState &&
-        Object.keys(itemState).map((field, i) => (
-          <Grid item key={i}>
-            <label>{field + ": "}</label>
-            <input
-              value={itemState[field as keyof Item]}
-              onChange={(e) => {
-                const tempItem = itemState;
-                tempItem[field as keyof Item] = e.target.value;
-                setItemState(Object.assign({}, tempItem));
-              }}
-            />
-          </Grid>
-        ))}
+      {Object.keys(originalItem).map((field, i) => (
+        <Grid item key={i}>
+          <label>{field + ": "}</label>
+          <input
+            value={originalItem[field as keyof Item]}
+            onChange={(e) => {
+              const tempItem = originalItem;
+              tempItem[field as keyof Item] = e.target.value;
+              setItemState(Object.assign({}, tempItem));
+            }}
+          />
+        </Grid>
+      ))}
       <Grid item>
         <Button
           onClick={() => {
