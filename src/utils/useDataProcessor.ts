@@ -9,12 +9,12 @@ const useDataProcessor = () => {
     const fetchData = async () => {
       const res = await axios.get(domain + "alldata");
       setData(res.data);
+      debugger;
     };
     fetchData();
   }, []);
   if (data) {
     const rawData = data;
-
     const colorMap = new Map();
     colorMap.set("Red", "🔴");
     colorMap.set("Orange", "🟠");
