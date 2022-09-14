@@ -96,6 +96,7 @@ const useDataProcessor = () => {
       task.type = "Task";
       return task;
     });
+    debugger;
     return {
       events: parsedEvents,
       tasks: parsedTasks,

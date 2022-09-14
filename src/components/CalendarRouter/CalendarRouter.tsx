@@ -11,6 +11,7 @@ interface CalendarRouterProps {
 
 const CalendarRouter = ({ openModal, query }: CalendarRouterProps) => {
   const data = useDataProcessor();
+  debugger;
   return data ? (
     <Router>
       <Routes>
@@ -55,7 +56,9 @@ const CalendarRouter = ({ openModal, query }: CalendarRouterProps) => {
         />
       </Routes>
     </Router>
-  ) : null;
+  ) : (
+    <p>Loading...</p>
+  );
 };
 
 export default CalendarRouter;
