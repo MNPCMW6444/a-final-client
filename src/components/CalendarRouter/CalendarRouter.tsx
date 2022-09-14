@@ -11,7 +11,6 @@ interface CalendarRouterProps {
 
 const CalendarRouter = ({ openModal, query }: CalendarRouterProps) => {
   const data = useDataProcessor();
-  debugger;
   return data ? (
     <Router>
       <Routes>
