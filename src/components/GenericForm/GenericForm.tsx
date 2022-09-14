@@ -1,8 +1,8 @@
 import Grid from "@mui/material/Grid";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Item, Task, Event } from "../../types/dataTypes";
 import Button from "@mui/material/Button";
-import rawData from "../../assets/mock.json";
+import useDataProcessor from "../../utils/useDataProcessor";
 
 interface GenericFormProps {
   closeForm: () => void;
@@ -10,13 +10,21 @@ interface GenericFormProps {
 }
 
 export default function GenericForm({ closeForm, item }: GenericFormProps) {
+  const rawData = useDataProcessor();
+
   let originalItem = item
     ? item.type === "Task"
-      ? (rawData.tasks.filter((task) => task.id === item.id)[0] as Task)
-      : (rawData.events.filter((event) => event.id === item.id)[0] as Event)
+      ? rawData &&
+        (rawData.tasks.filter((task: Item) => task.id === item.id)[0] as Task)
+      : rawData &&
+        (rawData.events.filter(
+          (event: Item) => event.id === item.id
+        )[0] as Event)
     : ({} as Item);
 
-  const [itemState, setItemState] = useState<Item>(originalItem);
+  const [itemState, setItemState] = useState<Item>(
+    originalItem || ({} as Item)
+  );
 
   return (
     <Grid container direction="column" spacing={2}>
