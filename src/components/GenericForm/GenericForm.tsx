@@ -6,5 +6,5 @@ interface GenericFormProps {
 }
 
 export default function GenericForm({ closeForm, item }: GenericFormProps) {
-  return <div>GenericForm</div>;
+  return <div>{JSON.stringify(item)}</div>;
 }
