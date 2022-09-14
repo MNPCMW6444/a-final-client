@@ -187,7 +187,8 @@ const GenericTable = ({
                                     }}
                                   >
                                     <Box>
-                                      {row[otherColumnMap.key as keyof Item]
+                                      {row[otherColumnMap.key as keyof Item] &&
+                                      row[otherColumnMap.key as keyof Item]
                                         .length > 20 ? (
                                         <span
                                           style={

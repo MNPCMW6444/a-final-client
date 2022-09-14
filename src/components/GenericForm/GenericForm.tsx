@@ -3,11 +3,18 @@ import { useEffect, useState } from "react";
 import { Item, Task, Event } from "../../types/dataTypes";
 import Button from "@mui/material/Button";
 import useDataProcessor from "../../utils/useDataProcessor";
+import axios from "axios";
+import domain from "../../config/domain";
 
 interface GenericFormProps {
   closeForm: () => void;
   item: Item | null;
 }
+
+const fieldNameFormatter = (field: string): string =>
+  field
+    .replace(/([A-Z])/g, " $1")
+    .replace(/^./, (field) => field.toUpperCase()) + ": ";
 
 export default function GenericForm({ closeForm, item }: GenericFormProps) {
   const rawData = useDataProcessor(false);
@@ -22,25 +29,32 @@ export default function GenericForm({ closeForm, item }: GenericFormProps) {
     : ({} as Item);
 
   const [itemState, setItemState] = useState<Item>(originalItem);
-  debugger;
   return (
     <Grid container direction="column" spacing={2}>
-      {Object.keys(originalItem).map((field, i) => (
-        <Grid item key={i}>
-          <label>{field + ": "}</label>
-          <input
-            value={originalItem[field as keyof Item]}
-            onChange={(e) => {
-              const tempItem = originalItem;
-              tempItem[field as keyof Item] = e.target.value;
-              setItemState(Object.assign({}, tempItem));
-            }}
-          />
-        </Grid>
-      ))}
+      {originalItem &&
+        Object.keys(originalItem).map(
+          (field, i) =>
+            field !== "id" &&
+            field !== "_id" && (
+              <Grid item key={i}>
+                <label>{fieldNameFormatter(field)}</label>
+                <input
+                  value={originalItem[field as keyof Item]}
+                  onChange={(e) => {
+                    const tempItem = originalItem;
+                    tempItem[field as keyof Item] = e.target.value;
+                    setItemState(Object.assign({}, tempItem));
+                  }}
+                />
+              </Grid>
+            )
+        )}
       <Grid item>
         <Button
           onClick={() => {
+            axios.put(domain + "edit" + item?.type + "/" + itemState._id, {
+              newItem: itemState,
+            });
             closeForm();
           }}
         >
