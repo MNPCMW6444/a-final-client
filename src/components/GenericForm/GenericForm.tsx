@@ -10,6 +10,7 @@ import Input from "@mui/material/Input";
 import InputLabel from "@mui/material/InputLabel";
 import Select from "@mui/material/Select";
 import MenuItem from "@mui/material/MenuItem";
+import ButtonGroup from "@mui/material/ButtonGroup";
 
 interface GenericFormProps {
   closeForm: () => void;
@@ -28,7 +29,7 @@ export default function GenericForm({
 
   const [type, setType] = useState<string>("Task");
 
-  const fieldsMap = fieldsConfig.get(item ? item.type : type);
+  const fieldsMap = fieldsConfig.get(item.type ? item.type : type);
 
   const [itemState, setItemState] = useState<Item>(
     item.type === "Task"
@@ -41,9 +42,27 @@ export default function GenericForm({
         )[0] as Event)
       : ({} as Event)
   );
-
+  debugger;
   return (
-    <Grid container direction="column" spacing={2}>
+    <Grid container direction="column" spacing={3}>
+      <Grid item alignSelf="center">
+        <ButtonGroup variant="contained">
+          <Button
+            disabled={!!item.type}
+            sx={{ backgroundColor: type === "Task" ? "blue" : "auto" }}
+            onClick={() => setType("Task")}
+          >
+            Task
+          </Button>
+          <Button
+            disabled={!!item.type}
+            sx={{ backgroundColor: type === "Event" ? "blue" : "auto" }}
+            onClick={() => setType("Event")}
+          >
+            Event
+          </Button>
+        </ButtonGroup>
+      </Grid>
       {itemState &&
         Array.from(
           fieldsMap,
