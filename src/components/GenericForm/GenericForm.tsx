@@ -30,7 +30,7 @@ export default function GenericForm({
   const [type, setType] = useState<string>("Task");
 
   const fieldsMap = fieldsConfig.get(item.type ? item.type : type);
-  if (rawData.events.length > 0) debugger;
+
   const [itemState, setItemState] = useState<Item>(
     item.type === "Task"
       ? rawData.tasks.length > 0
@@ -42,6 +42,7 @@ export default function GenericForm({
         )[0] as Event)
       : ({} as Event)
   );
+
   return (
     <Grid container direction="column" spacing={3}>
       <Grid item alignSelf="center">
@@ -147,12 +148,13 @@ export default function GenericForm({
       <Grid item>
         <Button
           onClick={async () => {
-            await axios.put(
-              domain + "edit" + item?.type + "/" + itemState._id,
-              {
-                newItem: itemState,
-              }
-            );
+            item.type
+              ? await axios.put(domain + "edit" + type + "/" + itemState._id, {
+                  newItem: itemState,
+                })
+              : await axios.post(domain + "create" + type, {
+                  newItem: itemState,
+                });
             closeForm();
             refresh();
           }}
