@@ -22,7 +22,7 @@ export default function GenericForm({
   item,
   refresh,
 }: GenericFormProps) {
-  const [type, setType] = useState<string>("Task");
+  const [type, setType] = useState<string>(item.type ? item.type : "Task");
 
   const fieldsMap = fieldsConfig.get(item.type ? item.type : type);
 
