@@ -12,11 +12,7 @@ interface CalendarRouterProps {
   refresh: () => void;
 }
 
-function ErrorFallback(
-  {
-    /* error, resetErrorBoundary  */
-  }
-) {
+function ErrorFallback() {
   return (
     <div role="alert">
       <p style={{ color: "red" }}>There is an error in this component</p>

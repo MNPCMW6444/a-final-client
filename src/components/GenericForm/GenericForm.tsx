@@ -26,6 +26,8 @@ export default function GenericForm({
 
   const fieldsMap = fieldsConfig.get(item.type ? item.type : type);
 
+  const [errorMessage, setErrorMessage] = useState<string>();
+
   const [itemState, setItemState] = useState<Item>(item);
 
   return (
@@ -74,7 +76,7 @@ export default function GenericForm({
               <Grid item sx={{ width: "35%" }}>
                 <InputLabel>{label + ": "}</InputLabel>
               </Grid>
-              <Grid item sx={{ width: "35%" }}>
+              <Grid item sx={{ width: "60%" }}>
                 {placeHolder ? (
                   <OutlinedInput
                     value={itemState[key as keyof Item]}
@@ -133,19 +135,34 @@ export default function GenericForm({
         <Button
           variant="outlined"
           onClick={async () => {
-            item.type
-              ? await Axios.put(domain + "edit" + type + "/" + itemState._id, {
-                  newItem: itemState,
-                })
-              : await Axios.post(domain + "create" + type, {
+            if (item.type)
+              try {
+                await Axios.put(domain + "edit" + type + "/" + itemState._id, {
                   newItem: itemState,
                 });
-            closeForm();
-            refresh();
+                closeForm();
+                refresh();
+              } catch (err: any) {
+                setErrorMessage(err.response.data.erroMsg);
+              }
+            else
+              try {
+                await Axios.post(domain + "create" + type, {
+                  newItem: itemState,
+                });
+                closeForm();
+                refresh();
+              } catch (err: any) {
+                setErrorMessage(err.response.data.erroMsg);
+              }
           }}
         >
           Save
         </Button>
+      </Grid>
+
+      <Grid item>
+        <span style={{ color: "red" }}>{errorMessage}</span>
       </Grid>
     </Grid>
   );
