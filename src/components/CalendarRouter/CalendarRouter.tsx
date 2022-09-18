@@ -28,7 +28,7 @@ const CalendarRouter = ({
   query,
   refresher,
 }: CalendarRouterProps) => {
-  const data = useDataProcessor(true, refresher);
+  const data = useDataProcessor(refresher);
   return data ? (
     <Router>
       <ErrorBoundary FallbackComponent={ErrorFallback} onReset={() => {}}>

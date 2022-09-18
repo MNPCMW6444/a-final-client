@@ -1,8 +1,7 @@
 import Grid from "@mui/material/Grid";
 import { useState } from "react";
-import { Item, Task, Event } from "../../types/dataTypes";
+import { Item } from "../../types/dataTypes";
 import Button from "@mui/material/Button";
-import useDataProcessor from "../../utils/useDataProcessor";
 import axios from "axios";
 import domain from "../../config/domain";
 import fieldsConfig from "../../config/fields";
@@ -16,32 +15,18 @@ interface GenericFormProps {
   closeForm: () => void;
   item: Item;
   refresh: () => void;
-  refresher: number;
 }
 
 export default function GenericForm({
   closeForm,
   item,
   refresh,
-  refresher,
 }: GenericFormProps) {
-  const rawData = useDataProcessor(false, refresher);
-
   const [type, setType] = useState<string>("Task");
 
   const fieldsMap = fieldsConfig.get(item.type ? item.type : type);
 
-  const [itemState, setItemState] = useState<Item>(
-    item.type === "Task"
-      ? rawData.tasks.length > 0
-        ? (rawData.tasks.filter((task: Item) => task.id === item.id)[0] as Task)
-        : ({} as Task)
-      : rawData.events.length > 0
-      ? (rawData.events.filter(
-          (event: Item) => event.id === item.id
-        )[0] as Event)
-      : ({} as Event)
-  );
+  const [itemState, setItemState] = useState<Item>(item);
 
   return (
     <Grid container direction="column" spacing={3}>
@@ -110,22 +95,21 @@ export default function GenericForm({
                     value={itemState[key as keyof Item]}
                     onChange={(e) => {
                       const tempItem = itemState;
-                      tempItem[key as keyof Item] = e.target.value;
+                      tempItem[key as keyof Item] = e.target.value as string;
                       setItemState(Object.assign({}, tempItem));
                     }}
                   >
-                    {Array.from(dropDownOptions, ([value, key]) => ({
-                      key,
-                      value,
-                    })).map((option) => (
-                      <MenuItem value={option.value}>{option.key}</MenuItem>
+                    {dropDownOptions.map((option: string) => (
+                      <MenuItem value={option}>{option}</MenuItem>
                     ))}
                   </Select>
                 ) : datePicker ? (
                   <Input
                     value={
                       itemState[key as keyof Item] &&
-                      itemState[key as keyof Item].substring(0, 10)
+                      new Date(itemState[key as keyof Item])
+                        .toISOString()
+                        .substring(0, 10)
                     }
                     type="date"
                     onChange={(

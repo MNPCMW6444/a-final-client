@@ -54,7 +54,6 @@ function App() {
                 closeForm={closeModal}
                 item={editedItem}
                 refresh={refresh}
-                refresher={refresher}
               />
             )}
           </Box>
