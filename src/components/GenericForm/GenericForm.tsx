@@ -5,7 +5,7 @@ import Button from "@mui/material/Button";
 import Axios from "axios";
 import domain from "../../config/domain";
 import fieldsConfig from "../../config/fields";
-import Input from "@mui/material/Input";
+import OutlinedInput from "@mui/material/OutlinedInput";
 import InputLabel from "@mui/material/InputLabel";
 import Select from "@mui/material/Select";
 import MenuItem from "@mui/material/MenuItem";
@@ -70,14 +70,13 @@ export default function GenericForm({
               direction="row"
               justifyContent="flex-start"
               alignItems="center"
-              spacing={6}
             >
-              <Grid item>
+              <Grid item sx={{ width: "35%" }}>
                 <InputLabel>{label + ": "}</InputLabel>
               </Grid>
               <Grid item>
                 {placeHolder ? (
-                  <Input
+                  <OutlinedInput
                     value={itemState[key as keyof Item]}
                     onChange={(
                       e: React.ChangeEvent<
@@ -104,7 +103,7 @@ export default function GenericForm({
                     ))}
                   </Select>
                 ) : datePicker ? (
-                  <Input
+                  <OutlinedInput
                     value={
                       itemState[key as keyof Item] &&
                       new Date(itemState[key as keyof Item])
@@ -129,8 +128,10 @@ export default function GenericForm({
             </Grid>
           )
         )}
-      <Grid item>
+
+      <Grid item alignSelf="center">
         <Button
+          variant="outlined"
           onClick={async () => {
             item.type
               ? await Axios.put(domain + "edit" + type + "/" + itemState._id, {
