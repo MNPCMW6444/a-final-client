@@ -1,3 +1,15 @@
+import colorMap from "../utils/colorMap";
+
+const priorityMap = new Map();
+priorityMap.set("Low", "Low");
+priorityMap.set("Medium", "Medium");
+priorityMap.set("High", "High");
+
+const statusMap = new Map();
+statusMap.set("Open", "Open");
+statusMap.set("In Progress", "In Progress");
+statusMap.set("Close", "Close");
+
 const fieldMap = new Map();
 const tasksMap = new Map();
 tasksMap.set("title", {
@@ -14,11 +26,11 @@ tasksMap.set("estimatedTime", {
 });
 tasksMap.set("status", {
   label: "Status",
-  dropDownOptions: ["In Progress", "Open", "Close"],
+  dropDownOptions: statusMap,
 });
 tasksMap.set("priority", {
   label: "Priority",
-  dropDownOptions: ["Low", "Medium", "High"],
+  dropDownOptions: priorityMap,
 });
 fieldMap.set("Task", tasksMap);
 const eventsMap = new Map();
@@ -40,17 +52,7 @@ eventsMap.set("endingTime", {
 });
 eventsMap.set("color", {
   label: "color",
-  dropDownOptions: [
-    "Red",
-    "Orange",
-    "Yellow",
-    "Green",
-    "Blue",
-    "Purple",
-    "Black",
-    "White",
-    "Brown",
-  ],
+  dropDownOptions: colorMap,
 });
 eventsMap.set("location", {
   label: "Location",

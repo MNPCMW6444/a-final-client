@@ -16,7 +16,7 @@ import Button from "@mui/material/Button";
 
 interface GenericTableProps {
   data: Item[];
-  openModal: (editedItem: any) => boolean;
+  openModal: (editedItem: any) => void;
   columns: Map<string, string>;
   query: string;
 }
@@ -241,7 +241,7 @@ const GenericTable = ({
       </Grid>
       <br />
       <Grid item>
-        <Button variant="contained" onClick={() => openModal({})}>
+        <Button variant="contained" onClick={() => openModal({} as Item)}>
           Create a New Item
         </Button>
       </Grid>

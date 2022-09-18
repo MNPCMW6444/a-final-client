@@ -29,10 +29,9 @@ function App() {
   const [refresher, setRefreher] = useState<number>(0);
   const refresh = () => setRefreher(refresher + 1);
 
-  const openModal = (editedItem: any): boolean => {
+  const openModal = (editedItem: any) => {
     setIsCreateFormOpen(true);
     setEditedItem(editedItem);
-    return true;
   };
 
   const closeModal = () => setIsCreateFormOpen(false);
@@ -49,12 +48,14 @@ function App() {
       >
         <Fade in={isCreateFormOpen}>
           <Box sx={style}>
-            <GenericForm
-              closeForm={closeModal}
-              item={editedItem || null}
-              refresh={refresh}
-              refresher={refresher}
-            />
+            {editedItem && (
+              <GenericForm
+                closeForm={closeModal}
+                item={editedItem}
+                refresh={refresh}
+                refresher={refresher}
+              />
+            )}
           </Box>
         </Fade>
       </Modal>

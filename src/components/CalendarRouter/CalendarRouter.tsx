@@ -6,7 +6,7 @@ import GenericTable from "../GenericTable/GenericTable";
 import { ErrorBoundary } from "react-error-boundary";
 
 interface CalendarRouterProps {
-  openModal: (editedItem: Item) => boolean;
+  openModal: (editedItem: Item) => void;
   query: string;
   refresher: number;
 }

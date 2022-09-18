@@ -40,7 +40,7 @@ const linkSx = {
 interface AppFrameProps {
   setQuery: React.Dispatch<React.SetStateAction<string>>;
   query: string;
-  openModal: (editedItem: Item) => boolean;
+  openModal: (editedItem: Item) => void;
   refresher: number;
 }
 export default function AppFrame({

@@ -2,9 +2,10 @@ import { useEffect, useState } from "react";
 import { Task, Event } from "../types/dataTypes";
 import domain from "../config/domain";
 import axios from "axios";
+import colorMap from "./colorMap";
 
 const useDataProcessor = (getProcessed: boolean, refresher: number) => {
-  const [data, setData] = useState();
+  const [data, setData] = useState({ events: [], tasks: [] });
   useEffect(() => {
     const fetchData = async () => {
       const res = await axios.get(domain + "alldata");
@@ -15,16 +16,6 @@ const useDataProcessor = (getProcessed: boolean, refresher: number) => {
   if (getProcessed) {
     if (data) {
       const rawData = data;
-      const colorMap = new Map();
-      colorMap.set("Red", "🔴");
-      colorMap.set("Orange", "🟠");
-      colorMap.set("Yellow", "🟡");
-      colorMap.set("Green", "🟢");
-      colorMap.set("Blue", "🔵");
-      colorMap.set("Purple", "🟣");
-      colorMap.set("Black", "⚫️");
-      colorMap.set("White", "⚪️");
-      colorMap.set("Brown", "🟤");
 
       const dbData = structuredClone(rawData);
 
@@ -100,7 +91,7 @@ const useDataProcessor = (getProcessed: boolean, refresher: number) => {
         events: parsedEvents,
         tasks: parsedTasks,
       };
-    } else return undefined;
+    } else return data;
   } else return data;
 };
 
