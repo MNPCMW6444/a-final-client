@@ -14,11 +14,11 @@ tasksMap.set("estimatedTime", {
 });
 tasksMap.set("status", {
   label: "Status",
-  dropDownOptions: ["Low", "Medium", "High"],
+  dropDownOptions: ["Close", "In Progress", "Open"],
 });
 tasksMap.set("priority", {
   label: "Priority",
-  dropDownOptions: ["Close", "In Progress", "Open"],
+  dropDownOptions: ["Low", "Medium", "High"],
 });
 fieldMap.set("Task", tasksMap);
 const eventsMap = new Map();
