@@ -9,6 +9,8 @@ import domain from "../../config/domain";
 interface GenericFormProps {
   closeForm: () => void;
   item: Item | null;
+  refresh: () => void;
+  refresher: number;
 }
 
 const fieldNameFormatter = (field: string): string =>
@@ -16,8 +18,13 @@ const fieldNameFormatter = (field: string): string =>
     .replace(/([A-Z])/g, " $1")
     .replace(/^./, (field) => field.toUpperCase()) + ": ";
 
-export default function GenericForm({ closeForm, item }: GenericFormProps) {
-  const rawData = useDataProcessor(false);
+export default function GenericForm({
+  closeForm,
+  item,
+  refresh,
+  refresher,
+}: GenericFormProps) {
+  const rawData = useDataProcessor(false, refresher);
   let originalItem = rawData
     ? item
       ? item.type === "Task"
@@ -51,11 +58,15 @@ export default function GenericForm({ closeForm, item }: GenericFormProps) {
         )}
       <Grid item>
         <Button
-          onClick={() => {
-            axios.put(domain + "edit" + item?.type + "/" + itemState._id, {
-              newItem: itemState,
-            });
+          onClick={async () => {
+            await axios.put(
+              domain + "edit" + item?.type + "/" + itemState._id,
+              {
+                newItem: itemState,
+              }
+            );
             closeForm();
+            refresh();
           }}
         >
           Save

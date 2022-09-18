@@ -26,6 +26,9 @@ function App() {
   const [editedItem, setEditedItem] = useState<Item>();
   const [isCreateFormOpen, setIsCreateFormOpen] = useState<boolean>(false);
 
+  const [refresher, setRefreher] = useState<number>(0);
+  const refresh = () => setRefreher(refresher + 1);
+
   const openModal = (editedItem: any): boolean => {
     setIsCreateFormOpen(true);
     setEditedItem(editedItem);
@@ -46,13 +49,23 @@ function App() {
       >
         <Fade in={isCreateFormOpen}>
           <Box sx={style}>
-            <GenericForm closeForm={closeModal} item={editedItem || null} />
+            <GenericForm
+              closeForm={closeModal}
+              item={editedItem || null}
+              refresh={refresh}
+              refresher={refresher}
+            />
           </Box>
         </Fade>
       </Modal>
 
       <ReactNotifications />
-      <AppFrame query={query} setQuery={setQuery} openModal={openModal} />
+      <AppFrame
+        query={query}
+        setQuery={setQuery}
+        openModal={openModal}
+        refresher={refresher}
+      />
     </ThemeProvider>
   );
 }

@@ -41,11 +41,13 @@ interface AppFrameProps {
   setQuery: React.Dispatch<React.SetStateAction<string>>;
   query: string;
   openModal: (editedItem: Item) => boolean;
+  refresher: number;
 }
 export default function AppFrame({
   query,
   setQuery,
   openModal,
+  refresher,
 }: AppFrameProps) {
   const [mobileOpen, setMobileOpen] = useState(false);
 
@@ -197,7 +199,11 @@ export default function AppFrame({
         }}
       >
         <Toolbar />
-        <CalendarRouter openModal={openModal} query={query} />
+        <CalendarRouter
+          openModal={openModal}
+          query={query}
+          refresher={refresher}
+        />
       </Box>
     </Box>
   );

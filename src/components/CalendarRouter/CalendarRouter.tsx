@@ -8,6 +8,7 @@ import { ErrorBoundary } from "react-error-boundary";
 interface CalendarRouterProps {
   openModal: (editedItem: Item) => boolean;
   query: string;
+  refresher: number;
 }
 
 function ErrorFallback(
@@ -22,8 +23,12 @@ function ErrorFallback(
   );
 }
 
-const CalendarRouter = ({ openModal, query }: CalendarRouterProps) => {
-  const data = useDataProcessor(true);
+const CalendarRouter = ({
+  openModal,
+  query,
+  refresher,
+}: CalendarRouterProps) => {
+  const data = useDataProcessor(true, refresher);
   return data ? (
     <Router>
       <ErrorBoundary FallbackComponent={ErrorFallback} onReset={() => {}}>

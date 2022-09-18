@@ -3,7 +3,7 @@ import { Task, Event } from "../types/dataTypes";
 import domain from "../config/domain";
 import axios from "axios";
 
-const useDataProcessor = (getProcessed: boolean) => {
+const useDataProcessor = (getProcessed: boolean, refresher: number) => {
   const [data, setData] = useState();
   useEffect(() => {
     const fetchData = async () => {
@@ -11,7 +11,7 @@ const useDataProcessor = (getProcessed: boolean) => {
       setData(res.data);
     };
     fetchData();
-  }, []);
+  }, [refresher]);
   if (getProcessed) {
     if (data) {
       const rawData = data;
