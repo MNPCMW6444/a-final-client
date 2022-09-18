@@ -74,7 +74,7 @@ export default function GenericForm({
               <Grid item sx={{ width: "35%" }}>
                 <InputLabel>{label + ": "}</InputLabel>
               </Grid>
-              <Grid item>
+              <Grid item sx={{ width: "35%" }}>
                 {placeHolder ? (
                   <OutlinedInput
                     value={itemState[key as keyof Item]}
