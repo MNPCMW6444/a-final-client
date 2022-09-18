@@ -30,7 +30,7 @@ export default function GenericForm({
   const [type, setType] = useState<string>("Task");
 
   const fieldsMap = fieldsConfig.get(item.type ? item.type : type);
-
+  if (rawData.events.length > 0) debugger;
   const [itemState, setItemState] = useState<Item>(
     item.type === "Task"
       ? rawData.tasks.length > 0
@@ -42,7 +42,6 @@ export default function GenericForm({
         )[0] as Event)
       : ({} as Event)
   );
-  debugger;
   return (
     <Grid container direction="column" spacing={3}>
       <Grid item alignSelf="center">
