@@ -1,10 +1,11 @@
 import Grid from "@mui/material/Grid";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { Item, Task, Event } from "../../types/dataTypes";
 import Button from "@mui/material/Button";
 import useDataProcessor from "../../utils/useDataProcessor";
 import axios from "axios";
 import domain from "../../config/domain";
+import fieldsConfig from "../../config/fields";
 
 interface GenericFormProps {
   closeForm: () => void;
@@ -12,11 +13,6 @@ interface GenericFormProps {
   refresh: () => void;
   refresher: number;
 }
-
-const fieldNameFormatter = (field: string): string =>
-  field
-    .replace(/([A-Z])/g, " $1")
-    .replace(/^./, (field) => field.toUpperCase()) + ": ";
 
 export default function GenericForm({
   closeForm,
@@ -35,26 +31,49 @@ export default function GenericForm({
       : ({} as Item)
     : ({} as Item);
 
+  const fieldsMap = fieldsConfig.get(item?.type);
+
   const [itemState, setItemState] = useState<Item>(originalItem);
   return (
     <Grid container direction="column" spacing={2}>
       {originalItem &&
-        Object.keys(originalItem).map(
-          (field, i) =>
-            field !== "id" &&
-            field !== "_id" && (
-              <Grid item key={i}>
-                <label>{fieldNameFormatter(field)}</label>
+        Array.from(
+          fieldsMap,
+          ([key, { label, placeHolder, dropDownOptions, datePicker }]) => ({
+            key,
+            label,
+            placeHolder,
+            dropDownOptions,
+            datePicker,
+          })
+        ).map(
+          (
+            { key, label, placeHolder, dropDownOptions, datePicker },
+            i: number
+          ) => (
+            <Grid item key={i}>
+              <label>{label}</label>
+              {placeHolder ? (
                 <input
-                  value={originalItem[field as keyof Item]}
+                  value={originalItem[key as keyof Item]}
                   onChange={(e) => {
                     const tempItem = originalItem;
-                    tempItem[field as keyof Item] = e.target.value;
+                    tempItem[key as keyof Item] = e.target.value;
                     setItemState(Object.assign({}, tempItem));
                   }}
                 />
-              </Grid>
-            )
+              ) : (
+                <input
+                  value={originalItem[key as keyof Item]}
+                  onChange={(e) => {
+                    const tempItem = originalItem;
+                    tempItem[key as keyof Item] = e.target.value;
+                    setItemState(Object.assign({}, tempItem));
+                  }}
+                />
+              )}
+            </Grid>
+          )
         )}
       <Grid item>
         <Button
