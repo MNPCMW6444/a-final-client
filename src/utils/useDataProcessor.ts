@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { Task, Event } from "../types/dataTypes";
 import domain from "../config/domain";
-import axios from "axios";
+import Axios from "axios";
 
 const colorMap = new Map();
 colorMap.set("Red", "🔴");
@@ -18,7 +18,7 @@ const useDataProcessor = (refresher: number) => {
   const [data, setData] = useState({ events: [], tasks: [] });
   useEffect(() => {
     const fetchData = async () => {
-      const res = await axios.get(domain + "alldata");
+      const res = await Axios.get(domain + "alldata");
       setData(res.data);
     };
     fetchData();

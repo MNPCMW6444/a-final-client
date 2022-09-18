@@ -42,12 +42,14 @@ interface AppFrameProps {
   query: string;
   openModal: (editedItem: Item) => void;
   refresher: number;
+  refresh: () => void;
 }
 export default function AppFrame({
   query,
   setQuery,
   openModal,
   refresher,
+  refresh,
 }: AppFrameProps) {
   const [mobileOpen, setMobileOpen] = useState(false);
 
@@ -203,6 +205,7 @@ export default function AppFrame({
           openModal={openModal}
           query={query}
           refresher={refresher}
+          refresh={refresh}
         />
       </Box>
     </Box>

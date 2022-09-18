@@ -2,7 +2,7 @@ import Grid from "@mui/material/Grid";
 import { useState } from "react";
 import { Item } from "../../types/dataTypes";
 import Button from "@mui/material/Button";
-import axios from "axios";
+import Axios from "axios";
 import domain from "../../config/domain";
 import fieldsConfig from "../../config/fields";
 import Input from "@mui/material/Input";
@@ -133,10 +133,10 @@ export default function GenericForm({
         <Button
           onClick={async () => {
             item.type
-              ? await axios.put(domain + "edit" + type + "/" + itemState._id, {
+              ? await Axios.put(domain + "edit" + type + "/" + itemState._id, {
                   newItem: itemState,
                 })
-              : await axios.post(domain + "create" + type, {
+              : await Axios.post(domain + "create" + type, {
                   newItem: itemState,
                 });
             closeForm();

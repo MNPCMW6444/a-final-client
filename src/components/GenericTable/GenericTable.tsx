@@ -13,12 +13,15 @@ import { Item } from "../../types/dataTypes";
 import Grid from "@mui/material/Grid";
 import Table from "@mui/material/Table";
 import Button from "@mui/material/Button";
+import Axios from "axios";
+import domain from "../../config/domain";
 
 interface GenericTableProps {
   data: Item[];
   openModal: (editedItem: any) => void;
   columns: Map<string, string>;
   query: string;
+  refresh: () => void;
 }
 
 const outerGridSx = {
@@ -73,6 +76,7 @@ const GenericTable = ({
   openModal,
   columns,
   query,
+  refresh,
 }: GenericTableProps) => {
   const filteredData: false | Item[] =
     data &&
@@ -81,7 +85,10 @@ const GenericTable = ({
 
   const [hoveringLongText, setHoveringLongText] = useState<boolean>(false);
 
-  const deleteItem = (item: Item) => {};
+  const deleteItem = async (item: Item) => {
+    await Axios.delete(domain + "delete" + item.type + "/" + item._id);
+    refresh();
+  };
 
   return (
     <Grid

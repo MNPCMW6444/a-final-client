@@ -9,6 +9,7 @@ interface CalendarRouterProps {
   openModal: (editedItem: Item) => void;
   query: string;
   refresher: number;
+  refresh: () => void;
 }
 
 function ErrorFallback(
@@ -27,6 +28,7 @@ const CalendarRouter = ({
   openModal,
   query,
   refresher,
+  refresh,
 }: CalendarRouterProps) => {
   const data = useDataProcessor(refresher);
   return data ? (
@@ -37,6 +39,7 @@ const CalendarRouter = ({
             path="/"
             element={
               <GenericTable
+                refresh={refresh}
                 query={query}
                 openModal={openModal}
                 data={[...data.events, ...data.tasks].filter((item: Item) =>
@@ -54,6 +57,7 @@ const CalendarRouter = ({
             path="/tasks"
             element={
               <GenericTable
+                refresh={refresh}
                 query={query}
                 openModal={openModal}
                 data={data.tasks}
@@ -65,6 +69,7 @@ const CalendarRouter = ({
             path="/events"
             element={
               <GenericTable
+                refresh={refresh}
                 query={query}
                 openModal={openModal}
                 data={data.events}

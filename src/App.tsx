@@ -66,6 +66,7 @@ function App() {
         setQuery={setQuery}
         openModal={openModal}
         refresher={refresher}
+        refresh={refresh}
       />
     </ThemeProvider>
   );
