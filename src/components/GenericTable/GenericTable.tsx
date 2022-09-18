@@ -81,7 +81,11 @@ const GenericTable = ({
   const filteredData: false | Item[] =
     data &&
     data.length > 0 &&
-    data.filter((item: any) => item.title.includes(query) || !query);
+    data.filter(
+      (item: any) =>
+        item.title.toLocaleLowerCase().includes(query.toLocaleLowerCase()) ||
+        !query
+    );
 
   const [hoveringLongText, setHoveringLongText] = useState<boolean>(false);
 
