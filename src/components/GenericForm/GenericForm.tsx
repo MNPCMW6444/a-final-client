@@ -22,11 +22,9 @@ export default function GenericForm({
   item,
   refresh,
 }: GenericFormProps) {
-  const [type, setType] = useState<string>(item.type ? item.type : "Task");
+  const [type, setType] = useState<string>(item.type || "Task");
 
-  const fieldsMap = fieldsConfig.get(item.type ? item.type : type);
-
-  const [errorMessage, setErrorMessage] = useState<string>();
+  const [errorMessage, setErrorMessage] = useState<string>("");
 
   const [itemState, setItemState] = useState<Item>(item);
 
@@ -52,7 +50,7 @@ export default function GenericForm({
       </Grid>
       {itemState &&
         Array.from(
-          fieldsMap,
+          fieldsConfig.get(type),
           ([key, { label, placeHolder, dropDownOptions, datePicker }]) => ({
             key,
             label,
