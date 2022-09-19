@@ -9,6 +9,7 @@ import drawerWidthSettings from "../../config/drawerWidthSettings";
 import Toolbar from "@mui/material/Toolbar";
 import SideBar from "../SideBar/SideBar";
 import { Typography } from "@mui/material";
+import { ItemTypes, PageTypes } from "../../utils/enums";
 
 interface CalendarRouterProps {
   openModal: (editedItem: Item) => void;
@@ -20,9 +21,11 @@ interface CalendarRouterProps {
 
 function ErrorFallback() {
   return (
-    <div role="alert">
-      <p style={{ color: "red" }}>There is an error in this component</p>
-    </div>
+    <Box>
+      <Typography sx={{ color: "red" }}>
+        There is an error in this component
+      </Typography>
+    </Box>
   );
 }
 
@@ -51,37 +54,37 @@ const CalendarRouter = ({
                       openModal={openModal}
                       data={[...data.events, ...data.tasks].filter(
                         (item: Item) =>
-                          item.type === "Task"
+                          item.type === ItemTypes.task
                             ? (item as Task).untilDate.substring(0, 9) ===
                               new Date().toLocaleString().substring(0, 9)
                             : (item as Event).beginningTime.substring(0, 9) ===
                               new Date().toLocaleString().substring(0, 9)
                       )}
-                      columns={columnsConfig.get("today")}
+                      columns={columnsConfig.get(PageTypes.today)}
                     />
                   }
                 />
                 <Route
-                  path="tasks"
+                  path={PageTypes.tasks}
                   element={
                     <GenericTable
                       refresh={refresh}
                       query={query}
                       openModal={openModal}
                       data={data.tasks}
-                      columns={columnsConfig.get("tasks")}
+                      columns={columnsConfig.get(PageTypes.tasks)}
                     />
                   }
                 />
                 <Route
-                  path="events"
+                  path={PageTypes.events}
                   element={
                     <GenericTable
                       refresh={refresh}
                       query={query}
                       openModal={openModal}
                       data={data.events}
-                      columns={columnsConfig.get("events")}
+                      columns={columnsConfig.get(PageTypes.events)}
                     />
                   }
                 />
