@@ -48,7 +48,7 @@ export default function SideBar() {
         direction="column"
         justifyContent="flex-start"
         alignItems="center"
-        height="45%"
+        height="50%"
         wrap="nowrap"
         paddingTop="10%"
       >
