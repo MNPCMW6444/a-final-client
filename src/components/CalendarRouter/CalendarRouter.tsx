@@ -36,6 +36,7 @@ const CalendarRouter = ({
       <Box
         component="main"
         sx={{
+          ml: { sm: `${drawerWidthSettings.width}px` },
           flexGrow: 1,
           padding: "5%",
           width: drawerWidthSettings.autoWidth,

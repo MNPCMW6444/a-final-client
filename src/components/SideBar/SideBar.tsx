@@ -42,10 +42,11 @@ export default function SideBar() {
       <Grid
         container
         direction="column"
-        justifyContent="center"
+        justifyContent="flex-start"
         alignItems="center"
-        height="70%"
+        height="45%"
         wrap="nowrap"
+        paddingTop="10%"
       >
         <Clock size="h6" />
         <Grid item>

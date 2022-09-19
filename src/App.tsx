@@ -67,16 +67,14 @@ function App() {
         </Fade>
       </Modal>
       <ReactNotifications />
-      <Box sx={{ display: "flex" }}>
-        <CssBaseline />
-        <TopBar query={query} setQuery={setQuery} />
-        <CalendarRouter
-          openModal={openModal}
-          query={query}
-          refresher={refresher}
-          refresh={refresh}
-        />
-      </Box>
+      <CssBaseline />
+      <TopBar query={query} setQuery={setQuery} />
+      <CalendarRouter
+        openModal={openModal}
+        query={query}
+        refresher={refresher}
+        refresh={refresh}
+      />
     </ThemeProvider>
   );
 }
