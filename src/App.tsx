@@ -1,11 +1,18 @@
 import { ReactNotifications } from "react-notifications-component";
 import "react-notifications-component/dist/theme.css";
-import { Box, createTheme, Fade, ThemeProvider } from "@mui/material";
+import {
+  Box,
+  createTheme,
+  CssBaseline,
+  Fade,
+  ThemeProvider,
+} from "@mui/material";
 import { useState } from "react";
-import AppFrame from "./components/AppFrame/AppFrame";
 import Modal from "@mui/material/Modal";
 import { Item } from "./types/dataTypes";
 import GenericForm from "./components/GenericForm/GenericForm";
+import TopBar from "./components/TopBar/TopBar";
+import CalendarRouter from "./components/CalendarRouter/CalendarRouter";
 
 const style = {
   position: "absolute" as "absolute",
@@ -59,15 +66,17 @@ function App() {
           </Box>
         </Fade>
       </Modal>
-
       <ReactNotifications />
-      <AppFrame
-        query={query}
-        setQuery={setQuery}
-        openModal={openModal}
-        refresher={refresher}
-        refresh={refresh}
-      />
+      <Box sx={{ display: "flex" }}>
+        <CssBaseline />
+        <TopBar query={query} setQuery={setQuery} />
+        <CalendarRouter
+          openModal={openModal}
+          query={query}
+          refresher={refresher}
+          refresh={refresh}
+        />
+      </Box>
     </ThemeProvider>
   );
 }
