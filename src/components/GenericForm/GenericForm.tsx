@@ -24,7 +24,9 @@ export default function GenericForm({
   item,
   refresh,
 }: GenericFormProps) {
-  const [type, setType] = useState<string>(item.type || "Task");
+  const [type, setType] = useState<string>(
+    item.type || Object.values(ItemTypes)[0]
+  );
 
   const [errorMessage, setErrorMessage] = useState<string>("");
 
