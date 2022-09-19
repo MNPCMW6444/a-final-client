@@ -39,6 +39,8 @@ function App() {
   const [refresher, setRefreher] = useState<number>(0);
   const refresh = () => setRefreher(refresher + 1);
 
+  const [mobileOpen, setMobileOpen] = useState(false);
+
   const openModal = (editedItem: any) => {
     setIsCreateFormOpen(true);
     setEditedItem(editedItem);
@@ -70,12 +72,18 @@ function App() {
       </Modal>
       <ReactNotifications />
       <CssBaseline />
-      <TopBar query={query} setQuery={setQuery} />
+      <TopBar
+        query={query}
+        setQuery={setQuery}
+        mobileOpen={mobileOpen}
+        setMobileOpen={setMobileOpen}
+      />
       <CalendarRouter
         openModal={openModal}
         query={query}
         refresher={refresher}
         refresh={refresh}
+        mobileOpen={mobileOpen}
       />
     </ThemeProvider>
   );

@@ -20,9 +20,9 @@ export default function SelectInput({
       sx={{ width: "70%", marginLeft: "12%" }}
       value={itemState[dataKey as keyof Item]}
       onChange={(e) => {
-        const tempItem = itemState;
+        const tempItem = { ...itemState };
         tempItem[dataKey as keyof Item] = e.target.value as string;
-        setItemState(Object.assign({}, tempItem));
+        setItemState(tempItem);
       }}
     >
       {dropDownOptions.map((option: string) => (

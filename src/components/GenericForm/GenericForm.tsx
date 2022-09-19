@@ -25,9 +25,7 @@ export default function GenericForm({
   item,
   refresh,
 }: GenericFormProps) {
-  const [type, setType] = useState<string>(
-    item.type || Object.values(ItemTypes)[0]
-  );
+  const [type, setType] = useState<string>(item.type || ItemTypes.task);
 
   const [errorMessage, setErrorMessage] = useState<string>("");
 
@@ -47,7 +45,7 @@ export default function GenericForm({
             {Object.values(ItemTypes).map((type) => (
               <Grid item>
                 <Button
-                  disabled={type !== item.type}
+                  disabled={!!item.type}
                   sx={buttonSx(type)}
                   onClick={() => setType(type)}
                 >

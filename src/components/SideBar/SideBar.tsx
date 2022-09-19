@@ -19,7 +19,7 @@ const boxSx = {
   maxWidth: { xs: "250px" },
 };
 
-export default function SideBar() {
+export default function SideBar({ mobileOpen }: { mobileOpen: boolean }) {
   const navigateTo = useNavigate();
 
   const [selected, setSelected] = useState("today");

@@ -15,6 +15,7 @@ interface CalendarRouterProps {
   query: string;
   refresher: number;
   refresh: () => void;
+  mobileOpen: boolean;
 }
 
 function ErrorFallback() {
@@ -30,6 +31,7 @@ const CalendarRouter = ({
   query,
   refresher,
   refresh,
+  mobileOpen,
 }: CalendarRouterProps) => {
   const data = useDataProcessor(refresher);
   return (
@@ -96,7 +98,7 @@ const CalendarRouter = ({
             flexShrink: { sm: 0 },
           }}
         >
-          <SideBar />
+          <SideBar mobileOpen={mobileOpen} />
         </Box>
       </Router>
     </>

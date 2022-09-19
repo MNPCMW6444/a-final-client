@@ -11,15 +11,16 @@ import Typography from "@mui/material/Typography";
 interface TopBarProps {
   query: string;
   setQuery: React.Dispatch<React.SetStateAction<string>>;
+  mobileOpen: boolean;
+  setMobileOpen: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
-export default function TopBar({ setQuery, query }: TopBarProps) {
-  const [mobileOpen, setMobileOpen] = useState(false);
-
-  const handleDrawerToggle = () => {
-    setMobileOpen(!mobileOpen);
-  };
-
+export default function TopBar({
+  setQuery,
+  query,
+  mobileOpen,
+  setMobileOpen,
+}: TopBarProps) {
   return (
     <AppBar
       position="fixed"
@@ -42,7 +43,7 @@ export default function TopBar({ setQuery, query }: TopBarProps) {
               color="inherit"
               aria-label="open drawer"
               edge="start"
-              onClick={handleDrawerToggle}
+              onClick={() => setMobileOpen(!mobileOpen)}
               sx={{ mr: 2, display: { sm: "none" } }}
             >
               <MenuIcon />

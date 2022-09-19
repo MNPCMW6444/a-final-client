@@ -21,9 +21,9 @@ export default function TextInput({
       onChange={(
         e: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>
       ) => {
-        const tempItem = itemState;
+        const tempItem = { ...itemState };
         tempItem[dataKey as keyof Item] = e.target.value;
-        setItemState(Object.assign({}, tempItem));
+        setItemState(tempItem);
       }}
       placeholder={placeHolder}
     />
