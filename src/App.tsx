@@ -13,6 +13,7 @@ import { Item } from "./types/dataTypes";
 import GenericForm from "./components/GenericForm/GenericForm";
 import TopBar from "./components/TopBar/TopBar";
 import CalendarRouter from "./components/CalendarRouter/CalendarRouter";
+import blue from "@mui/material/colors/blue";
 
 const style = {
   position: "absolute" as "absolute",
@@ -20,12 +21,13 @@ const style = {
   left: "50%",
   transform: "translate(-50%, -50%)",
   width: "80%",
-  height: "85%",
   bgcolor: "background.paper",
-  border: "2px solid #000",
+  border: "0.2rem solid #000",
   boxShadow: 24,
   p: 4,
   overflow: "scroll",
+  backgroundColor: blue[50],
+  borderRadius: "50px",
 };
 
 function App() {

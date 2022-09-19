@@ -36,7 +36,7 @@ export default function GenericForm({
   const buttonSx = (id: string) => ({
     backgroundColor: type === id ? blue[300] : blue[100],
     color: blue[900],
-    width: "30vw",
+    width: 68 / Object.values(ItemTypes).length + "vw",
   });
 
   return (
@@ -47,7 +47,7 @@ export default function GenericForm({
             {Object.values(ItemTypes).map((type) => (
               <Grid item>
                 <Button
-                  disabled={!!item.type}
+                  disabled={type !== item.type}
                   sx={buttonSx(type)}
                   onClick={() => setType(type)}
                 >
@@ -79,8 +79,6 @@ export default function GenericForm({
                   <InputLabel
                     sx={{
                       textAlign: "center",
-                      width: "70%",
-                      marginLeft: "10%",
                     }}
                   >
                     {label + ": "}
