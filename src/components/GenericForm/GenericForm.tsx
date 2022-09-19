@@ -5,13 +5,13 @@ import Button from "@mui/material/Button";
 import Axios from "axios";
 import domain from "../../config/domain";
 import fieldsConfig from "../../config/fields";
-import OutlinedInput from "@mui/material/OutlinedInput";
 import InputLabel from "@mui/material/InputLabel";
-import Select from "@mui/material/Select";
-import MenuItem from "@mui/material/MenuItem";
 import ButtonGroup from "@mui/material/ButtonGroup";
 import blue from "@mui/material/colors/blue";
 import { ItemTypes } from "../../utils/enums";
+import TextInput from "./TextInput";
+import SelectInput from "./SelectInput";
+import DateInput from "./DateInput";
 
 interface GenericFormProps {
   closeForm: () => void;
@@ -85,50 +85,24 @@ export default function GenericForm({
               </Grid>
               <Grid item sx={{ width: "60%" }}>
                 {placeHolder ? (
-                  <OutlinedInput
-                    value={itemState[key as keyof Item]}
-                    onChange={(
-                      e: React.ChangeEvent<
-                        HTMLTextAreaElement | HTMLInputElement
-                      >
-                    ) => {
-                      const tempItem = itemState;
-                      tempItem[key as keyof Item] = e.target.value;
-                      setItemState(Object.assign({}, tempItem));
-                    }}
-                    placeholder={placeHolder}
+                  <TextInput
+                    placeHolder={placeHolder}
+                    dataKey={key}
+                    itemState={itemState}
+                    setItemState={setItemState}
                   />
                 ) : dropDownOptions ? (
-                  <Select
-                    value={itemState[key as keyof Item]}
-                    onChange={(e) => {
-                      const tempItem = itemState;
-                      tempItem[key as keyof Item] = e.target.value as string;
-                      setItemState(Object.assign({}, tempItem));
-                    }}
-                  >
-                    {dropDownOptions.map((option: string) => (
-                      <MenuItem value={option}>{option}</MenuItem>
-                    ))}
-                  </Select>
+                  <SelectInput
+                    dropDownOptions={dropDownOptions}
+                    dataKey={key}
+                    itemState={itemState}
+                    setItemState={setItemState}
+                  />
                 ) : datePicker ? (
-                  <OutlinedInput
-                    value={
-                      itemState[key as keyof Item] &&
-                      new Date(itemState[key as keyof Item])
-                        .toISOString()
-                        .substring(0, 10)
-                    }
-                    type="date"
-                    onChange={(
-                      e: React.ChangeEvent<
-                        HTMLTextAreaElement | HTMLInputElement
-                      >
-                    ) => {
-                      const tempItem = itemState;
-                      tempItem[key as keyof Item] = e.target.value;
-                      setItemState(Object.assign({}, tempItem));
-                    }}
+                  <DateInput
+                    dataKey={key}
+                    itemState={itemState}
+                    setItemState={setItemState}
                   />
                 ) : (
                   <InputLabel>configuration error!</InputLabel>
