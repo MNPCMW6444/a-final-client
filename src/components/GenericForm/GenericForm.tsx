@@ -11,6 +11,7 @@ import Select from "@mui/material/Select";
 import MenuItem from "@mui/material/MenuItem";
 import ButtonGroup from "@mui/material/ButtonGroup";
 import blue from "@mui/material/colors/blue";
+import { ItemTypes } from "../../utils/enums";
 
 interface GenericFormProps {
   closeForm: () => void;
@@ -40,24 +41,17 @@ export default function GenericForm({
       <Grid item alignSelf="center">
         <ButtonGroup variant="contained">
           <Grid container direction="row" alignItems="center" spacing={2}>
-            <Grid item>
-              <Button
-                disabled={!!item.type}
-                sx={buttonSx("Task")}
-                onClick={() => setType("Task")}
-              >
-                Task
-              </Button>
-            </Grid>
-            <Grid item>
-              <Button
-                disabled={!!item.type}
-                sx={buttonSx("Event")}
-                onClick={() => setType("Event")}
-              >
-                Event
-              </Button>
-            </Grid>
+            {Object.values(ItemTypes).map((type) => (
+              <Grid item>
+                <Button
+                  disabled={!!item.type}
+                  sx={buttonSx(type)}
+                  onClick={() => setType(type)}
+                >
+                  {type}
+                </Button>
+              </Grid>
+            ))}
           </Grid>
         </ButtonGroup>
       </Grid>
