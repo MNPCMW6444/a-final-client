@@ -105,7 +105,12 @@ const CalendarRouter = ({
           <p>Loading...</p>
         )}
       </Box>
-      <SideBar />
+      <Box
+        component="nav"
+        sx={{ width: { sm: drawerWidthSettings.width }, flexShrink: { sm: 0 } }}
+      >
+        <SideBar />
+      </Box>
     </>
   );
 };
