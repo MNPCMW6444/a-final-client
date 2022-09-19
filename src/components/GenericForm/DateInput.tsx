@@ -14,6 +14,7 @@ export default function DateInput({
 }: DateInputProps) {
   return (
     <OutlinedInput
+      sx={{ width: "70%", marginLeft: "10%" }}
       value={
         itemState[dataKey as keyof Item] &&
         new Date(itemState[dataKey as keyof Item])

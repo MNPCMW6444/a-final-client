@@ -17,6 +17,7 @@ export default function SelectInput({
 }: SelectInputProps) {
   return (
     <Select
+      sx={{ width: "70%", marginLeft: "10%" }}
       value={itemState[dataKey as keyof Item]}
       onChange={(e) => {
         const tempItem = itemState;

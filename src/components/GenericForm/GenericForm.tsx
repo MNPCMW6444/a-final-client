@@ -12,6 +12,7 @@ import { ItemTypes } from "../../utils/enums";
 import TextInput from "./TextInput";
 import SelectInput from "./SelectInput";
 import DateInput from "./DateInput";
+import { Typography } from "@mui/material";
 
 interface GenericFormProps {
   closeForm: () => void;
@@ -39,8 +40,8 @@ export default function GenericForm({
   });
 
   return (
-    <Grid container direction="column" spacing={3}>
-      <Grid item alignSelf="center">
+    <Grid container direction="column" alignItems="center" spacing={6}>
+      <Grid item>
         <ButtonGroup variant="contained">
           <Grid container direction="row" alignItems="center" spacing={2}>
             {Object.values(ItemTypes).map((type) => (
@@ -57,62 +58,64 @@ export default function GenericForm({
           </Grid>
         </ButtonGroup>
       </Grid>
-      {itemState &&
-        Array.from(
-          fieldsConfig.get(type),
-          ([key, { label, placeHolder, dropDownOptions, datePicker }]) => ({
-            key,
-            label,
-            placeHolder,
-            dropDownOptions,
-            datePicker,
-          })
-        ).map(
-          (
-            { key, label, placeHolder, dropDownOptions, datePicker },
-            i: number
-          ) => (
-            <Grid
-              key={i}
-              item
-              container
-              direction="row"
-              justifyContent="flex-start"
-              alignItems="center"
-            >
-              <Grid item sx={{ width: "35%" }}>
-                <InputLabel>{label + ": "}</InputLabel>
+      <Grid item container spacing={2}>
+        {itemState &&
+          Array.from(
+            fieldsConfig.get(type),
+            ([key, { label, placeHolder, dropDownOptions, datePicker }]) => ({
+              key,
+              label,
+              placeHolder,
+              dropDownOptions,
+              datePicker,
+            })
+          ).map(
+            (
+              { key, label, placeHolder, dropDownOptions, datePicker },
+              i: number
+            ) => (
+              <Grid item key={i} container direction="row" alignItems="center">
+                <Grid item sx={{ width: "50%" }}>
+                  <InputLabel
+                    sx={{
+                      textAlign: "center",
+                      width: "70%",
+                      marginLeft: "10%",
+                    }}
+                  >
+                    {label + ": "}
+                  </InputLabel>
+                </Grid>
+                <Grid item sx={{ width: "50%" }}>
+                  {placeHolder ? (
+                    <TextInput
+                      placeHolder={placeHolder}
+                      dataKey={key}
+                      itemState={itemState}
+                      setItemState={setItemState}
+                    />
+                  ) : dropDownOptions ? (
+                    <SelectInput
+                      dropDownOptions={dropDownOptions}
+                      dataKey={key}
+                      itemState={itemState}
+                      setItemState={setItemState}
+                    />
+                  ) : datePicker ? (
+                    <DateInput
+                      dataKey={key}
+                      itemState={itemState}
+                      setItemState={setItemState}
+                    />
+                  ) : (
+                    <InputLabel>configuration error!</InputLabel>
+                  )}
+                </Grid>
               </Grid>
-              <Grid item sx={{ width: "60%" }}>
-                {placeHolder ? (
-                  <TextInput
-                    placeHolder={placeHolder}
-                    dataKey={key}
-                    itemState={itemState}
-                    setItemState={setItemState}
-                  />
-                ) : dropDownOptions ? (
-                  <SelectInput
-                    dropDownOptions={dropDownOptions}
-                    dataKey={key}
-                    itemState={itemState}
-                    setItemState={setItemState}
-                  />
-                ) : datePicker ? (
-                  <DateInput
-                    dataKey={key}
-                    itemState={itemState}
-                    setItemState={setItemState}
-                  />
-                ) : (
-                  <InputLabel>configuration error!</InputLabel>
-                )}
-              </Grid>
-            </Grid>
-          )
-        )}
-
-      <Grid item alignSelf="center">
+            )
+          )}
+      </Grid>
+      <Grid item>
         <Button
           variant="outlined"
           onClick={async () => {
@@ -141,9 +144,8 @@ export default function GenericForm({
           Save
         </Button>
       </Grid>
-
       <Grid item>
-        <span style={{ color: "red" }}>{errorMessage}</span>
+        <Typography style={{ color: "red" }}>{errorMessage}</Typography>
       </Grid>
     </Grid>
   );

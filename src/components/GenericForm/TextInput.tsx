@@ -16,6 +16,7 @@ export default function TextInput({
 }: TextInputProps) {
   return (
     <OutlinedInput
+      sx={{ width: "70%", marginLeft: "10%" }}
       value={itemState[dataKey as keyof Item]}
       onChange={(
         e: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>

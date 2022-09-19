@@ -106,14 +106,12 @@ const GenericTable = ({
         overflowX: "scroll",
       }}
     >
-      {" "}
       <Grid
         container
         direction="column"
         alignItems="center"
         width="100%"
         sx={outerGridSx}
-        wrap="nowrap"
       >
         <Grid item sx={tableItemSx}>
           <TableContainer>
