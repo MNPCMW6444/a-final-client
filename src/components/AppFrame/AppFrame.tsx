@@ -52,53 +52,6 @@ export default function AppFrame({
     setMobileOpen(!mobileOpen);
   };
 
-  const drawer = (
-    <div>
-      <Grid
-        container
-        direction="column"
-        justifyContent="center"
-        alignItems="center"
-        height="70%"
-        wrap="nowrap"
-      >
-        <Clock size="h6" />
-        <Grid item>
-          <Typography variant="h4" component="h4">
-            Blue Calendar
-          </Typography>
-        </Grid>
-        <Grid item>
-          <Box component="img" sx={boxSx} alt="Blue Torch Logo" src={BT} />
-        </Grid>
-      </Grid>
-      <Divider />
-      <List>
-        <Link href="/" sx={linkSx}>
-          <ListItem key={"Today"} disablePadding>
-            <ListItemButton>
-              <ListItemText primary={"Today"} />
-            </ListItemButton>
-          </ListItem>
-        </Link>
-        <Link href="/events" sx={linkSx}>
-          <ListItem key={"Events"} disablePadding>
-            <ListItemButton>
-              <ListItemText primary={"All Events"} />
-            </ListItemButton>
-          </ListItem>
-        </Link>
-        <Link href="/tasks" sx={linkSx}>
-          <ListItem key={"Tasks"} disablePadding>
-            <ListItemButton>
-              <ListItemText primary={"All Tasks"} />
-            </ListItemButton>
-          </ListItem>
-        </Link>
-      </List>
-    </div>
-  );
-
   return (
     <Box sx={{ display: "flex" }}>
       <CssBaseline />
@@ -108,23 +61,6 @@ export default function AppFrame({
         sx={{ width: { sm: drawerWidthSettings.width }, flexShrink: { sm: 0 } }}
         aria-label="mailbox folders"
       >
-        <Drawer
-          variant="temporary"
-          open={mobileOpen}
-          onClose={handleDrawerToggle}
-          ModalProps={{
-            keepMounted: true,
-          }}
-          sx={{
-            display: { xs: "block", sm: "none" },
-            "& .MuiDrawer-paper": {
-              boxSizing: "border-box",
-              width: drawerWidthSettings.width,
-            },
-          }}
-        >
-          {drawer}
-        </Drawer>
         <Drawer
           variant="permanent"
           sx={{
@@ -136,7 +72,48 @@ export default function AppFrame({
           }}
           open
         >
-          {drawer}
+          <Grid
+            container
+            direction="column"
+            justifyContent="center"
+            alignItems="center"
+            height="70%"
+            wrap="nowrap"
+          >
+            <Clock size="h6" />
+            <Grid item>
+              <Typography variant="h4" component="h4">
+                Blue Calendar
+              </Typography>
+            </Grid>
+            <Grid item>
+              <Box component="img" sx={boxSx} alt="Blue Torch Logo" src={BT} />
+            </Grid>
+          </Grid>
+          <Divider />
+          <List>
+            <Link href="/" sx={linkSx}>
+              <ListItem key={"Today"} disablePadding>
+                <ListItemButton>
+                  <ListItemText primary={"Today"} />
+                </ListItemButton>
+              </ListItem>
+            </Link>
+            <Link href="/events" sx={linkSx}>
+              <ListItem key={"Events"} disablePadding>
+                <ListItemButton>
+                  <ListItemText primary={"All Events"} />
+                </ListItemButton>
+              </ListItem>
+            </Link>
+            <Link href="/tasks" sx={linkSx}>
+              <ListItem key={"Tasks"} disablePadding>
+                <ListItemButton>
+                  <ListItemText primary={"All Tasks"} />
+                </ListItemButton>
+              </ListItem>
+            </Link>
+          </List>
         </Drawer>
       </Box>
       <Box
