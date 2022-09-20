@@ -19,7 +19,7 @@ const boxSx = {
   maxWidth: { xs: "250px" },
 };
 
-export default function SideBar({ mobileOpen }: { mobileOpen: boolean }) {
+const SideBar = ({ mobileOpen }: { mobileOpen: boolean }) => {
   const navigateTo = useNavigate();
 
   const [selected, setSelected] = useState("today");
@@ -102,4 +102,6 @@ export default function SideBar({ mobileOpen }: { mobileOpen: boolean }) {
       </ButtonGroup>
     </Drawer>
   );
-}
+};
+
+export default SideBar;

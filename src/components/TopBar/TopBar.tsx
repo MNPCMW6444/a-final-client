@@ -15,56 +15,55 @@ interface TopBarProps {
   setMobileOpen: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
-export default function TopBar({
+const TopBar = ({
   setQuery,
   query,
   mobileOpen,
   setMobileOpen,
-}: TopBarProps) {
-  return (
-    <AppBar
-      position="fixed"
-      sx={{
-        width: drawerWidthSettings.autoWidth,
-        ml: { sm: `${drawerWidthSettings.width}px` },
-      }}
-    >
-      <Toolbar>
-        <Grid
-          container
-          direction="row"
-          justifyContent="flex-start"
-          alignItems="center"
-          wrap="nowrap"
-          spacing={5}
-        >
-          <Grid item>
-            <IconButton
-              color="inherit"
-              aria-label="open drawer"
-              edge="start"
-              onClick={() => setMobileOpen(!mobileOpen)}
-              sx={{ mr: 2, display: { sm: "none" } }}
-            >
-              <MenuIcon />
-            </IconButton>
-          </Grid>
-          <Grid item>
-            <Typography variant="subtitle1" noWrap component="div">
-              Blue Calendar
-            </Typography>
-          </Grid>
-          <Grid item>
-            <SearchBar
-              placeholder="Search By Title..."
-              value={query}
-              style={{ color: "black" }}
-              width="100%"
-              onChange={(e) => setQuery(e.target.value)}
-            />
-          </Grid>
+}: TopBarProps) => (
+  <AppBar
+    position="fixed"
+    sx={{
+      width: drawerWidthSettings.autoWidth,
+      ml: { sm: `${drawerWidthSettings.width}px` },
+    }}
+  >
+    <Toolbar>
+      <Grid
+        container
+        direction="row"
+        justifyContent="flex-start"
+        alignItems="center"
+        wrap="nowrap"
+        spacing={5}
+      >
+        <Grid item>
+          <IconButton
+            color="inherit"
+            aria-label="open drawer"
+            edge="start"
+            onClick={() => setMobileOpen(!mobileOpen)}
+            sx={{ mr: 2, display: { sm: "none" } }}
+          >
+            <MenuIcon />
+          </IconButton>
         </Grid>
-      </Toolbar>
-    </AppBar>
-  );
-}
+        <Grid item>
+          <Typography variant="subtitle1" noWrap component="div">
+            Blue Calendar
+          </Typography>
+        </Grid>
+        <Grid item>
+          <SearchBar
+            placeholder="Search By Title..."
+            value={query}
+            style={{ color: "black" }}
+            width="100%"
+            onChange={(e) => setQuery(e.target.value)}
+          />
+        </Grid>
+      </Grid>
+    </Toolbar>
+  </AppBar>
+);
+export default TopBar;
