@@ -28,20 +28,29 @@ const GenericForm = ({ closeForm, item, refresh }: GenericFormProps) => {
   const [itemState, setItemState] = useState<Item>(item);
 
   const buttonSx = (id: string) => ({
-    backgroundColor: type === id ? blue[300] : blue[100],
-    color: blue[900],
-    width: 68 / Object.values(ItemTypes).length + "vw",
+    width: 63 / Object.values(ItemTypes).length + "vw",
+    backgroundColor: type === id ? blue[900] : blue[100],
+    color: type === id ? blue[100] : blue[900],
+    border: "0.1vw solid blue",
+    "&:hover": {
+      backgroundColor: type === id ? blue[900] : blue[400],
+      color: type === id ? blue[100] : blue[900],
+    },
+    "&:active": {
+      backgroundColor: blue[900],
+      color: blue[100],
+    },
   });
 
   return (
     <Grid container direction="column" alignItems="center" spacing={6}>
       <Grid item>
         <ButtonGroup variant="contained">
-          <Grid container direction="row" alignItems="center" spacing={2}>
+          <Grid container direction="row">
             {Object.values(ItemTypes).map((type) => (
               <Grid item>
                 <Button
-                  disabled={!!item.type}
+                  disabled={!!item.type && item.type !== type}
                   sx={buttonSx(type)}
                   onClick={() => setType(type)}
                 >

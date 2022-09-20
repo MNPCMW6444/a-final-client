@@ -26,9 +26,17 @@ const SideBar = ({ mobileOpen }: { mobileOpen: boolean }) => {
 
   const buttonSx = (id: string) => ({
     border: "0.5rem solid white",
-    backgroundColor: selected === id ? blue[300] : blue[100],
-    color: blue[900],
     width: "200px",
+    backgroundColor: selected === id ? blue[900] : blue[100],
+    color: selected === id ? blue[100] : blue[900],
+    "&:hover": {
+      backgroundColor: selected === id ? blue[900] : blue[400],
+      color: selected === id ? blue[100] : blue[900],
+    },
+    "&:active": {
+      backgroundColor: blue[900],
+      color: blue[100],
+    },
   });
 
   return (
