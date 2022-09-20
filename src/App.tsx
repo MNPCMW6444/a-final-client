@@ -16,7 +16,7 @@ import CalendarRouter from "./components/CalendarRouter/CalendarRouter";
 import blue from "@mui/material/colors/blue";
 
 const style = {
-  width: "80vw",
+  width: "50vw",
   height: "80vh",
   border: "0.2rem solid #000",
   boxShadow: 24,
@@ -25,7 +25,7 @@ const style = {
   borderRadius: "10vw",
   padding: "8vw",
   position: "fixed",
-  left: "10vw",
+  left: "25vw",
   top: "10vh",
 };
 

@@ -13,6 +13,7 @@ import TextInput from "./TextInput";
 import SelectInput from "./SelectInput";
 import DateInput from "./DateInput";
 import { Typography } from "@mui/material";
+import red from "@mui/material/colors/red";
 
 interface GenericFormProps {
   closeForm: () => void;
@@ -28,20 +29,21 @@ const GenericForm = ({ closeForm, item, refresh }: GenericFormProps) => {
   const [itemState, setItemState] = useState<Item>(item);
 
   const buttonSx = (id: string) => ({
-    width: 63 / Object.values(ItemTypes).length + "vw",
-    backgroundColor: type === id ? blue[900] : blue[100],
-    color: type === id ? blue[100] : blue[900],
-    border: "0.1vw solid blue",
+    width: 33 / Object.values(ItemTypes).length + "vw",
+    backgroundColor:
+      id === "red" ? red[100] : type === id ? blue[900] : blue[100],
+    color: id === "red" ? red[600] : type === id ? blue[100] : blue[900],
+    border: "0.1vw solid " + id === "red" ? "red" : "blue",
     "&:hover": {
-      backgroundColor: type === id ? blue[900] : blue[400],
-      color: type === id ? blue[100] : blue[900],
+      backgroundColor:
+        id === "red" ? red[800] : type === id ? blue[900] : blue[400],
+      color: id === "red" ? red[100] : type === id ? blue[100] : blue[900],
     },
     "&:active": {
-      backgroundColor: blue[900],
+      backgroundColor: id === "red" ? red[900] : blue[900],
       color: blue[100],
     },
   });
-
   return (
     <Grid container direction="column" alignItems="center" spacing={6}>
       <Grid item>
@@ -61,89 +63,161 @@ const GenericForm = ({ closeForm, item, refresh }: GenericFormProps) => {
           </Grid>
         </ButtonGroup>
       </Grid>
-      <Grid item container spacing={2}>
-        {itemState &&
-          Array.from(
-            fieldsConfig.get(type),
-            ([key, { label, placeHolder, dropDownOptions, datePicker }]) => ({
-              key,
-              label,
-              placeHolder,
-              dropDownOptions,
-              datePicker,
-            })
-          ).map(
-            (
-              { key, label, placeHolder, dropDownOptions, datePicker },
-              i: number
-            ) => (
-              <Grid item key={i} container direction="row" alignItems="center">
-                <Grid item sx={{ width: "50%" }}>
-                  <InputLabel
-                    sx={{
-                      textAlign: "center",
-                    }}
-                  >
-                    {label + ": "}
-                  </InputLabel>
-                </Grid>
-                <Grid item sx={{ width: "50%" }}>
-                  {placeHolder ? (
-                    <TextInput
-                      placeHolder={placeHolder}
-                      dataKey={key}
-                      itemState={itemState}
-                      setItemState={setItemState}
-                    />
-                  ) : dropDownOptions ? (
-                    <SelectInput
-                      dropDownOptions={dropDownOptions}
-                      dataKey={key}
-                      itemState={itemState}
-                      setItemState={setItemState}
-                    />
-                  ) : datePicker ? (
-                    <DateInput
-                      dataKey={key}
-                      itemState={itemState}
-                      setItemState={setItemState}
-                    />
-                  ) : (
-                    <InputLabel>configuration error!</InputLabel>
-                  )}
-                </Grid>
-              </Grid>
-            )
-          )}
-      </Grid>
-      <Grid item>
-        <Button
-          variant="outlined"
-          onClick={async () => {
-            if (item.type)
-              try {
-                await Axios.put(domain + "edit" + type + "/" + itemState._id, {
-                  newItem: itemState,
-                });
-                closeForm();
-                refresh();
-              } catch (err: any) {
-                setErrorMessage(err.response.data.erroMsg);
-              }
-            else
-              try {
-                await Axios.post(domain + "create" + type, {
-                  newItem: itemState,
-                });
-                closeForm();
-                refresh();
-              } catch (err: any) {
-                setErrorMessage(err.response.data.erroMsg);
-              }
-          }}
+      <Grid
+        item
+        container
+        direction="row"
+        justifyContent="center"
+        alignItems="center"
+        wrap="nowrap"
+        spacing={6}
+        width="33vw"
+      >
+        <Grid
+          item
+          container
+          direction="column"
+          justifyContent="space-around"
+          alignItems="center"
+          height="50vh"
         >
-          Save
-        </Button>
+          {itemState &&
+            Array.from(
+              fieldsConfig.get(type),
+              ([key, { label, placeHolder, dropDownOptions, datePicker }]) => ({
+                key,
+                label,
+                placeHolder,
+                dropDownOptions,
+                datePicker,
+              })
+            ).map(
+              (
+                { key, label, placeHolder, dropDownOptions, datePicker },
+                i: number
+              ) => (
+                <Grid
+                  item
+                  container
+                  direction="row"
+                  justifyContent="flex-start"
+                  alignItems="center"
+                  spacing={10}
+                  key={i}
+                >
+                  <Grid item>
+                    <InputLabel>{label + ": "}</InputLabel>
+                  </Grid>
+                </Grid>
+              )
+            )}
+        </Grid>
+
+        <Grid
+          item
+          container
+          direction="column"
+          justifyContent="space-around"
+          alignItems="center"
+          height="50vh"
+        >
+          {itemState &&
+            Array.from(
+              fieldsConfig.get(type),
+              ([key, { label, placeHolder, dropDownOptions, datePicker }]) => ({
+                key,
+                label,
+                placeHolder,
+                dropDownOptions,
+                datePicker,
+              })
+            ).map(
+              (
+                { key, label, placeHolder, dropDownOptions, datePicker },
+                i: number
+              ) => (
+                <Grid
+                  item
+                  container
+                  direction="row"
+                  justifyContent="flex-start"
+                  alignItems="center"
+                  spacing={10}
+                  key={i}
+                >
+                  <Grid item sx={{ width: "400px" }}>
+                    {placeHolder ? (
+                      <TextInput
+                        placeHolder={placeHolder}
+                        dataKey={key}
+                        itemState={itemState}
+                        setItemState={setItemState}
+                      />
+                    ) : dropDownOptions ? (
+                      <SelectInput
+                        dropDownOptions={dropDownOptions}
+                        dataKey={key}
+                        itemState={itemState}
+                        setItemState={setItemState}
+                      />
+                    ) : datePicker ? (
+                      <DateInput
+                        dataKey={key}
+                        itemState={itemState}
+                        setItemState={setItemState}
+                      />
+                    ) : (
+                      <InputLabel>configuration error!</InputLabel>
+                    )}
+                  </Grid>
+                </Grid>
+              )
+            )}
+        </Grid>
+      </Grid>
+      <Grid item container direction="row" spacing={2} wrap="nowrap">
+        <Grid item>
+          <Button
+            variant="outlined"
+            sx={buttonSx("")}
+            onClick={async () => {
+              if (item.type)
+                try {
+                  await Axios.put(
+                    domain + "edit" + type + "/" + itemState._id,
+                    {
+                      newItem: itemState,
+                    }
+                  );
+                  closeForm();
+                  refresh();
+                } catch (err: any) {
+                  setErrorMessage(err.response.data.erroMsg);
+                }
+              else
+                try {
+                  await Axios.post(domain + "create" + type, {
+                    newItem: itemState,
+                  });
+                  closeForm();
+                  refresh();
+                } catch (err: any) {
+                  setErrorMessage(err.response.data.erroMsg);
+                }
+            }}
+          >
+            Save
+          </Button>
+        </Grid>
+        <Grid item>
+          <Button
+            variant="outlined"
+            sx={buttonSx("red")}
+            onClick={() => closeForm()}
+          >
+            Cancel
+          </Button>
+        </Grid>
       </Grid>
       <Grid item>
         <Typography style={{ color: "red" }}>{errorMessage}</Typography>
