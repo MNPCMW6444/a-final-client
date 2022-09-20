@@ -9,25 +9,25 @@ interface SelectInputProps {
   setItemState: React.Dispatch<React.SetStateAction<Item>>;
 }
 
-export default function SelectInput({
+const SelectInput = ({
   dropDownOptions,
   dataKey,
   itemState,
   setItemState,
-}: SelectInputProps) {
-  return (
-    <Select
-      sx={{ width: "70%", marginLeft: "12%" }}
-      value={itemState[dataKey as keyof Item]}
-      onChange={(e) => {
-        const tempItem = { ...itemState };
-        tempItem[dataKey as keyof Item] = e.target.value as string;
-        setItemState(tempItem);
-      }}
-    >
-      {dropDownOptions.map((option: string) => (
-        <MenuItem value={option}>{option}</MenuItem>
-      ))}
-    </Select>
-  );
-}
+}: SelectInputProps) => (
+  <Select
+    sx={{ width: "70%", marginLeft: "12%" }}
+    value={itemState[dataKey as keyof Item]}
+    onChange={(e) => {
+      const tempItem = { ...itemState };
+      tempItem[dataKey as keyof Item] = e.target.value as string;
+      setItemState(tempItem);
+    }}
+  >
+    {dropDownOptions.map((option: string) => (
+      <MenuItem value={option}>{option}</MenuItem>
+    ))}
+  </Select>
+);
+
+export default SelectInput;

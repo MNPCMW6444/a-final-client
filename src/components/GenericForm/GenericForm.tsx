@@ -20,11 +20,7 @@ interface GenericFormProps {
   refresh: () => void;
 }
 
-export default function GenericForm({
-  closeForm,
-  item,
-  refresh,
-}: GenericFormProps) {
+const GenericForm = ({ closeForm, item, refresh }: GenericFormProps) => {
   const [type, setType] = useState<string>(item.type || ItemTypes.task);
 
   const [errorMessage, setErrorMessage] = useState<string>("");
@@ -145,4 +141,6 @@ export default function GenericForm({
       </Grid>
     </Grid>
   );
-}
+};
+
+export default GenericForm;
