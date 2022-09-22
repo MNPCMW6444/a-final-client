@@ -16,17 +16,20 @@ import CalendarRouter from "./components/CalendarRouter/CalendarRouter";
 import blue from "@mui/material/colors/blue";
 
 const style = {
-  width: "50vw",
+  width: "80vw",
   height: "80vh",
   border: "0.2rem solid #000",
   boxShadow: 24,
   overflow: "scroll",
   backgroundColor: blue[50],
-  borderRadius: "10vw",
-  padding: "8vw",
+  borderRadius: "5vw",
+  padding: "4vw",
   position: "fixed",
-  left: "25vw",
-  top: "10vh",
+  minWidth: "540px",
+  maxWidth: "700px",
+  left: "50%",
+  top: "50%",
+  transform: "translate(-50%, -50%)",
 };
 
 function App() {

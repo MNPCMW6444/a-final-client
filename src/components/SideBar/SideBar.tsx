@@ -11,6 +11,8 @@ import { useNavigate } from "react-router-dom";
 import ButtonGroup from "@mui/material/ButtonGroup";
 import Button from "@mui/material/Button";
 import { useState } from "react";
+import { PageTypes } from "../../utils/enums";
+import selectButton from "../selectButton/selectButton";
 
 const boxSx = {
   height: { xs: "28vw" },
@@ -72,40 +74,26 @@ const SideBar = ({ mobileOpen }: { mobileOpen: boolean }) => {
       </Grid>
       <Divider />
       <ButtonGroup variant="contained">
-        <Grid container direction="column" alignItems="center">
-          <Grid item>
-            <Button
-              sx={buttonSx("today")}
-              onClick={() => {
-                navigateTo("/today");
-                setSelected("today");
-              }}
-            >
-              Today
-            </Button>
-          </Grid>
-          <Grid item>
-            <Button
-              sx={buttonSx("events")}
-              onClick={() => {
-                navigateTo("/events");
-                setSelected("events");
-              }}
-            >
-              Events
-            </Button>
-          </Grid>
-          <Grid item>
-            <Button
-              sx={buttonSx("tasks")}
-              onClick={() => {
-                navigateTo("/tasks");
-                setSelected("tasks");
-              }}
-            >
-              Tasks
-            </Button>
-          </Grid>
+        <Grid
+          container
+          direction="column"
+          justifyContent="space-around"
+          alignItems="center"
+          height="20vh"
+        >
+          {Object.values(PageTypes).map((option) => {
+            const SelectButton = selectButton(option, selected);
+            return (
+              <Grid item width="80%">
+                <SelectButton
+                  onClick={() => {
+                    navigateTo("/" + option);
+                    setSelected(option);
+                  }}
+                />
+              </Grid>
+            );
+          })}
         </Grid>
       </ButtonGroup>
     </Drawer>

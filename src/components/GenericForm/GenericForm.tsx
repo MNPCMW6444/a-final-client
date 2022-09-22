@@ -14,6 +14,8 @@ import SelectInput from "./SelectInput";
 import DateInput from "./DateInput";
 import { Typography } from "@mui/material";
 import red from "@mui/material/colors/red";
+import selectButton from "../selectButton/selectButton";
+import SelectButton from "../selectButton/selectButton";
 
 interface GenericFormProps {
   closeForm: () => void;
@@ -28,158 +30,94 @@ const GenericForm = ({ closeForm, item, refresh }: GenericFormProps) => {
 
   const [itemState, setItemState] = useState<Item>(item);
 
-  const buttonSx = (id: string) => ({
-    width: 33 / Object.values(ItemTypes).length + "vw",
-    backgroundColor:
-      id === "red" ? red[100] : type === id ? blue[900] : blue[100],
-    color: id === "red" ? red[600] : type === id ? blue[100] : blue[900],
-    border: "0.1vw solid " + id === "red" ? "red" : "blue",
-    "&:hover": {
-      backgroundColor:
-        id === "red" ? red[800] : type === id ? blue[900] : blue[400],
-      color: id === "red" ? red[100] : type === id ? blue[100] : blue[900],
-    },
-    "&:active": {
-      backgroundColor: id === "red" ? red[900] : blue[900],
-      color: blue[100],
-    },
-  });
   return (
-    <Grid container direction="column" alignItems="center" spacing={6}>
-      <Grid item>
-        <ButtonGroup variant="contained">
-          <Grid container direction="row">
-            {Object.values(ItemTypes).map((type) => (
-              <Grid item>
-                <Button
-                  disabled={!!item.type && item.type !== type}
-                  sx={buttonSx(type)}
-                  onClick={() => setType(type)}
-                >
-                  {type}
-                </Button>
-              </Grid>
-            ))}
-          </Grid>
-        </ButtonGroup>
+    <Grid
+      container
+      direction="column"
+      justifyContent="center"
+      alignItems="center"
+      rowSpacing={6}
+    >
+      <Grid item container direction="row" justifyContent="center">
+        {Object.values(ItemTypes).map((option) => {
+          const SelectButton = selectButton(option, type);
+          return (
+            <Grid item>
+              <SelectButton
+                disabled={!!item.type && item.type !== type}
+                onClick={() => setType(option)}
+              />
+            </Grid>
+          );
+        })}
       </Grid>
       <Grid
         item
         container
-        direction="row"
-        justifyContent="center"
+        direction="column"
         alignItems="center"
-        wrap="nowrap"
-        spacing={6}
-        width="33vw"
+        spacing={2}
+        sx={{ marginLeft: "25px" }}
       >
-        <Grid
-          item
-          container
-          direction="column"
-          justifyContent="space-around"
-          alignItems="center"
-          height="50vh"
-        >
-          {itemState &&
-            Array.from(
-              fieldsConfig.get(type),
-              ([key, { label, placeHolder, dropDownOptions, datePicker }]) => ({
-                key,
-                label,
-                placeHolder,
-                dropDownOptions,
-                datePicker,
-              })
-            ).map(
-              (
-                { key, label, placeHolder, dropDownOptions, datePicker },
-                i: number
-              ) => (
-                <Grid
-                  item
-                  container
-                  direction="row"
-                  justifyContent="flex-start"
-                  alignItems="center"
-                  spacing={10}
-                  key={i}
-                >
-                  <Grid item>
-                    <InputLabel>{label + ": "}</InputLabel>
-                  </Grid>
+        {itemState &&
+          Array.from(
+            fieldsConfig.get(type),
+            ([key, { label, placeHolder, dropDownOptions, datePicker }]) => ({
+              key,
+              label,
+              placeHolder,
+              dropDownOptions,
+              datePicker,
+            })
+          ).map(
+            (
+              { key, label, placeHolder, dropDownOptions, datePicker },
+              i: number
+            ) => (
+              <Grid
+                item
+                container
+                direction="row"
+                justifyContent="space-between"
+                alignItems="center"
+                key={i}
+              >
+                <Grid item>
+                  <InputLabel>{label + ": "}</InputLabel>
                 </Grid>
-              )
-            )}
-        </Grid>
-
-        <Grid
-          item
-          container
-          direction="column"
-          justifyContent="space-around"
-          alignItems="center"
-          height="50vh"
-        >
-          {itemState &&
-            Array.from(
-              fieldsConfig.get(type),
-              ([key, { label, placeHolder, dropDownOptions, datePicker }]) => ({
-                key,
-                label,
-                placeHolder,
-                dropDownOptions,
-                datePicker,
-              })
-            ).map(
-              (
-                { key, label, placeHolder, dropDownOptions, datePicker },
-                i: number
-              ) => (
-                <Grid
-                  item
-                  container
-                  direction="row"
-                  justifyContent="flex-start"
-                  alignItems="center"
-                  spacing={10}
-                  key={i}
-                >
-                  <Grid item sx={{ width: "400px" }}>
-                    {placeHolder ? (
-                      <TextInput
-                        placeHolder={placeHolder}
-                        dataKey={key}
-                        itemState={itemState}
-                        setItemState={setItemState}
-                      />
-                    ) : dropDownOptions ? (
-                      <SelectInput
-                        dropDownOptions={dropDownOptions}
-                        dataKey={key}
-                        itemState={itemState}
-                        setItemState={setItemState}
-                      />
-                    ) : datePicker ? (
+                <Grid item sx={{ minWidth: "350px", width: "70%" }}>
+                  {placeHolder ? (
+                    <TextInput
+                      placeHolder={placeHolder}
+                      dataKey={key}
+                      itemState={itemState}
+                      setItemState={setItemState}
+                    />
+                  ) : dropDownOptions ? (
+                    <SelectInput
+                      dropDownOptions={dropDownOptions}
+                      dataKey={key}
+                      itemState={itemState}
+                      setItemState={setItemState}
+                    />
+                  ) : (
+                    datePicker && (
                       <DateInput
                         dataKey={key}
                         itemState={itemState}
                         setItemState={setItemState}
                       />
-                    ) : (
-                      <InputLabel>configuration error!</InputLabel>
-                    )}
-                  </Grid>
+                    )
+                  )}
                 </Grid>
-              )
-            )}
-        </Grid>
+              </Grid>
+            )
+          )}
       </Grid>
-      <Grid item container direction="row" spacing={2} wrap="nowrap">
+      <Grid item container direction="row" justifyContent="center">
         <Grid item>
           <Button
             variant="outlined"
-            sx={buttonSx("")}
             onClick={async () => {
               if (item.type)
                 try {
@@ -210,16 +148,12 @@ const GenericForm = ({ closeForm, item, refresh }: GenericFormProps) => {
           </Button>
         </Grid>
         <Grid item>
-          <Button
-            variant="outlined"
-            sx={buttonSx("red")}
-            onClick={() => closeForm()}
-          >
+          <Button variant="outlined" onClick={() => closeForm()}>
             Cancel
           </Button>
         </Grid>
       </Grid>
-      <Grid item>
+      <Grid item justifyContent="center">
         <Typography style={{ color: "red" }}>{errorMessage}</Typography>
       </Grid>
     </Grid>
