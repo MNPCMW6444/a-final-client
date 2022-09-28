@@ -49,6 +49,7 @@ const GenericForm = ({ closeForm, item, refresh }: GenericFormProps) => {
         alignItems="center"
         spacing={2}
         width="40vw"
+        minWidth="540px"
       >
         {itemState &&
           Array.from(
