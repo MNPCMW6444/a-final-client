@@ -1,11 +1,7 @@
 import Typography from "@mui/material/Typography";
 import { useState, useEffect } from "react";
-type validClockSize = "h1" | "h2" | "h3" | "h4" | "h5" | "h6";
 
-interface ClockProps {
-  size: validClockSize;
-}
-const Clock = ({size}: ClockProps) => {
+const Clock = () => {
   const [time, setTime] = useState<Date>(new Date());
 
   useEffect(() => {
@@ -17,24 +13,8 @@ const Clock = ({size}: ClockProps) => {
 
   return (
     <>
-      <Typography
-        variant={size}
-        color="black"
-        fontWeight="300"
-        fontSize="1.2rem"
-        lineHeight="1.467"
-        letterSpacing="-0.01562em"
-      >
-        {time.toLocaleDateString()}
-      </Typography>
-      <Typography
-        variant={size}
-        color="black"
-        fontWeight="300"
-        fontSize="2rem"
-        lineHeight="1.367"
-        letterSpacing="-0.01562em"
-      >
+      <Typography fontSize="1.2rem">{time.toLocaleDateString()}</Typography>
+      <Typography fontSize="2rem">
         {time.toLocaleTimeString().substring(0, 8)}
       </Typography>
     </>

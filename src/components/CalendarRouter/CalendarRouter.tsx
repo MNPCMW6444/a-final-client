@@ -16,25 +16,26 @@ interface CalendarRouterProps {
   query: string;
   refresher: number;
   refresh: () => void;
-  mobileOpen: boolean;
 }
 
-function ErrorFallback() {
-  return (
-    <Box>
-      <Typography sx={{ color: "red" }}>
-        There is an error in this component
-      </Typography>
-    </Box>
-  );
-}
+const errorStyle = { color: "red" };
+
+const navigationStyle = {
+  width: { sm: drawerWidthSettings.width },
+  flexShrink: { sm: 0 },
+};
+
+const ErrorFallback = () => (
+  <Box>
+    <Typography sx={errorStyle}>There is an error in this component</Typography>
+  </Box>
+);
 
 const CalendarRouter = ({
   openModal,
   query,
   refresher,
   refresh,
-  mobileOpen,
 }: CalendarRouterProps) => {
   const data = useDataProcessor(refresher);
   return (
@@ -94,14 +95,8 @@ const CalendarRouter = ({
         ) : (
           <Typography>Loading...</Typography>
         )}
-        <Box
-          component="nav"
-          sx={{
-            width: { sm: drawerWidthSettings.width },
-            flexShrink: { sm: 0 },
-          }}
-        >
-          <SideBar mobileOpen={mobileOpen} />
+        <Box component="nav" sx={navigationStyle}>
+          <SideBar />
         </Box>
       </Router>
     </>

@@ -5,11 +5,9 @@ import Grid from "@mui/material/Grid";
 import Clock from "../Clock/Clock";
 import drawerWidthSettings from "../../config/drawerWidthSettings";
 import Typography from "@mui/material/Typography";
-import { blue } from "@mui/material/colors";
 import BT from "../../assets/BT.png";
 import { useNavigate } from "react-router-dom";
 import ButtonGroup from "@mui/material/ButtonGroup";
-import Button from "@mui/material/Button";
 import { useState } from "react";
 import { PageTypes } from "../../utils/enums";
 import selectButton from "../selectButton/selectButton";
@@ -21,38 +19,21 @@ const boxSx = {
   maxWidth: { xs: "250px" },
 };
 
-const SideBar = ({ mobileOpen }: { mobileOpen: boolean }) => {
+const drawerStyle = {
+  display: { xs: "none", sm: "block" },
+  "& .MuiDrawer-paper": {
+    boxSizing: "border-box",
+    width: drawerWidthSettings.width,
+  },
+};
+
+const SideBar = () => {
   const navigateTo = useNavigate();
 
   const [selected, setSelected] = useState("today");
 
-  const buttonSx = (id: string) => ({
-    border: "0.5rem solid white",
-    width: "200px",
-    backgroundColor: selected === id ? blue[900] : blue[100],
-    color: selected === id ? blue[100] : blue[900],
-    "&:hover": {
-      backgroundColor: selected === id ? blue[900] : blue[400],
-      color: selected === id ? blue[100] : blue[900],
-    },
-    "&:active": {
-      backgroundColor: blue[900],
-      color: blue[100],
-    },
-  });
-
   return (
-    <Drawer
-      variant="permanent"
-      sx={{
-        display: { xs: "none", sm: "block" },
-        "& .MuiDrawer-paper": {
-          boxSizing: "border-box",
-          width: drawerWidthSettings.width,
-        },
-      }}
-      open
-    >
+    <Drawer variant="permanent" sx={drawerStyle} open>
       <Grid
         container
         direction="column"
@@ -62,7 +43,7 @@ const SideBar = ({ mobileOpen }: { mobileOpen: boolean }) => {
         wrap="nowrap"
         paddingTop="10%"
       >
-        <Clock size="h6" />
+        <Clock />
         <Grid item>
           <Typography variant="h4" component="h4">
             Blue Calendar
@@ -82,7 +63,7 @@ const SideBar = ({ mobileOpen }: { mobileOpen: boolean }) => {
           height="20vh"
         >
           {Object.values(PageTypes).map((option) => {
-            const SelectButton = selectButton(option, selected);
+            const SelectButton = selectButton(option, selected === option);
             return (
               <Grid item width="80%">
                 <SelectButton

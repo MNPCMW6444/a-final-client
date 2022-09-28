@@ -8,6 +8,8 @@ interface TextInputProps {
   setItemState: React.Dispatch<React.SetStateAction<Item>>;
 }
 
+const fieldStyle = { width: "70%", marginLeft: "12%" };
+
 const TextInput = ({
   placeHolder,
   dataKey,
@@ -15,7 +17,7 @@ const TextInput = ({
   setItemState,
 }: TextInputProps) => (
   <OutlinedInput
-    sx={{ width: "70%", marginLeft: "12%" }}
+    sx={fieldStyle}
     value={itemState[dataKey as keyof Item]}
     onChange={(
       e: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>

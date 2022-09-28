@@ -6,9 +6,12 @@ interface DateInputProps {
   itemState: Item;
   setItemState: React.Dispatch<React.SetStateAction<Item>>;
 }
+
+const fieldStyle = { width: "70%", marginLeft: "12%" };
+
 const DateInput = ({ dataKey, itemState, setItemState }: DateInputProps) => (
   <OutlinedInput
-    sx={{ width: "70%", marginLeft: "12%" }}
+    sx={fieldStyle}
     value={
       itemState[dataKey as keyof Item] &&
       new Date(itemState[dataKey as keyof Item]).toISOString().substring(0, 10)

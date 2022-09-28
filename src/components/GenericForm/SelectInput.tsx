@@ -9,6 +9,8 @@ interface SelectInputProps {
   setItemState: React.Dispatch<React.SetStateAction<Item>>;
 }
 
+const fieldStyle = { width: "70%", marginLeft: "12%" };
+
 const SelectInput = ({
   dropDownOptions,
   dataKey,
@@ -16,7 +18,7 @@ const SelectInput = ({
   setItemState,
 }: SelectInputProps) => (
   <Select
-    sx={{ width: "70%", marginLeft: "12%" }}
+    sx={fieldStyle}
     value={itemState[dataKey as keyof Item]}
     onChange={(e) => {
       const tempItem = { ...itemState };

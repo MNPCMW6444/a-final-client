@@ -15,8 +15,8 @@ import TopBar from "./components/TopBar/TopBar";
 import CalendarRouter from "./components/CalendarRouter/CalendarRouter";
 import blue from "@mui/material/colors/blue";
 
-const style = {
-  width: "80vw",
+const modalStyle = {
+  width: "42vw",
   height: "80vh",
   border: "0.2rem solid #000",
   boxShadow: 24,
@@ -30,6 +30,11 @@ const style = {
   left: "50%",
   top: "50%",
   transform: "translate(-50%, -50%)",
+  overflowX: "hidden",
+  overflowY: "scroll",
+  "&::-webkit-scrollbar": {
+    width: "",
+  },
 };
 
 function App() {
@@ -61,7 +66,7 @@ function App() {
         }}
       >
         <Fade in={isCreateFormOpen}>
-          <Box sx={style}>
+          <Box sx={modalStyle}>
             {editedItem && (
               <GenericForm
                 closeForm={closeModal}
@@ -85,7 +90,6 @@ function App() {
         query={query}
         refresher={refresher}
         refresh={refresh}
-        mobileOpen={mobileOpen}
       />
     </ThemeProvider>
   );

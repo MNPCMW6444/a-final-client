@@ -72,6 +72,27 @@ const StyledHeader = styled(Box)(() => ({
   fontWeight: 500,
 }));
 
+const tableStyle = {
+  ml: { sm: `${drawerWidthSettings.width}px` },
+  flexGrow: 1,
+  padding: "5%",
+  width: drawerWidthSettings.autoWidth,
+  overflowX: "scroll",
+};
+
+const otherStyle = {
+  width: "104px",
+  paddingLeft: "5px",
+  paddingRight: "5px",
+  height: "10px",
+};
+
+const innerOtherStyle = {
+  width: "104px",
+  paddingLeft: "5px",
+  paddingRight: "5px",
+};
+
 const GenericTable = ({
   data,
   openModal,
@@ -96,16 +117,7 @@ const GenericTable = ({
   };
 
   return (
-    <Box
-      component="main"
-      sx={{
-        ml: { sm: `${drawerWidthSettings.width}px` },
-        flexGrow: 1,
-        padding: "5%",
-        width: drawerWidthSettings.autoWidth,
-        overflowX: "scroll",
-      }}
-    >
+    <Box component="main" sx={tableStyle}>
       <Grid
         container
         direction="column"
@@ -161,16 +173,7 @@ const GenericTable = ({
                                       header,
                                     })
                                   ).map((otherColumnMap, i) => (
-                                    <Grid
-                                      item
-                                      key={i}
-                                      sx={{
-                                        width: "104px",
-                                        paddingLeft: "5px",
-                                        paddingRight: "5px",
-                                        height: "10px",
-                                      }}
-                                    >
+                                    <Grid item key={i} sx={otherStyle}>
                                       <StyledHeader>
                                         {otherColumnMap.header}
                                       </StyledHeader>
@@ -201,11 +204,7 @@ const GenericTable = ({
                                       justifyContent="center"
                                       alignItems="center"
                                       key={i}
-                                      sx={{
-                                        width: "104px",
-                                        paddingLeft: "5px",
-                                        paddingRight: "5px",
-                                      }}
+                                      sx={innerOtherStyle}
                                     >
                                       <Box>
                                         {row[

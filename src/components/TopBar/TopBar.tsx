@@ -5,7 +5,6 @@ import IconButton from "@mui/material/IconButton";
 import drawerWidthSettings from "../../config/drawerWidthSettings";
 import Toolbar from "@mui/material/Toolbar";
 import Grid from "@mui/material/Grid";
-import { useState } from "react";
 import Typography from "@mui/material/Typography";
 
 interface TopBarProps {
@@ -15,19 +14,20 @@ interface TopBarProps {
   setMobileOpen: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
+const appBarStyle = {
+  width: drawerWidthSettings.autoWidth,
+  ml: { sm: `${drawerWidthSettings.width}px` },
+};
+
+const openButtonStyle = { mr: 2, display: { sm: "none" } };
+
 const TopBar = ({
   setQuery,
   query,
   mobileOpen,
   setMobileOpen,
 }: TopBarProps) => (
-  <AppBar
-    position="fixed"
-    sx={{
-      width: drawerWidthSettings.autoWidth,
-      ml: { sm: `${drawerWidthSettings.width}px` },
-    }}
-  >
+  <AppBar position="fixed" sx={appBarStyle}>
     <Toolbar>
       <Grid
         container
@@ -43,7 +43,7 @@ const TopBar = ({
             aria-label="open drawer"
             edge="start"
             onClick={() => setMobileOpen(!mobileOpen)}
-            sx={{ mr: 2, display: { sm: "none" } }}
+            sx={openButtonStyle}
           >
             <MenuIcon />
           </IconButton>

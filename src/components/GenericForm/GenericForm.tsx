@@ -6,22 +6,20 @@ import Axios from "axios";
 import domain from "../../config/domain";
 import fieldsConfig from "../../config/fields";
 import InputLabel from "@mui/material/InputLabel";
-import ButtonGroup from "@mui/material/ButtonGroup";
-import blue from "@mui/material/colors/blue";
 import { ItemTypes } from "../../utils/enums";
 import TextInput from "./TextInput";
 import SelectInput from "./SelectInput";
 import DateInput from "./DateInput";
 import { Typography } from "@mui/material";
-import red from "@mui/material/colors/red";
 import selectButton from "../selectButton/selectButton";
-import SelectButton from "../selectButton/selectButton";
 
 interface GenericFormProps {
   closeForm: () => void;
   item: Item;
   refresh: () => void;
 }
+
+const fieldStyle = { width: "70%" };
 
 const GenericForm = ({ closeForm, item, refresh }: GenericFormProps) => {
   const [type, setType] = useState<string>(item.type || ItemTypes.task);
@@ -31,23 +29,16 @@ const GenericForm = ({ closeForm, item, refresh }: GenericFormProps) => {
   const [itemState, setItemState] = useState<Item>(item);
 
   return (
-    <Grid
-      container
-      direction="column"
-      justifyContent="center"
-      alignItems="center"
-      rowSpacing={6}
-    >
-      <Grid item container direction="row" justifyContent="center">
+    <Grid container direction="column" rowSpacing={6}>
+      <Grid item container justifyContent="center" columnSpacing={0.5}>
         {Object.values(ItemTypes).map((option) => {
-          const SelectButton = selectButton(option, type);
+          const SelectButton = selectButton(option, type === option);
           return (
-            <Grid item>
-              <SelectButton
-                disabled={!!item.type && item.type !== type}
-                onClick={() => setType(option)}
-              />
-            </Grid>
+            (!item.type || item.type === option) && (
+              <Grid item>
+                <SelectButton onClick={() => setType(option)} />
+              </Grid>
+            )
           );
         })}
       </Grid>
@@ -57,7 +48,7 @@ const GenericForm = ({ closeForm, item, refresh }: GenericFormProps) => {
         direction="column"
         alignItems="center"
         spacing={2}
-        sx={{ marginLeft: "25px" }}
+        width="40vw"
       >
         {itemState &&
           Array.from(
@@ -77,7 +68,6 @@ const GenericForm = ({ closeForm, item, refresh }: GenericFormProps) => {
               <Grid
                 item
                 container
-                direction="row"
                 justifyContent="space-between"
                 alignItems="center"
                 key={i}
@@ -85,7 +75,7 @@ const GenericForm = ({ closeForm, item, refresh }: GenericFormProps) => {
                 <Grid item>
                   <InputLabel>{label + ": "}</InputLabel>
                 </Grid>
-                <Grid item sx={{ minWidth: "350px", width: "70%" }}>
+                <Grid item sx={fieldStyle}>
                   {placeHolder ? (
                     <TextInput
                       placeHolder={placeHolder}
