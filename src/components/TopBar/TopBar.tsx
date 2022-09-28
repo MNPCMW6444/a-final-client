@@ -31,7 +31,6 @@ const TopBar = ({
     <Toolbar>
       <Grid
         container
-        direction="row"
         justifyContent="flex-start"
         alignItems="center"
         wrap="nowrap"

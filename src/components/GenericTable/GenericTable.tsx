@@ -159,7 +159,6 @@ const GenericTable = ({
                               <>
                                 <Grid
                                   container
-                                  direction="row"
                                   wrap="nowrap"
                                   alignItems="center"
                                 >
