@@ -13,7 +13,6 @@ import { Item } from "./types/dataTypes";
 import GenericForm from "./components/GenericForm/GenericForm";
 import TopBar from "./components/TopBar/TopBar";
 import CalendarRouter from "./components/CalendarRouter/CalendarRouter";
-import blue from "@mui/material/colors/blue";
 
 const modalStyle = {
   width: "42vw",
@@ -21,7 +20,7 @@ const modalStyle = {
   border: "0.2rem solid #000",
   boxShadow: 24,
   overflow: "scroll",
-  backgroundColor: blue[50],
+  backgroundColor: "white",
   borderRadius: "5vw",
   padding: "4vw",
   position: "fixed",

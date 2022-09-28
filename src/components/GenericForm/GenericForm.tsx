@@ -21,6 +21,8 @@ interface GenericFormProps {
 
 const fieldStyle = { width: "70%" };
 
+const controlButtonStyle = { width: "100px" };
+
 const GenericForm = ({ closeForm, item, refresh }: GenericFormProps) => {
   const [type, setType] = useState<string>(item.type || ItemTypes.task);
 
@@ -105,7 +107,7 @@ const GenericForm = ({ closeForm, item, refresh }: GenericFormProps) => {
             )
           )}
       </Grid>
-      <Grid item container direction="row" justifyContent="center">
+      <Grid item container justifyContent="center" columnSpacing={1}>
         <Grid item>
           <Button
             variant="outlined"
@@ -134,12 +136,18 @@ const GenericForm = ({ closeForm, item, refresh }: GenericFormProps) => {
                   setErrorMessage(err.response.data.erroMsg);
                 }
             }}
+            sx={controlButtonStyle}
           >
             Save
           </Button>
         </Grid>
         <Grid item>
-          <Button variant="outlined" onClick={() => closeForm()}>
+          <Button
+            sx={controlButtonStyle}
+            variant="outlined"
+            color="error"
+            onClick={() => closeForm()}
+          >
             Cancel
           </Button>
         </Grid>
