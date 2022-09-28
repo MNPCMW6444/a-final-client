@@ -12,6 +12,11 @@ import { useState } from "react";
 import { PageTypes } from "../../utils/enums";
 import selectButton from "../selectButton/selectButton";
 
+interface SideBarProps {
+  route: string;
+  refresh: () => void;
+}
+
 const boxSx = {
   height: { xs: "28vw" },
   width: { xs: "28vw" },
@@ -27,10 +32,10 @@ const drawerStyle = {
   },
 };
 
-const SideBar = () => {
+const SideBar = ({ route, refresh }: SideBarProps) => {
   const navigateTo = useNavigate();
 
-  const [selected, setSelected] = useState("today");
+  const [selected, setSelected] = useState(route);
 
   return (
     <Drawer variant="permanent" sx={drawerStyle} open>
@@ -70,6 +75,7 @@ const SideBar = () => {
                   onClick={() => {
                     navigateTo("/" + option);
                     setSelected(option);
+                    refresh();
                   }}
                 />
               </Grid>

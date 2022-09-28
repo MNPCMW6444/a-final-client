@@ -5,9 +5,7 @@ import useDataProcessor from "../../utils/useDataProcessor";
 import GenericTable from "../GenericTable/GenericTable";
 import { ErrorBoundary } from "react-error-boundary";
 import Box from "@mui/material/Box";
-import drawerWidthSettings from "../../config/drawerWidthSettings";
 import Toolbar from "@mui/material/Toolbar";
-import SideBar from "../SideBar/SideBar";
 import { Typography } from "@mui/material";
 import { ItemTypes, PageTypes } from "../../utils/enums";
 
@@ -19,11 +17,6 @@ interface CalendarRouterProps {
 }
 
 const errorStyle = { color: "red" };
-
-const navigationStyle = {
-  width: { sm: drawerWidthSettings.width },
-  flexShrink: { sm: 0 },
-};
 
 const ErrorFallback = () => (
   <Box>
@@ -42,7 +35,7 @@ const CalendarRouter = ({
     <>
       <Toolbar />
       <Router>
-        {data ? (
+        {data.length > 0 ? (
           <ErrorBoundary FallbackComponent={ErrorFallback} onReset={() => {}}>
             <Routes>
               <Route path="/">
@@ -53,15 +46,15 @@ const CalendarRouter = ({
                       refresh={refresh}
                       query={query}
                       openModal={openModal}
-                      data={[...data.events, ...data.tasks].filter(
-                        (item: Item) =>
-                          item.type === ItemTypes.task
-                            ? (item as Task).untilDate.substring(0, 9) ===
-                              new Date().toLocaleString().substring(0, 9)
-                            : (item as Event).beginningTime.substring(0, 9) ===
-                              new Date().toLocaleString().substring(0, 9)
+                      data={(data as Item[]).filter((item: Item) =>
+                        item.type === ItemTypes.task
+                          ? (item as Task).untilDate.substring(0, 9) ===
+                            new Date().toLocaleString().substring(0, 9)
+                          : (item as Event).beginningTime.substring(0, 9) ===
+                            new Date().toLocaleString().substring(0, 9)
                       )}
                       columns={columnsConfig.get(PageTypes.today)}
+                      route="today"
                     />
                   }
                 />
@@ -72,8 +65,11 @@ const CalendarRouter = ({
                       refresh={refresh}
                       query={query}
                       openModal={openModal}
-                      data={data.tasks}
+                      data={(data as Item[]).filter(
+                        (item: Item) => item.type === ItemTypes.task
+                      )}
                       columns={columnsConfig.get(PageTypes.tasks)}
+                      route="tasks"
                     />
                   }
                 />
@@ -84,8 +80,11 @@ const CalendarRouter = ({
                       refresh={refresh}
                       query={query}
                       openModal={openModal}
-                      data={data.events}
+                      data={(data as Item[]).filter(
+                        (item: Item) => item.type === ItemTypes.event
+                      )}
                       columns={columnsConfig.get(PageTypes.events)}
+                      route="events"
                     />
                   }
                 />
@@ -95,9 +94,6 @@ const CalendarRouter = ({
         ) : (
           <Typography>Loading...</Typography>
         )}
-        <Box component="nav" sx={navigationStyle}>
-          <SideBar />
-        </Box>
       </Router>
     </>
   );

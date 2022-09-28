@@ -16,6 +16,7 @@ import Button from "@mui/material/Button";
 import Axios from "axios";
 import domain from "../../config/domain";
 import drawerWidthSettings from "../../config/drawerWidthSettings";
+import SideBar from "../SideBar/SideBar";
 
 interface GenericTableProps {
   data: Item[];
@@ -23,6 +24,7 @@ interface GenericTableProps {
   columns: Map<string, string>;
   query: string;
   refresh: () => void;
+  route: string;
 }
 
 const outerGridSx = {
@@ -93,27 +95,49 @@ const innerOtherStyle = {
   paddingRight: "5px",
 };
 
+const navigationStyle = {
+  width: { sm: drawerWidthSettings.width },
+  flexShrink: { sm: 0 },
+};
+
 const GenericTable = ({
   data,
   openModal,
   columns,
   query,
   refresh,
+  route,
 }: GenericTableProps) => {
-  const filteredData: false | Item[] =
-    data &&
-    data.length > 0 &&
-    data.filter(
-      (item: any) =>
+  const [filteredData, setFilteredData] = useState<Item[]>(
+    data.filter((item: Item) => {
+      return (
         item.title.toLocaleLowerCase().includes(query.toLocaleLowerCase()) ||
         !query
-    );
+      );
+    })
+  );
 
   const [hoveringLongText, setHoveringLongText] = useState<boolean>(false);
 
   const deleteItem = async (item: Item) => {
     await Axios.delete(domain + "delete" + item.type + "/" + item._id);
     refresh();
+  };
+
+  const sortData = (property: string) => {
+    debugger;
+    if (filteredData)
+      setFilteredData(
+        (filteredData as Item[]).sort((itemA: Item, itemB: Item) => {
+          debugger;
+          return (
+            -1 *
+            itemA["title" as keyof Item].localeCompare(
+              itemB["title" as keyof Item]
+            )
+          );
+        })
+      );
   };
 
   return (
@@ -132,7 +156,11 @@ const GenericTable = ({
                 <TableRow>
                   {Array.from(columns, ([_, header]) => ({ header })).map(
                     (column, index) => (
-                      <TableCell key={`headCell-${index}`} sx={tableHeaderSx}>
+                      <TableCell
+                        key={`headCell-${index}`}
+                        sx={tableHeaderSx}
+                        onClick={() => sortData(column.header)}
+                      >
                         {column.header}
                       </TableCell>
                     )
@@ -269,6 +297,9 @@ const GenericTable = ({
           </Button>
         </Grid>
       </Grid>
+      <Box component="nav" sx={navigationStyle}>
+        <SideBar route={route} refresh={refresh} />
+      </Box>
     </Box>
   );
 };

@@ -1,7 +1,8 @@
 import { useEffect, useState } from "react";
-import { Task, Event } from "../types/dataTypes";
+import { Item, Task, Event } from "../types/dataTypes";
 import domain from "../config/domain";
 import Axios from "axios";
+import { ItemTypes } from "./enums";
 
 const colorMap = new Map();
 colorMap.set("Red", "🔴");
@@ -15,23 +16,33 @@ colorMap.set("White", "⚪️");
 colorMap.set("Brown", "🟤");
 
 const useDataProcessor = (refresher: number) => {
-  const [data, setData] = useState({ events: [], tasks: [] });
+  const [data, setData] = useState<Item[]>([]);
   useEffect(() => {
+    const axiosController = new AbortController();
     const fetchData = async () => {
       const res = await Axios.get(domain + "alldata");
-      setData(res.data);
+      res.data.tasks.forEach((task: Task) => {
+        task.type = ItemTypes.task;
+      });
+      res.data.events.forEach((event: Event) => {
+        event.type = ItemTypes.event;
+      });
+      setData([...res.data.tasks, ...res.data.events]);
+      return () => axiosController.abort();
     };
     fetchData();
   }, [refresher]);
-  if (data) {
-    const rawData = data;
 
-    const dbData = structuredClone(rawData);
+  if (data.length > 0) {
+    const dbData = structuredClone(data);
 
-    const jsonEvents = dbData.events;
-    const jsonTasks = dbData.tasks;
+    const jsonEvents = (dbData as Item[]).filter(
+      (item: Item) => item.type === ItemTypes.event
+    );
+    const jsonTasks = (dbData as Item[]).filter(
+      (item: Item) => item.type === ItemTypes.task
+    );
     let parsedEvents: Event[];
-
     parsedEvents = jsonEvents.map((event: any) => {
       event.beginningTime =
         new Date(event.beginningTime).toLocaleDateString() +
@@ -46,7 +57,8 @@ const useDataProcessor = (refresher: number) => {
         ", " +
         new Date(event.notificationDate).toLocaleTimeString().substring(0, 4);
       event.color = colorMap.get(event.color);
-      event.type = "Event";
+      event.type = ItemTypes.event;
+
       return event;
     });
     let parsedTasks: Task[];
@@ -93,13 +105,10 @@ const useDataProcessor = (refresher: number) => {
               " Seconds";
             break;
         }
-      task.type = "Task";
+      task.type = ItemTypes.task;
       return task;
     });
-    return {
-      events: parsedEvents,
-      tasks: parsedTasks,
-    };
+    return [...parsedEvents, ...parsedTasks];
   } else return data;
 };
 
