@@ -66,7 +66,23 @@ const CalendarRouter = ({
               <Route path="/">
                 <Route path="/" element={defaultElement} />
                 <Route path="*" element={defaultElement} />
-                <Route path={PageTypes.tasks} element={defaultElement} />
+                <Route
+                  path={PageTypes.tasks}
+                  element={
+                    <GenericTable
+                      setDrawerOpen={setDrawerOpen}
+                      drawerOpen={drawerOpen}
+                      refresh={refresh}
+                      query={query}
+                      openModal={openModal}
+                      data={(data as Item[]).filter(
+                        (item: Item) => item.type === ItemTypes.task
+                      )}
+                      columns={columnsConfig.get(PageTypes.tasks)}
+                      route="tasks"
+                    />
+                  }
+                />
                 <Route
                   path={PageTypes.events}
                   element={

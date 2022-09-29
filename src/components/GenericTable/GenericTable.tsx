@@ -3,7 +3,7 @@ import TableCell from "@mui/material/TableCell";
 import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
-import { Dispatch, SetStateAction, useState } from "react";
+import { Dispatch, SetStateAction, useEffect, useState } from "react";
 import { Properties } from "csstype";
 import otherColumn from "../../config/otherColumn";
 import { blue } from "@mui/material/colors";
@@ -17,6 +17,7 @@ import Axios from "axios";
 import domain from "../../config/domain";
 import drawerWidthSettings from "../../config/drawerWidthSettings";
 import SideBar from "../SideBar/SideBar";
+import { FormControlUnstyledContext } from "@mui/base";
 
 interface GenericTableProps {
   drawerOpen: boolean;
@@ -123,26 +124,38 @@ const GenericTable = ({
 
   const [hoveringLongText, setHoveringLongText] = useState<boolean>(false);
 
+  const [sortDirection, setSortDirection] = useState<boolean>(false);
+
   const deleteItem = async (item: Item) => {
     await Axios.delete(domain + "delete" + item.type + "/" + item._id);
     refresh();
   };
 
   const sortData = (property: string) => {
-    debugger;
     if (filteredData)
       setFilteredData(
         (filteredData as Item[]).sort((itemA: Item, itemB: Item) => {
-          debugger;
+          setSortDirection(!sortDirection);
           return (
-            -1 *
-            itemA["title" as keyof Item].localeCompare(
-              itemB["title" as keyof Item]
+            (sortDirection ? 1 : -1) *
+            itemA[property as keyof Item].localeCompare(
+              itemB[property as keyof Item]
             )
           );
         })
       );
   };
+
+  useEffect(() => {
+    setFilteredData(
+      data.filter((item: Item) => {
+        return (
+          item.title.toLocaleLowerCase().includes(query.toLocaleLowerCase()) ||
+          !query
+        );
+      })
+    );
+  }, [data]);
 
   return (
     <Box component="main" sx={tableStyle}>
@@ -158,17 +171,18 @@ const GenericTable = ({
             <Table sx={tableSx}>
               <TableHead>
                 <TableRow>
-                  {Array.from(columns, ([_, header]) => ({ header })).map(
-                    (column, index) => (
-                      <TableCell
-                        key={`headCell-${index}`}
-                        sx={tableHeaderSx}
-                        onClick={() => sortData(column.header)}
-                      >
-                        {column.header}
-                      </TableCell>
-                    )
-                  )}
+                  {Array.from(columns, ([key, header]) => ({
+                    key,
+                    header,
+                  })).map((column, index) => (
+                    <TableCell
+                      key={`headCell-${index}`}
+                      sx={tableHeaderSx}
+                      onClick={() => sortData(column.key)}
+                    >
+                      {column.header}
+                    </TableCell>
+                  ))}
                 </TableRow>
               </TableHead>
               <TableBody>

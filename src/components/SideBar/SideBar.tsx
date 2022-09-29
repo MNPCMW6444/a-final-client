@@ -33,7 +33,6 @@ const SideBar = ({
   setDrawerOpen,
 }: SideBarProps) => {
   const navigateTo = useNavigate();
-
   const [selected, setSelected] = useState(route);
 
   const drawer = (
@@ -66,10 +65,10 @@ const SideBar = ({
           alignItems="center"
           height="20vh"
         >
-          {Object.values(PageTypes).map((option) => {
+          {Object.values(PageTypes).map((option, index) => {
             const SelectButton = selectButton(option, selected === option);
             return (
-              <Grid item width="80%">
+              <Grid key={index} item width="80%">
                 <SelectButton
                   onClick={() => {
                     navigateTo("/" + option);
