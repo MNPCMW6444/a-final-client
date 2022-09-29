@@ -8,13 +8,15 @@ import Typography from "@mui/material/Typography";
 import BT from "../../assets/BT.png";
 import { useNavigate } from "react-router-dom";
 import ButtonGroup from "@mui/material/ButtonGroup";
-import { useState } from "react";
+import { Dispatch, SetStateAction, useState } from "react";
 import { PageTypes } from "../../utils/enums";
 import selectButton from "../selectButton/selectButton";
 
 interface SideBarProps {
   route: string;
   refresh: () => void;
+  drawerOpen: boolean;
+  setDrawerOpen: Dispatch<SetStateAction<boolean>>;
 }
 
 const boxSx = {
@@ -24,21 +26,18 @@ const boxSx = {
   maxWidth: { xs: "250px" },
 };
 
-const drawerStyle = {
-  display: { xs: "none", sm: "block" },
-  "& .MuiDrawer-paper": {
-    boxSizing: "border-box",
-    width: drawerWidthSettings.width,
-  },
-};
-
-const SideBar = ({ route, refresh }: SideBarProps) => {
+const SideBar = ({
+  route,
+  refresh,
+  drawerOpen,
+  setDrawerOpen,
+}: SideBarProps) => {
   const navigateTo = useNavigate();
 
   const [selected, setSelected] = useState(route);
 
-  return (
-    <Drawer variant="permanent" sx={drawerStyle} open>
+  const drawer = (
+    <>
       <Grid
         container
         direction="column"
@@ -83,7 +82,46 @@ const SideBar = ({ route, refresh }: SideBarProps) => {
           })}
         </Grid>
       </ButtonGroup>
-    </Drawer>
+    </>
+  );
+
+  return (
+    <Box
+      component="nav"
+      sx={{ width: { sm: drawerWidthSettings.width }, flexShrink: { sm: 0 } }}
+      aria-label="mailbox folders"
+    >
+      <Drawer
+        variant="temporary"
+        open={drawerOpen}
+        onClose={() => setDrawerOpen(!drawerOpen)}
+        ModalProps={{
+          keepMounted: true, // Better open performance on mobile.
+        }}
+        sx={{
+          display: { xs: "block", sm: "none" },
+          "& .MuiDrawer-paper": {
+            boxSizing: "border-box",
+            width: drawerWidthSettings.width,
+          },
+        }}
+      >
+        {drawer}
+      </Drawer>
+      <Drawer
+        variant="permanent"
+        sx={{
+          display: { xs: "none", sm: "block" },
+          "& .MuiDrawer-paper": {
+            boxSizing: "border-box",
+            width: drawerWidthSettings.width,
+          },
+        }}
+        open
+      >
+        {drawer}
+      </Drawer>
+    </Box>
   );
 };
 

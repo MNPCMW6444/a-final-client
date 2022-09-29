@@ -45,7 +45,7 @@ function App() {
   const [refresher, setRefreher] = useState<number>(0);
   const refresh = () => setRefreher(refresher + 1);
 
-  const [mobileOpen, setMobileOpen] = useState(false);
+  const [drawerOpen, setDrawerOpen] = useState(false);
 
   const openModal = (editedItem: any) => {
     setIsCreateFormOpen(true);
@@ -81,14 +81,16 @@ function App() {
       <TopBar
         query={query}
         setQuery={setQuery}
-        mobileOpen={mobileOpen}
-        setMobileOpen={setMobileOpen}
+        drawerOpen={drawerOpen}
+        setDrawerOpen={setDrawerOpen}
       />
       <CalendarRouter
+        setDrawerOpen={setDrawerOpen}
         openModal={openModal}
         query={query}
         refresher={refresher}
         refresh={refresh}
+        drawerOpen={drawerOpen}
       />
     </ThemeProvider>
   );

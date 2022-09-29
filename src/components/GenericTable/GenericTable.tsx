@@ -3,7 +3,7 @@ import TableCell from "@mui/material/TableCell";
 import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
-import { useState } from "react";
+import { Dispatch, SetStateAction, useState } from "react";
 import { Properties } from "csstype";
 import otherColumn from "../../config/otherColumn";
 import { blue } from "@mui/material/colors";
@@ -19,12 +19,14 @@ import drawerWidthSettings from "../../config/drawerWidthSettings";
 import SideBar from "../SideBar/SideBar";
 
 interface GenericTableProps {
+  drawerOpen: boolean;
   data: Item[];
   openModal: (editedItem: any) => void;
   columns: Map<string, string>;
   query: string;
   refresh: () => void;
   route: string;
+  setDrawerOpen: Dispatch<SetStateAction<boolean>>;
 }
 
 const outerGridSx = {
@@ -101,12 +103,14 @@ const navigationStyle = {
 };
 
 const GenericTable = ({
+  drawerOpen,
   data,
   openModal,
   columns,
   query,
   refresh,
   route,
+  setDrawerOpen,
 }: GenericTableProps) => {
   const [filteredData, setFilteredData] = useState<Item[]>(
     data.filter((item: Item) => {
@@ -298,7 +302,12 @@ const GenericTable = ({
         </Grid>
       </Grid>
       <Box component="nav" sx={navigationStyle}>
-        <SideBar route={route} refresh={refresh} />
+        <SideBar
+          route={route}
+          refresh={refresh}
+          drawerOpen={drawerOpen}
+          setDrawerOpen={setDrawerOpen}
+        />
       </Box>
     </Box>
   );

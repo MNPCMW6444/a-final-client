@@ -1,17 +1,19 @@
 import AppBar from "@mui/material/AppBar";
 import MenuIcon from "@mui/icons-material/Menu";
-import SearchBar from "@mkyy/mui-search-bar";
 import IconButton from "@mui/material/IconButton";
 import drawerWidthSettings from "../../config/drawerWidthSettings";
 import Toolbar from "@mui/material/Toolbar";
 import Grid from "@mui/material/Grid";
 import Typography from "@mui/material/Typography";
+import TextField from "@mui/material/TextField";
+import SearchIcon from "@mui/icons-material/Search";
+import blue from "@mui/material/colors/blue";
 
 interface TopBarProps {
   query: string;
   setQuery: React.Dispatch<React.SetStateAction<string>>;
-  mobileOpen: boolean;
-  setMobileOpen: React.Dispatch<React.SetStateAction<boolean>>;
+  drawerOpen: boolean;
+  setDrawerOpen: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 const appBarStyle = {
@@ -24,8 +26,8 @@ const openButtonStyle = { mr: 2, display: { sm: "none" } };
 const TopBar = ({
   setQuery,
   query,
-  mobileOpen,
-  setMobileOpen,
+  drawerOpen,
+  setDrawerOpen,
 }: TopBarProps) => (
   <AppBar position="fixed" sx={appBarStyle}>
     <Toolbar>
@@ -41,7 +43,7 @@ const TopBar = ({
             color="inherit"
             aria-label="open drawer"
             edge="start"
-            onClick={() => setMobileOpen(!mobileOpen)}
+            onClick={() => setDrawerOpen(!drawerOpen)}
             sx={openButtonStyle}
           >
             <MenuIcon />
@@ -52,14 +54,25 @@ const TopBar = ({
             Blue Calendar
           </Typography>
         </Grid>
-        <Grid item>
-          <SearchBar
-            placeholder="Search By Title..."
-            value={query}
-            style={{ color: "black" }}
-            width="100%"
-            onChange={(e) => setQuery(e.target.value)}
-          />
+        <Grid item container alignItems="center" columnSpacing={0.5}>
+          <Grid item>
+            <SearchIcon />
+          </Grid>
+          <Grid item>
+            <TextField
+              onChange={(
+                e: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>
+              ) => setQuery(e.target.value)}
+              placeholder="Search By Title..."
+              value={query}
+              variant="outlined"
+              sx={{
+                input: { color: "white" },
+                backgroundColor: blue[600],
+                borderRadius: "10px",
+              }}
+            />
+          </Grid>
         </Grid>
       </Grid>
     </Toolbar>
