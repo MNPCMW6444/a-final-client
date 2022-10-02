@@ -39,12 +39,13 @@ const outerGridSx = {
 
 const tableItemSx = { width: "100%", maxHeight: "70vh", overflowY: "scroll" };
 
-const tableHeaderSx = {
+const tableHeaderSx = (isClickable: boolean) => ({
   textAlign: "center",
   backgroundColor: blue[600],
   border: "0.1em solid #ddd",
   color: "white",
-};
+  cursor: isClickable ? "pointer" : "auto",
+});
 
 const tableCellSx = {
   backgroundColor: blue[200],
@@ -125,15 +126,17 @@ const GenericTable = ({
     })
   );
 
-  const pageType = PageTypes[route as keyof typeof PageTypes];
-
   const [hoveringLongText, setHoveringLongText] = useState<boolean>(false);
 
   const [sortDirection, setSortDirection] = useState<boolean>(false);
   const [sortColumn, setSortColumn] = useState<string>();
 
   const [activeQuickFilters, setActiveQuickfilters] = useState<boolean[]>(
-    quickFiltersConfig[pageType].map(() => false)
+    quickFiltersConfig[
+      PageTypes[
+        route as keyof typeof PageTypes
+      ] as keyof typeof quickFiltersConfig
+    ].map(() => false)
   );
 
   const deleteItem = async (item: Item) => {
@@ -165,7 +168,13 @@ const GenericTable = ({
           !query
       )
     );
-    setActiveQuickfilters(quickFiltersConfig[pageType].map(() => false));
+    setActiveQuickfilters(
+      quickFiltersConfig[
+        PageTypes[
+          route as keyof typeof PageTypes
+        ] as keyof typeof quickFiltersConfig
+      ].map(() => false)
+    );
   }, [data, query, route]);
 
   useEffect(() => {
@@ -178,7 +187,11 @@ const GenericTable = ({
     activeQuickFilters.forEach((filter, i) => {
       if (filter)
         newData = newData.filter(
-          quickFiltersConfig[pageType][i].filterFunction
+          quickFiltersConfig[
+            PageTypes[
+              route as keyof typeof PageTypes
+            ] as keyof typeof quickFiltersConfig
+          ][i].filterFunction
         );
     });
     setFilteredData(newData);
@@ -200,7 +213,11 @@ const GenericTable = ({
               Filters:
             </Typography>
           </Grid>
-          {quickFiltersConfig[pageType].map((filter, i) => (
+          {quickFiltersConfig[
+            PageTypes[
+              route as keyof typeof PageTypes
+            ] as keyof typeof quickFiltersConfig
+          ].map((filter, i) => (
             <Grid item>
               <GenericQuickFilter
                 key={i}
@@ -221,19 +238,26 @@ const GenericTable = ({
                     key,
                     header,
                   })).map((column, index) => {
-                    debugger;
                     return (
                       <TableCell
                         key={`headCell-${index}`}
-                        sx={tableHeaderSx}
-                        onClick={() => sortData(column.key)}
+                        sx={tableHeaderSx(
+                          column.key !== "other" && column.key !== "actions"
+                        )}
+                        onClick={
+                          column.key !== "other" && column.key !== "actions"
+                            ? () => sortData(column.key)
+                            : () => {}
+                        }
                       >
-                        {column.header +
-                          (sortColumn === column.key
-                            ? sortDirection
-                              ? "↑"
-                              : "↓"
-                            : "")}
+                        {column.key !== "other" && column.key !== "actions"
+                          ? column.header +
+                            (sortColumn === column.key
+                              ? sortDirection
+                                ? "↑"
+                                : "↓"
+                              : "")
+                          : column.header}
                       </TableCell>
                     );
                   })}

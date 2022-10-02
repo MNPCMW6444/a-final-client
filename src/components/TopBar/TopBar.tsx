@@ -21,6 +21,14 @@ const appBarStyle = {
   ml: { sm: `${drawerWidthSettings.width}px` },
 };
 
+const searchBarStyle = {
+  input: { color: "white" },
+  backgroundColor: blue[600],
+  borderRadius: "10px",
+  width: "200%",
+  maxWidth: "350px",
+};
+
 const openButtonStyle = { mr: 2, display: { sm: "none" } };
 
 const TopBar = ({
@@ -36,7 +44,6 @@ const TopBar = ({
         justifyContent="flex-start"
         alignItems="center"
         wrap="nowrap"
-        spacing={5}
       >
         <Grid item>
           <IconButton
@@ -54,11 +61,11 @@ const TopBar = ({
             Blue Calendar
           </Typography>
         </Grid>
-        <Grid item container alignItems="center" columnSpacing={0.5}>
+        <Grid item container justifyContent="center" alignItems="center">
           <Grid item>
             <SearchIcon />
           </Grid>
-          <Grid item>
+          <Grid item width="50%">
             <TextField
               onChange={(
                 e: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>
@@ -66,11 +73,8 @@ const TopBar = ({
               placeholder="Search By Title..."
               value={query}
               variant="outlined"
-              sx={{
-                input: { color: "white" },
-                backgroundColor: blue[600],
-                borderRadius: "10px",
-              }}
+              sx={searchBarStyle}
+              autoComplete="off"
             />
           </Grid>
         </Grid>

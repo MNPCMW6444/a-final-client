@@ -31,6 +31,7 @@ const GenericQuickFilter = ({
           temp[index] = !temp[index];
           setIsActive(temp);
         }}
+        checked={isActive[index]}
       />{" "}
     </Grid>
   </Grid>
