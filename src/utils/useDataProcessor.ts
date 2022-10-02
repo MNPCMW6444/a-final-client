@@ -47,15 +47,32 @@ const useDataProcessor = (refresher: number) => {
       event.beginningTime =
         new Date(event.beginningTime).toLocaleDateString() +
         ", " +
-        new Date(event.beginningTime).toLocaleTimeString().substring(0, 4);
+        new Date(event.beginningTime)
+          .toLocaleTimeString()
+          .substring(
+            0,
+            new Date(event.beginningTime).toLocaleTimeString().indexOf(":", 3)
+          );
       event.endingTime =
         new Date(event.endingTime).toLocaleDateString() +
         ", " +
-        new Date(event.endingTime).toLocaleTimeString().substring(0, 4);
+        new Date(event.endingTime)
+          .toLocaleTimeString()
+          .substring(
+            0,
+            new Date(event.endingTime).toLocaleTimeString().indexOf(":", 3)
+          );
       event.notificationDate =
         new Date(event.notificationDate).toLocaleDateString() +
         ", " +
-        new Date(event.notificationDate).toLocaleTimeString().substring(0, 4);
+        new Date(event.notificationDate)
+          .toLocaleTimeString()
+          .substring(
+            0,
+            new Date(event.notificationDate)
+              .toLocaleTimeString()
+              .indexOf(":", 3)
+          );
       event.color = colorMap.get(event.color);
       event.type = ItemTypes.event;
 
@@ -66,7 +83,12 @@ const useDataProcessor = (refresher: number) => {
       task.untilDate =
         new Date(task.untilDate).toLocaleDateString() +
         ", " +
-        new Date(task.untilDate).toLocaleTimeString().substring(0, 4);
+        new Date(task.untilDate)
+          .toLocaleTimeString()
+          .substring(
+            0,
+            new Date(task.untilDate).toLocaleTimeString().indexOf(":", 3)
+          );
       if (task.estimatedTime)
         switch (task.estimatedTime.slice(-1)) {
           case "y":
