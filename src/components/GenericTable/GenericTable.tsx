@@ -20,6 +20,7 @@ import SideBar from "../SideBar/SideBar";
 import quickFiltersConfig from "../../config/quickFilters";
 import GenericQuickFilter from "./GenericQuickFilter";
 import { Typography } from "@mui/material";
+import { PageTypes } from "../../utils/enums";
 
 interface GenericTableProps {
   drawerOpen: boolean;
@@ -124,12 +125,14 @@ const GenericTable = ({
     })
   );
 
+  const pageType = PageTypes[route as keyof typeof PageTypes];
+
   const [hoveringLongText, setHoveringLongText] = useState<boolean>(false);
 
   const [sortDirection, setSortDirection] = useState<boolean>(false);
 
   const [activeQuickFilters, setActiveQuickfilters] = useState<boolean[]>(
-    quickFiltersConfig.map(() => false)
+    quickFiltersConfig[pageType].map(() => false)
   );
 
   const deleteItem = async (item: Item) => {
@@ -152,18 +155,16 @@ const GenericTable = ({
       );
   };
 
-  useEffect(
-    () =>
-      setFilteredData(
-        data.filter(
-          (item: Item) =>
-            item.title
-              .toLocaleLowerCase()
-              .includes(query.toLocaleLowerCase()) || !query
-        )
-      ),
-    [data, query]
-  );
+  useEffect(() => {
+    setFilteredData(
+      data.filter(
+        (item: Item) =>
+          item.title.toLocaleLowerCase().includes(query.toLocaleLowerCase()) ||
+          !query
+      )
+    );
+    setActiveQuickfilters(quickFiltersConfig[pageType].map(() => false));
+  }, [data, query, route]);
 
   useEffect(() => {
     debugger;
@@ -174,7 +175,9 @@ const GenericTable = ({
     );
     activeQuickFilters.forEach((filter, i) => {
       if (filter)
-        newData = newData.filter(quickFiltersConfig[i].filterFunction);
+        newData = newData.filter(
+          quickFiltersConfig[pageType][i].filterFunction
+        );
     });
     setFilteredData(newData);
   }, [activeQuickFilters]);
@@ -191,9 +194,9 @@ const GenericTable = ({
       >
         <Grid item container alignItems="center" columnSpacing={0.5}>
           <Grid item>
-            <Typography>Quick Filters:</Typography>
+            <Typography>Filters:</Typography>
           </Grid>
-          {quickFiltersConfig.map((filter, i) => (
+          {quickFiltersConfig[pageType].map((filter, i) => (
             <Grid item>
               <GenericQuickFilter
                 key={i}
