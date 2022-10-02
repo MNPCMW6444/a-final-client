@@ -1,6 +1,6 @@
-import Button from "@mui/material/Button";
 import blue from "@mui/material/colors/blue";
 import { Dispatch, SetStateAction } from "react";
+import { Grid, InputLabel, Switch } from "@mui/material";
 
 interface GenericQuickFilterProps {
   index: number;
@@ -9,18 +9,10 @@ interface GenericQuickFilterProps {
   setIsActive: Dispatch<SetStateAction<boolean[]>>;
 }
 
-const selectedStyle = (isActive: boolean) =>
-  isActive
-    ? {
-        backgroundColor: blue[200],
-        "&:hover": { backgroundColor: blue[200] },
-        "&:active": { backgroundColor: blue[200] },
-      }
-    : {
-        backgroundColor: blue[50],
-        "&:hover": { backgroundColor: blue[100] },
-        "&:active": { backgroundColor: blue[100] },
-      };
+const selectedStyle = (isActive: boolean) => ({
+  fontSize: "1.2em",
+  color: isActive ? blue[900] : "auto",
+});
 
 const GenericQuickFilter = ({
   index,
@@ -28,15 +20,19 @@ const GenericQuickFilter = ({
   isActive,
   setIsActive,
 }: GenericQuickFilterProps) => (
-  <Button
-    sx={selectedStyle(isActive[index])}
-    onClick={() => {
-      const temp = [...isActive];
-      temp[index] = !temp[index];
-      setIsActive(temp);
-    }}
-  >
-    {name}
-  </Button>
+  <Grid container alignItems="center">
+    <Grid item>
+      <InputLabel sx={selectedStyle(isActive[index])}> {name + ":"}</InputLabel>
+    </Grid>
+    <Grid item>
+      <Switch
+        onClick={() => {
+          const temp = [...isActive];
+          temp[index] = !temp[index];
+          setIsActive(temp);
+        }}
+      />{" "}
+    </Grid>
+  </Grid>
 );
 export default GenericQuickFilter;

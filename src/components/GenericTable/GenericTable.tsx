@@ -194,7 +194,9 @@ const GenericTable = ({
       >
         <Grid item container alignItems="center" columnSpacing={1}>
           <Grid item>
-            <Typography>Filters:</Typography>
+            <Typography variant="button" fontSize="1.2em">
+              Filters:
+            </Typography>
           </Grid>
           {quickFiltersConfig[pageType].map((filter, i) => (
             <Grid item>
