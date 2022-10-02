@@ -130,6 +130,7 @@ const GenericTable = ({
   const [hoveringLongText, setHoveringLongText] = useState<boolean>(false);
 
   const [sortDirection, setSortDirection] = useState<boolean>(false);
+  const [sortColumn, setSortColumn] = useState<string>();
 
   const [activeQuickFilters, setActiveQuickfilters] = useState<boolean[]>(
     quickFiltersConfig[pageType].map(() => false)
@@ -145,6 +146,7 @@ const GenericTable = ({
       setFilteredData(
         (filteredData as Item[]).sort((itemA: Item, itemB: Item) => {
           setSortDirection(!sortDirection);
+          setSortColumn(property);
           return (
             (sortDirection ? 1 : -1) *
             itemA[property as keyof Item].localeCompare(
@@ -218,15 +220,23 @@ const GenericTable = ({
                   {Array.from(columns, ([key, header]) => ({
                     key,
                     header,
-                  })).map((column, index) => (
-                    <TableCell
-                      key={`headCell-${index}`}
-                      sx={tableHeaderSx}
-                      onClick={() => sortData(column.key)}
-                    >
-                      {column.header}
-                    </TableCell>
-                  ))}
+                  })).map((column, index) => {
+                    debugger;
+                    return (
+                      <TableCell
+                        key={`headCell-${index}`}
+                        sx={tableHeaderSx}
+                        onClick={() => sortData(column.key)}
+                      >
+                        {column.header +
+                          (sortColumn === column.key
+                            ? sortDirection
+                              ? "↑"
+                              : "↓"
+                            : "")}
+                      </TableCell>
+                    );
+                  })}
                 </TableRow>
               </TableHead>
               <TableBody>
