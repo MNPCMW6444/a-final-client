@@ -190,9 +190,9 @@ const GenericTable = ({
         alignItems="center"
         width="100%"
         sx={outerGridSx}
-        columnSpacing={1}
+        rowSpacing={3}
       >
-        <Grid item container alignItems="center" columnSpacing={0.5}>
+        <Grid item container alignItems="center" columnSpacing={1}>
           <Grid item>
             <Typography>Filters:</Typography>
           </Grid>

@@ -9,7 +9,18 @@ interface GenericQuickFilterProps {
   setIsActive: Dispatch<SetStateAction<boolean[]>>;
 }
 
-const selectedStyle = { backgroundColor: blue[100] };
+const selectedStyle = (isActive: boolean) =>
+  isActive
+    ? {
+        backgroundColor: blue[200],
+        "&:hover": { backgroundColor: blue[200] },
+        "&:active": { backgroundColor: blue[200] },
+      }
+    : {
+        backgroundColor: blue[50],
+        "&:hover": { backgroundColor: blue[100] },
+        "&:active": { backgroundColor: blue[100] },
+      };
 
 const GenericQuickFilter = ({
   index,
@@ -18,7 +29,7 @@ const GenericQuickFilter = ({
   setIsActive,
 }: GenericQuickFilterProps) => (
   <Button
-    sx={isActive[index] ? selectedStyle : undefined}
+    sx={selectedStyle(isActive[index])}
     onClick={() => {
       const temp = [...isActive];
       temp[index] = !temp[index];
