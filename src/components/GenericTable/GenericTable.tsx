@@ -17,7 +17,9 @@ import Axios from "axios";
 import domain from "../../config/domain";
 import drawerWidthSettings from "../../config/drawerWidthSettings";
 import SideBar from "../SideBar/SideBar";
-import { FormControlUnstyledContext } from "@mui/base";
+import quickFiltersConfig from "../../config/quickFilters";
+import GenericQuickFilter from "./GenericQuickFilter";
+import { Typography } from "@mui/material";
 
 interface GenericTableProps {
   drawerOpen: boolean;
@@ -126,6 +128,10 @@ const GenericTable = ({
 
   const [sortDirection, setSortDirection] = useState<boolean>(false);
 
+  const [activeQuickFilters, setActiveQuickfilters] = useState<boolean[]>(
+    quickFiltersConfig.map(() => false)
+  );
+
   const deleteItem = async (item: Item) => {
     await Axios.delete(domain + "delete" + item.type + "/" + item._id);
     refresh();
@@ -146,16 +152,32 @@ const GenericTable = ({
       );
   };
 
+  useEffect(
+    () =>
+      setFilteredData(
+        data.filter(
+          (item: Item) =>
+            item.title
+              .toLocaleLowerCase()
+              .includes(query.toLocaleLowerCase()) || !query
+        )
+      ),
+    [data, query]
+  );
+
   useEffect(() => {
-    setFilteredData(
-      data.filter((item: Item) => {
-        return (
-          item.title.toLocaleLowerCase().includes(query.toLocaleLowerCase()) ||
-          !query
-        );
-      })
+    debugger;
+    let newData = data.filter(
+      (item: Item) =>
+        item.title.toLocaleLowerCase().includes(query.toLocaleLowerCase()) ||
+        !query
     );
-  }, [data]);
+    activeQuickFilters.forEach((filter, i) => {
+      if (filter)
+        newData = newData.filter(quickFiltersConfig[i].filterFunction);
+    });
+    setFilteredData(newData);
+  }, [activeQuickFilters]);
 
   return (
     <Box component="main" sx={tableStyle}>
@@ -165,7 +187,24 @@ const GenericTable = ({
         alignItems="center"
         width="100%"
         sx={outerGridSx}
+        columnSpacing={1}
       >
+        <Grid item container alignItems="center" columnSpacing={0.5}>
+          <Grid item>
+            <Typography>Quick Filters:</Typography>
+          </Grid>
+          {quickFiltersConfig.map((filter, i) => (
+            <Grid item>
+              <GenericQuickFilter
+                key={i}
+                index={i}
+                name={filter.name}
+                isActive={activeQuickFilters}
+                setIsActive={setActiveQuickfilters}
+              />
+            </Grid>
+          ))}
+        </Grid>
         <Grid item sx={tableItemSx}>
           <TableContainer>
             <Table sx={tableSx}>
