@@ -16,11 +16,11 @@ const buttonSx = (label: string, isSelected: boolean) => ({
   },
 });
 
-const selectButton =
+const SelectButton =
   (label: string, isSelected: boolean) => (props: ButtonProps) =>
     (
       <Button {...props} sx={buttonSx(label, isSelected)}>
         {label}
       </Button>
     );
-export default selectButton;
+export default SelectButton;

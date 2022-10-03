@@ -1,7 +1,7 @@
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import { Task, Event, Item } from "../../types/dataTypes";
 import columnsConfig from "../../config/columns";
-import useDataProcessor from "../../utils/useDataProcessor";
+import useDataProcessor from "../../hooks/useDataProcessor";
 import GenericTable from "../GenericTable/GenericTable";
 import { ErrorBoundary } from "react-error-boundary";
 import Box from "@mui/material/Box";

@@ -18,7 +18,7 @@ import domain from "../../config/domain";
 import drawerWidthSettings from "../../config/drawerWidthSettings";
 import SideBar from "../SideBar/SideBar";
 import quickFiltersConfig from "../../config/quickFilters";
-import GenericQuickFilter from "./GenericQuickFilter";
+import GenericQuickFilter from "../QuickFilter/QuickFilter";
 import { Typography } from "@mui/material";
 import { ItemTypes, PageTypes } from "../../utils/enums";
 
@@ -184,14 +184,14 @@ const GenericTable = ({
         item.title.toLocaleLowerCase().includes(query.toLocaleLowerCase()) ||
         !query
     );
-    activeQuickFilters.forEach((filter, i) => {
+    activeQuickFilters.forEach((filter, index) => {
       if (filter)
         newData = newData.filter(
           quickFiltersConfig[
             PageTypes[
               route as keyof typeof PageTypes
             ] as keyof typeof quickFiltersConfig
-          ][i].filterFunction
+          ][index].filterFunction
         );
     });
     setFilteredData(newData);
@@ -217,11 +217,11 @@ const GenericTable = ({
             PageTypes[
               route as keyof typeof PageTypes
             ] as keyof typeof quickFiltersConfig
-          ].map((filter, i) => (
+          ].map((filter, index) => (
             <Grid item>
               <GenericQuickFilter
-                key={i}
-                index={i}
+                key={index}
+                index={index}
                 name={filter.name}
                 isActive={activeQuickFilters}
                 setIsActive={setActiveQuickfilters}
@@ -297,8 +297,8 @@ const GenericTable = ({
                                           key,
                                           header,
                                         })
-                                      ).map((otherColumnMap, i) => (
-                                        <Grid item key={i} sx={otherStyle}>
+                                      ).map((otherColumnMap, index) => (
+                                        <Grid item key={index} sx={otherStyle}>
                                           <StyledHeader>
                                             {otherColumnMap.header}
                                           </StyledHeader>
@@ -320,14 +320,14 @@ const GenericTable = ({
                                         key,
                                         header,
                                       })
-                                    ).map((otherColumnMap, i) => (
+                                    ).map((otherColumnMap, index) => (
                                       <Grid
                                         item
                                         container
                                         direction="column"
                                         justifyContent="center"
                                         alignItems="center"
-                                        key={i}
+                                        key={index}
                                         sx={innerOtherStyle}
                                       >
                                         <Box>

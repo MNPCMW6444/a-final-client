@@ -19,7 +19,6 @@ const modalStyle = {
   height: "80vh",
   border: "0.2rem solid #000",
   boxShadow: 24,
-  overflow: "scroll",
   backgroundColor: "white",
   borderRadius: "5vw",
   padding: "4vw",
@@ -45,7 +44,7 @@ function App() {
   const [refresher, setRefreher] = useState<number>(0);
   const refresh = () => setRefreher(refresher + 1);
 
-  const [drawerOpen, setDrawerOpen] = useState(false);
+  const [drawerOpen, setDrawerOpen] = useState<boolean>(false);
 
   const openModal = (editedItem: any) => {
     setIsCreateFormOpen(true);

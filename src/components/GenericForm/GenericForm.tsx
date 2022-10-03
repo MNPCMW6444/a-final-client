@@ -11,7 +11,7 @@ import TextInput from "./TextInput";
 import SelectInput from "./SelectInput";
 import DateInput from "./DateInput";
 import { Typography } from "@mui/material";
-import selectButton from "../selectButton/selectButton";
+import selectButton from "../hoc/SelectButton";
 
 interface GenericFormProps {
   closeForm: () => void;

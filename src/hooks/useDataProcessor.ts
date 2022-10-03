@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { Item, Task, Event } from "../types/dataTypes";
 import domain from "../config/domain";
 import Axios from "axios";
-import { ItemTypes } from "./enums";
+import { ItemTypes } from "../utils/enums";
 
 const colorMap = new Map();
 colorMap.set("Red", "🔴");
