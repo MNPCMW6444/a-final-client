@@ -1,6 +1,6 @@
 import Grid from "@mui/material/Grid";
 import { useState } from "react";
-import { Item } from "../../types/dataTypes";
+import { Item } from "../../types";
 import Button from "@mui/material/Button";
 import Axios from "axios";
 import domain from "../../config/domain";
@@ -11,7 +11,7 @@ import TextInput from "./TextInput";
 import SelectInput from "./SelectInput";
 import DateInput from "./DateInput";
 import { Typography } from "@mui/material";
-import selectButton from "../hoc/SelectButton";
+import selectButton from "../CalendarButton/CalendarButton";
 
 interface GenericFormProps {
   closeForm: () => void;

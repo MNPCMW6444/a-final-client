@@ -1,5 +1,5 @@
 import OutlinedInput from "@mui/material/OutlinedInput";
-import { Item } from "../../types/dataTypes";
+import { Item } from "../../types/index";
 
 interface TextInputProps {
   placeHolder: string;

@@ -9,7 +9,7 @@ import otherColumn from "../../config/otherColumn";
 import { blue } from "@mui/material/colors";
 import styled from "@emotion/styled";
 import Box from "@mui/material/Box";
-import { Item } from "../../types/dataTypes";
+import { Item } from "../../types/index";
 import Grid from "@mui/material/Grid";
 import Table from "@mui/material/Table";
 import Button from "@mui/material/Button";

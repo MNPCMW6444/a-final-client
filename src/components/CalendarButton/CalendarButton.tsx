@@ -16,11 +16,11 @@ const buttonSx = (label: string, isSelected: boolean) => ({
   },
 });
 
-const SelectButton =
+const CalendarButton =
   (label: string, isSelected: boolean) => (props: ButtonProps) =>
     (
       <Button {...props} sx={buttonSx(label, isSelected)}>
         {label}
       </Button>
     );
-export default SelectButton;
+export default CalendarButton;

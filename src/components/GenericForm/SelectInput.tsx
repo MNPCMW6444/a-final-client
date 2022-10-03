@@ -1,6 +1,6 @@
 import MenuItem from "@mui/material/MenuItem";
 import Select from "@mui/material/Select";
-import { Item } from "../../types/dataTypes";
+import { Item } from "../../types/index";
 
 interface SelectInputProps {
   dropDownOptions: string[];

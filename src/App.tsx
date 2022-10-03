@@ -9,7 +9,7 @@ import {
 } from "@mui/material";
 import { useState } from "react";
 import Modal from "@mui/material/Modal";
-import { Item } from "./types/dataTypes";
+import { Item } from "./types/index";
 import GenericForm from "./components/GenericForm/GenericForm";
 import TopBar from "./components/TopBar/TopBar";
 import CalendarRouter from "./components/CalendarRouter/CalendarRouter";

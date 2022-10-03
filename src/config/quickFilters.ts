@@ -1,4 +1,4 @@
-import { Item, Task, Event } from "../types/dataTypes";
+import { Item, Task, Event } from "../types/index";
 import { ItemTypes } from "../utils/enums";
 
 const uncompletedTasksFilter = {

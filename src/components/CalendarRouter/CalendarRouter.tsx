@@ -1,5 +1,5 @@
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
-import { Task, Event, Item } from "../../types/dataTypes";
+import { Task, Event, Item } from "../../types/index";
 import columnsConfig from "../../config/columns";
 import useDataProcessor from "../../hooks/useDataProcessor";
 import GenericTable from "../GenericTable/GenericTable";

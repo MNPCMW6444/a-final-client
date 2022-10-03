@@ -10,7 +10,7 @@ import { useNavigate } from "react-router-dom";
 import ButtonGroup from "@mui/material/ButtonGroup";
 import { Dispatch, SetStateAction, useState } from "react";
 import { PageTypes } from "../../utils/enums";
-import selectButton from "../hoc/SelectButton";
+import selectButton from "../CalendarButton/CalendarButton";
 
 interface SideBarProps {
   route: string;
