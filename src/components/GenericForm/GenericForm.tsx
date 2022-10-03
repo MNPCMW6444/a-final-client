@@ -9,9 +9,9 @@ import InputLabel from "@mui/material/InputLabel";
 import { ItemTypes } from "../../utils/enums";
 import TextInput from "./TextInput";
 import SelectInput from "./SelectInput";
-import DateInput from "./DateInput";
 import { Typography } from "@mui/material";
 import selectButton from "../CalendarButton/CalendarButton";
+import DateInput from "./DateInput";
 
 interface GenericFormProps {
   closeForm: () => void;
@@ -70,44 +70,44 @@ const GenericForm = ({ closeForm, item, refresh }: GenericFormProps) => {
             (
               { key, label, placeHolder, dropDownOptions, datePicker },
               i: number
-            ) => (
-              <Grid
-                item
-                container
-                justifyContent="space-between"
-                alignItems="center"
-                key={i}
-              >
-                <Grid item>
-                  <InputLabel>{label + ": "}</InputLabel>
-                </Grid>
-                <Grid item sx={fieldStyle}>
-                  {placeHolder ? (
-                    <TextInput
-                      placeHolder={placeHolder}
-                      dataKey={key}
-                      itemState={itemState}
-                      setItemState={setItemState}
-                    />
-                  ) : dropDownOptions ? (
-                    <SelectInput
-                      dropDownOptions={dropDownOptions}
-                      dataKey={key}
-                      itemState={itemState}
-                      setItemState={setItemState}
-                    />
-                  ) : (
-                    datePicker && (
+            ) => {
+              return (
+                <Grid
+                  item
+                  container
+                  justifyContent="space-between"
+                  alignItems="center"
+                  key={i}
+                >
+                  <Grid item>
+                    <InputLabel>{label + ": "}</InputLabel>
+                  </Grid>
+                  <Grid item sx={fieldStyle}>
+                    {placeHolder ? (
+                      <TextInput
+                        placeHolder={placeHolder}
+                        dataKey={key}
+                        itemState={itemState}
+                        setItemState={setItemState}
+                      />
+                    ) : dropDownOptions ? (
+                      <SelectInput
+                        dropDownOptions={dropDownOptions}
+                        dataKey={key}
+                        itemState={itemState}
+                        setItemState={setItemState}
+                      />
+                    ) : (
                       <DateInput
                         dataKey={key}
                         itemState={itemState}
                         setItemState={setItemState}
                       />
-                    )
-                  )}
+                    )}
+                  </Grid>
                 </Grid>
-              </Grid>
-            )
+              );
+            }
           )}
       </Grid>
       <Grid item container justifyContent="center" columnSpacing={1}>
