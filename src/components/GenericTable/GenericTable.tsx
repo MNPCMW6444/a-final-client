@@ -33,15 +33,11 @@ interface GenericTableProps {
   setDrawerOpen: Dispatch<SetStateAction<boolean>>;
 }
 
-  width: 240,
-  autoWidth: { sm: `calc(100% - ${240}px)` },
-};
-
 const outerGridSx = {
   overflow: "hidden",
 };
 
-const tableItemSx = { width: "100%", maxHeight: "70vh", overflowY: "scroll" };
+const tableItemSx = { width: "100%", maxHeight: "60vh", overflowY: "scroll" };
 
 const tableHeaderSx = (isClickable: boolean) => ({
   textAlign: "center",
