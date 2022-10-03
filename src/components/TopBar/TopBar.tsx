@@ -8,13 +8,13 @@ import Typography from "@mui/material/Typography";
 import TextField from "@mui/material/TextField";
 import SearchIcon from "@mui/icons-material/Search";
 import blue from "@mui/material/colors/blue";
-import { Dispatch } from "react";
+import { Dispatch, SetStateAction } from "react";
 
 interface TopBarProps {
   query: string;
-  setQuery: Dispatch<React.SetStateAction<string>>;
+  setQuery: Dispatch<SetStateAction<string>>;
   drawerOpen: boolean;
-  setDrawerOpen: Dispatch<React.SetStateAction<boolean>>;
+  setDrawerOpen: Dispatch<SetStateAction<boolean>>;
 }
 
 const appBarStyle = {

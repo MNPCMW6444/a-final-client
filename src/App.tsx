@@ -54,11 +54,11 @@ function App() {
   const closeModal = () => setIsCreateFormOpen(false);
 
   const commonProps = {
-    setDrawerOpen: { setDrawerOpen },
-    drawerOpen: { drawerOpen },
-    refresh: { refresh },
-    query: { query },
-    openModal: { openModal },
+    setDrawerOpen: setDrawerOpen,
+    drawerOpen: drawerOpen,
+    refresh: refresh,
+    query: query,
+    openModal: openModal,
   };
 
   return (

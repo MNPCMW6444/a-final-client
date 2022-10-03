@@ -1,12 +1,12 @@
 import OutlinedInput from "@mui/material/OutlinedInput";
-import { Dispatch } from "react";
+import { Dispatch, SetStateAction } from "react";
 import { Item } from "../../types/index";
 import { styledInputComponent } from "../hoc/styledInputComponent";
 
 interface DateInputProps {
   dataKey: string;
   itemState: Item;
-  setItemState: Dispatch<React.SetStateAction<Item>>;
+  setItemState: Dispatch<SetStateAction<Item>>;
 }
 
 const StyleOutlinedInput = styledInputComponent(OutlinedInput);
