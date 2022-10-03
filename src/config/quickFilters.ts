@@ -1,6 +1,16 @@
 import { Item, Task, Event } from "../types/dataTypes";
 import { ItemTypes } from "../utils/enums";
 
+const uncompletedTasksFilter = {
+  name: "Uncompleted tasks",
+  filterFunction: (task: Item) => (task as Task).status !== "Close",
+};
+
+const highPriorityTasksFilter = {
+  name: "High priority tasks",
+  filterFunction: (task: Item) => (task as Task).priority !== "High",
+};
+
 const quickFilters = {
   today: [
     {
@@ -11,25 +21,10 @@ const quickFilters = {
       name: "Only events",
       filterFunction: (item: Item) => item.type === ItemTypes.event,
     },
-    {
-      name: "Uncompleted tasks",
-      filterFunction: (task: Item) => (task as Task).status !== "Close",
-    },
-    {
-      name: "High priority tasks",
-      filterFunction: (task: Item) => (task as Task).priority !== "High",
-    },
+    uncompletedTasksFilter,
+    highPriorityTasksFilter,
   ],
-  tasks: [
-    {
-      name: "Uncompleted tasks",
-      filterFunction: (task: Item) => (task as Task).status !== "Close",
-    },
-    {
-      name: "High priority tasks",
-      filterFunction: (task: Item) => (task as Task).priority !== "High",
-    },
-  ],
+  tasks: [uncompletedTasksFilter, highPriorityTasksFilter],
   events: [
     {
       name: "Events for today",
