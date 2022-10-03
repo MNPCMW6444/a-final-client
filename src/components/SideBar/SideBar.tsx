@@ -26,8 +26,16 @@ const boxSx = {
   maxWidth: { xs: "250px" },
 };
 
-const drawerSx = {
+const mobileBarSx = {
   display: { xs: "block", sm: "none" },
+  "& .MuiDrawer-paper": {
+    boxSizing: "border-box",
+    width: drawerWidthSettings.width,
+  },
+};
+
+const wideBarSx = {
+  display: { xs: "none", sm: "block" },
   "& .MuiDrawer-paper": {
     boxSizing: "border-box",
     width: drawerWidthSettings.width,
@@ -98,7 +106,7 @@ const SideBar = ({
   );
 
   return (
-    <Box component="nav" sx={sideSx} aria-label="mailbox folders">
+    <Box component="nav" sx={boxSx} aria-label="mailbox folders">
       <Drawer
         variant="temporary"
         open={drawerOpen}
@@ -106,11 +114,11 @@ const SideBar = ({
         ModalProps={{
           keepMounted: true,
         }}
-        sx={drawerSx}
+        sx={mobileBarSx}
       >
         {drawer}
       </Drawer>
-      <Drawer variant="permanent" sx={drawerSx} open>
+      <Drawer variant="permanent" sx={wideBarSx} open>
         {drawer}
       </Drawer>
     </Box>

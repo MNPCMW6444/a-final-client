@@ -177,7 +177,6 @@ const GenericTable = ({
   }, [data, query, route]);
 
   useEffect(() => {
-    debugger;
     let newData = data.filter(
       (item: Item) =>
         item.title.toLocaleLowerCase().includes(query.toLocaleLowerCase()) ||
