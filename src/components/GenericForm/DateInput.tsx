@@ -1,5 +1,6 @@
 import OutlinedInput from "@mui/material/OutlinedInput";
 import { Item } from "../../types/index";
+import { styledInputComponent } from "../hoc/styledInputComponent";
 
 interface DateInputProps {
   dataKey: string;
@@ -7,11 +8,10 @@ interface DateInputProps {
   setItemState: React.Dispatch<React.SetStateAction<Item>>;
 }
 
-const fieldStyle = { width: "70%", marginLeft: "12%" };
+const StyleOutlinedInput = styledInputComponent(OutlinedInput);
 
 const DateInput = ({ dataKey, itemState, setItemState }: DateInputProps) => (
-  <OutlinedInput
-    sx={fieldStyle}
+  <StyleOutlinedInput
     value={
       itemState[dataKey as keyof Item] &&
       new Date(itemState[dataKey as keyof Item]).toISOString().substring(0, 10)

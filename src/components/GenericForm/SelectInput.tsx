@@ -1,6 +1,7 @@
 import MenuItem from "@mui/material/MenuItem";
 import Select from "@mui/material/Select";
 import { Item } from "../../types/index";
+import { styledInputComponent } from "../hoc/styledInputComponent";
 
 interface SelectInputProps {
   dropDownOptions: string[];
@@ -9,7 +10,7 @@ interface SelectInputProps {
   setItemState: React.Dispatch<React.SetStateAction<Item>>;
 }
 
-const fieldStyle = { width: "70%", marginLeft: "12%" };
+const StyleSelect = styledInputComponent(Select);
 
 const SelectInput = ({
   dropDownOptions,
@@ -17,8 +18,7 @@ const SelectInput = ({
   itemState,
   setItemState,
 }: SelectInputProps) => (
-  <Select
-    sx={fieldStyle}
+  <StyleSelect
     value={itemState[dataKey as keyof Item]}
     onChange={(e) => {
       const tempItem = { ...itemState };
@@ -29,7 +29,7 @@ const SelectInput = ({
     {dropDownOptions.map((option: string) => (
       <MenuItem value={option}>{option}</MenuItem>
     ))}
-  </Select>
+  </StyleSelect>
 );
 
 export default SelectInput;

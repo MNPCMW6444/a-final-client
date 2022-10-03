@@ -1,5 +1,6 @@
 import OutlinedInput from "@mui/material/OutlinedInput";
 import { Item } from "../../types/index";
+import { styledInputComponent } from "../hoc/styledInputComponent";
 
 interface TextInputProps {
   placeHolder: string;
@@ -8,7 +9,7 @@ interface TextInputProps {
   setItemState: React.Dispatch<React.SetStateAction<Item>>;
 }
 
-const fieldStyle = { width: "70%", marginLeft: "12%" };
+const StyledOutlinedInput = styledInputComponent(OutlinedInput);
 
 const TextInput = ({
   placeHolder,
@@ -16,8 +17,7 @@ const TextInput = ({
   itemState,
   setItemState,
 }: TextInputProps) => (
-  <OutlinedInput
-    sx={fieldStyle}
+  <StyledOutlinedInput
     value={itemState[dataKey as keyof Item]}
     onChange={(
       e: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>
