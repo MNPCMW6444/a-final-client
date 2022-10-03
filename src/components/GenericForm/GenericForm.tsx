@@ -32,6 +32,22 @@ const GenericForm = ({ closeForm, item, refresh }: GenericFormProps) => {
 
   const fieldsArray = fieldsConfig.get(type);
 
+  const handleFormSend = async () => {
+    try {
+      item.type
+        ? await Axios.put(domain + "edit" + type + "/" + itemState._id, {
+            newItem: itemState,
+          })
+        : await Axios.post(domain + "create" + type, {
+            newItem: itemState,
+          });
+      closeForm();
+      refresh();
+    } catch (err: any) {
+      setErrorMessage(err.response.data.erroMsg);
+    }
+  };
+
   return (
     <Grid container direction="column" rowSpacing={6}>
       <Grid item container justifyContent="center" columnSpacing={0.5}>
@@ -57,19 +73,13 @@ const GenericForm = ({ closeForm, item, refresh }: GenericFormProps) => {
       >
         {itemState &&
           fieldsArray &&
-          Array.from(
-            fieldsArray,
-            ([key, { label, placeHolder, dropDownOptions, datePicker }]) => ({
-              key,
-              label,
-              placeHolder,
-              dropDownOptions,
-              datePicker,
-            })
-          ).map(
+          Array.from(fieldsArray, ([key, props]) => ({
+            key,
+            ...props,
+          })).map(
             (
               { key, label, placeHolder, dropDownOptions, datePicker },
-              i: number
+              index: number
             ) => {
               return (
                 <Grid
@@ -77,7 +87,7 @@ const GenericForm = ({ closeForm, item, refresh }: GenericFormProps) => {
                   container
                   justifyContent="space-between"
                   alignItems="center"
-                  key={i}
+                  key={index}
                 >
                   <Grid item>
                     <InputLabel>{label + ": "}</InputLabel>
@@ -98,11 +108,13 @@ const GenericForm = ({ closeForm, item, refresh }: GenericFormProps) => {
                         setItemState={setItemState}
                       />
                     ) : (
-                      <DateInput
-                        dataKey={key}
-                        itemState={itemState}
-                        setItemState={setItemState}
-                      />
+                      datePicker && (
+                        <DateInput
+                          dataKey={key}
+                          itemState={itemState}
+                          setItemState={setItemState}
+                        />
+                      )
                     )}
                   </Grid>
                 </Grid>
@@ -114,31 +126,7 @@ const GenericForm = ({ closeForm, item, refresh }: GenericFormProps) => {
         <Grid item>
           <Button
             variant="outlined"
-            onClick={async () => {
-              if (item.type)
-                try {
-                  await Axios.put(
-                    domain + "edit" + type + "/" + itemState._id,
-                    {
-                      newItem: itemState,
-                    }
-                  );
-                  closeForm();
-                  refresh();
-                } catch (err: any) {
-                  setErrorMessage(err.response.data.erroMsg);
-                }
-              else
-                try {
-                  await Axios.post(domain + "create" + type, {
-                    newItem: itemState,
-                  });
-                  closeForm();
-                  refresh();
-                } catch (err: any) {
-                  setErrorMessage(err.response.data.erroMsg);
-                }
-            }}
+            onClick={handleFormSend}
             sx={controlButtonStyle}
           >
             Save

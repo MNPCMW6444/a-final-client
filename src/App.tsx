@@ -55,26 +55,26 @@ function App() {
 
   return (
     <ThemeProvider theme={createTheme()}>
-      <Modal
-        open={isCreateFormOpen}
-        onClose={closeModal}
-        closeAfterTransition
-        BackdropProps={{
-          timeout: 500,
-        }}
-      >
-        <Fade in={isCreateFormOpen}>
-          <Box sx={modalStyle}>
-            {editedItem && (
+      {editedItem && (
+        <Modal
+          open={isCreateFormOpen}
+          onClose={closeModal}
+          closeAfterTransition
+          BackdropProps={{
+            timeout: 500,
+          }}
+        >
+          <Fade in={isCreateFormOpen}>
+            <Box sx={modalStyle}>
               <GenericForm
                 closeForm={closeModal}
                 item={editedItem}
                 refresh={refresh}
               />
-            )}
-          </Box>
-        </Fade>
-      </Modal>
+            </Box>
+          </Fade>
+        </Modal>
+      )}
       <ReactNotifications />
       <CssBaseline />
       <TopBar
