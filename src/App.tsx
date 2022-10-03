@@ -53,6 +53,14 @@ function App() {
 
   const closeModal = () => setIsCreateFormOpen(false);
 
+  const commonProps = {
+    setDrawerOpen: { setDrawerOpen },
+    drawerOpen: { drawerOpen },
+    refresh: { refresh },
+    query: { query },
+    openModal: { openModal },
+  };
+
   return (
     <ThemeProvider theme={createTheme()}>
       {editedItem && (
@@ -83,14 +91,7 @@ function App() {
         drawerOpen={drawerOpen}
         setDrawerOpen={setDrawerOpen}
       />
-      <CalendarRouter
-        setDrawerOpen={setDrawerOpen}
-        openModal={openModal}
-        query={query}
-        refresher={refresher}
-        refresh={refresh}
-        drawerOpen={drawerOpen}
-      />
+      <CalendarRouter commonProps={commonProps} refresher={refresher} />
     </ThemeProvider>
   );
 }

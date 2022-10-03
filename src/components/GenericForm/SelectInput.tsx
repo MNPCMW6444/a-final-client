@@ -1,5 +1,6 @@
 import MenuItem from "@mui/material/MenuItem";
 import Select from "@mui/material/Select";
+import { Dispatch } from "react";
 import { Item } from "../../types/index";
 import { styledInputComponent } from "../hoc/styledInputComponent";
 
@@ -7,7 +8,7 @@ interface SelectInputProps {
   dropDownOptions: string[];
   dataKey: string;
   itemState: Item;
-  setItemState: React.Dispatch<React.SetStateAction<Item>>;
+  setItemState: Dispatch<React.SetStateAction<Item>>;
 }
 
 const StyleSelect = styledInputComponent(Select);

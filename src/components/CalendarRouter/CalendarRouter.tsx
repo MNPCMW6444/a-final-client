@@ -11,12 +11,14 @@ import { ItemTypes, PageTypes } from "../../utils/enums";
 import { Dispatch, SetStateAction } from "react";
 
 interface CalendarRouterProps {
-  setDrawerOpen: Dispatch<SetStateAction<boolean>>;
-  openModal: (editedItem: Item) => void;
-  query: string;
+  commonProps: {
+    setDrawerOpen: Dispatch<SetStateAction<boolean>>;
+    openModal: (editedItem: Item) => void;
+    query: string;
+    refresh: () => void;
+    drawerOpen: boolean;
+  };
   refresher: number;
-  refresh: () => void;
-  drawerOpen: boolean;
 }
 
 const errorStyle = { color: "red" };
@@ -27,23 +29,12 @@ const ErrorFallback = () => (
   </Box>
 );
 
-const CalendarRouter = ({
-  setDrawerOpen,
-  openModal,
-  query,
-  refresher,
-  refresh,
-  drawerOpen,
-}: CalendarRouterProps) => {
+const CalendarRouter = ({ commonProps, refresher }: CalendarRouterProps) => {
   const data = useDataProcessor(refresher);
 
   const defaultElement = (
     <GenericTable
-      setDrawerOpen={setDrawerOpen}
-      drawerOpen={drawerOpen}
-      refresh={refresh}
-      query={query}
-      openModal={openModal}
+      commonProps={commonProps}
       data={(data as Item[]).filter((item: Item) =>
         item.type === ItemTypes.task
           ? (item as Task).untilDate.substring(0, 9) ===
@@ -70,11 +61,7 @@ const CalendarRouter = ({
                   path={PageTypes.tasks}
                   element={
                     <GenericTable
-                      setDrawerOpen={setDrawerOpen}
-                      drawerOpen={drawerOpen}
-                      refresh={refresh}
-                      query={query}
-                      openModal={openModal}
+                      commonProps={commonProps}
                       data={(data as Item[]).filter(
                         (item: Item) => item.type === ItemTypes.task
                       )}
@@ -87,11 +74,7 @@ const CalendarRouter = ({
                   path={PageTypes.events}
                   element={
                     <GenericTable
-                      setDrawerOpen={setDrawerOpen}
-                      drawerOpen={drawerOpen}
-                      refresh={refresh}
-                      query={query}
-                      openModal={openModal}
+                      commonProps={commonProps}
                       data={(data as Item[]).filter(
                         (item: Item) => item.type === ItemTypes.event
                       )}

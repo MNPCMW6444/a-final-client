@@ -23,14 +23,16 @@ import { Typography } from "@mui/material";
 import { ItemTypes, PageTypes } from "../../utils/enums";
 
 interface GenericTableProps {
-  drawerOpen: boolean;
+  commonProps: {
+    setDrawerOpen: Dispatch<SetStateAction<boolean>>;
+    openModal: (editedItem: Item) => void;
+    query: string;
+    refresh: () => void;
+    drawerOpen: boolean;
+  };
   data: Item[];
-  openModal: (editedItem: any) => void;
   columns: Map<string, string> | undefined;
-  query: string;
-  refresh: () => void;
   route: string;
-  setDrawerOpen: Dispatch<SetStateAction<boolean>>;
 }
 
 const outerGridSx = {
@@ -108,15 +110,12 @@ const navigationStyle = {
 };
 
 const GenericTable = ({
-  drawerOpen,
+  commonProps,
   data,
-  openModal,
   columns,
-  query,
-  refresh,
   route,
-  setDrawerOpen,
 }: GenericTableProps) => {
+  const { setDrawerOpen, openModal, query, refresh, drawerOpen } = commonProps;
   const [filteredData, setFilteredData] = useState<Item[]>(
     data.filter((item: Item) => {
       return (
