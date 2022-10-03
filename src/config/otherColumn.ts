@@ -1,16 +1,23 @@
 import { ItemTypes } from "../utils/enums";
 
-const otherColumnMap = new Map();
-const eventMap = new Map();
-eventMap.set("beginningTime", "From:");
-eventMap.set("endingTime", "Until:");
-eventMap.set("location", "Location:");
-const taskMap = new Map();
-taskMap.set("review", "Review:");
-taskMap.set("status", "Status:");
-taskMap.set("timeSpent", "Time Spent:");
-taskMap.set("untilDate", "Until Date:");
-otherColumnMap.set(ItemTypes.event, eventMap);
-otherColumnMap.set(ItemTypes.task, taskMap);
+const otherColumnMap = new Map([
+  [
+    ItemTypes.event,
+    new Map([
+      ["beginningTime", "From:"],
+      ["endingTime", "Until:"],
+      ["location", "Location:"],
+    ]),
+  ],
+  [
+    ItemTypes.task,
+    new Map([
+      ["review", "Review:"],
+      ["status", "Status:"],
+      ["timeSpent", "Time Spent:"],
+      ["untilDate", "Until Date:"],
+    ]),
+  ],
+]);
 
 export default otherColumnMap;

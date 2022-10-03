@@ -1,55 +1,108 @@
-const fieldMap = new Map();
-const tasksMap = new Map();
-tasksMap.set("title", {
-  label: "Title",
-  placeHolder: "Insert your title here...",
-});
-tasksMap.set("description", {
-  label: "Description",
-  placeHolder: "Insert your description here...",
-});
-tasksMap.set("estimatedTime", {
-  label: "Estimated Time",
-  placeHolder: "*y *w *d *h",
-});
-tasksMap.set("status", {
-  label: "Status",
-  dropDownOptions: ["Close", "In Progress", "Open"],
-});
-tasksMap.set("priority", {
-  label: "Priority",
-  dropDownOptions: ["Low", "Medium", "High"],
-});
-fieldMap.set("Task", tasksMap);
-const eventsMap = new Map();
-eventsMap.set("title", {
-  label: "Title",
-  placeHolder: "Insert your title here...",
-});
-eventsMap.set("description", {
-  label: "Description",
-  placeHolder: "Insert your description here...",
-});
-eventsMap.set("beginningTime", {
-  label: "Beginning Time",
-  datePicker: true,
-});
-eventsMap.set("endingTime", {
-  label: "Ending Time",
-  datePicker: true,
-});
-eventsMap.set("color", {
-  label: "color",
-  dropDownOptions: ["🔴", "🟠", "🟡", "🟢", "🔵", "🟣", "⚫️", "⚪️", "🟤"],
-});
-eventsMap.set("location", {
-  label: "Location",
-  placeHolder: "Insert your location here...",
-});
-eventsMap.set("notificationTime", {
-  label: "Notification Time",
-  datePicker: true,
-});
-fieldMap.set("Event", eventsMap);
+const fieldMap = new Map([
+  [
+    "Event",
+    new Map([
+      [
+        "title",
+        {
+          label: "Title",
+          placeHolder: "Insert your title here...",
+        },
+      ],
+      [
+        "description",
+        {
+          label: "Description",
+          placeHolder: "Insert your description here...",
+        },
+      ],
+      [
+        "beginningTime",
+        {
+          label: "Beginning Time",
+          datePicker: true,
+        },
+      ],
+      [
+        "endingTime",
+        {
+          label: "Ending Time",
+          datePicker: true,
+        },
+      ],
+      [
+        "color",
+        {
+          label: "color",
+          dropDownOptions: [
+            "🔴",
+            "🟠",
+            "🟡",
+            "🟢",
+            "🔵",
+            "🟣",
+            "⚫️",
+            "⚪️",
+            "🟤",
+          ],
+        },
+      ],
+      [
+        "location",
+        {
+          label: "Location",
+          placeHolder: "Insert your location here...",
+        },
+      ],
+      [
+        "notificationTime",
+        {
+          label: "Notification Time",
+          datePicker: true,
+        },
+      ],
+    ]),
+  ],
+  [
+    "Task",
+    new Map([
+      [
+        "title",
+        {
+          label: "Title",
+          placeHolder: "Insert your title here...",
+        },
+      ],
+      [
+        "description",
+        {
+          label: "Description",
+          placeHolder: "Insert your description here...",
+        },
+      ],
+      [
+        "estimatedTime",
+        {
+          label: "Estimated Time",
+          placeHolder: "*y *w *d *h",
+        },
+      ],
+      [
+        "status",
+        {
+          label: "Status",
+          dropDownOptions: ["Close", "In Progress", "Open"],
+        },
+      ],
+      [
+        "priority",
+        {
+          label: "Priority",
+          dropDownOptions: ["Low", "Medium", "High"],
+        },
+      ],
+    ]),
+  ],
+]);
 
 export default fieldMap;

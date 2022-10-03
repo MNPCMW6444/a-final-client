@@ -20,18 +20,22 @@ import SideBar from "../SideBar/SideBar";
 import quickFiltersConfig from "../../config/quickFilters";
 import GenericQuickFilter from "./GenericQuickFilter";
 import { Typography } from "@mui/material";
-import { PageTypes } from "../../utils/enums";
+import { ItemTypes, PageTypes } from "../../utils/enums";
 
 interface GenericTableProps {
   drawerOpen: boolean;
   data: Item[];
   openModal: (editedItem: any) => void;
-  columns: Map<string, string>;
+  columns: Map<string, string> | undefined;
   query: string;
   refresh: () => void;
   route: string;
   setDrawerOpen: Dispatch<SetStateAction<boolean>>;
 }
+
+  width: 240,
+  autoWidth: { sm: `calc(100% - ${240}px)` },
+};
 
 const outerGridSx = {
   overflow: "hidden",
@@ -195,7 +199,7 @@ const GenericTable = ({
         );
     });
     setFilteredData(newData);
-  }, [activeQuickFilters]);
+  }, [activeQuickFilters, data, query, route]);
 
   return (
     <Box component="main" sx={tableStyle}>
@@ -234,152 +238,155 @@ const GenericTable = ({
             <Table sx={tableSx}>
               <TableHead>
                 <TableRow>
-                  {Array.from(columns, ([key, header]) => ({
-                    key,
-                    header,
-                  })).map((column, index) => {
-                    return (
-                      <TableCell
-                        key={`headCell-${index}`}
-                        sx={tableHeaderSx(
-                          column.key !== "other" && column.key !== "actions"
-                        )}
-                        onClick={
-                          column.key !== "other" && column.key !== "actions"
-                            ? () => sortData(column.key)
-                            : () => {}
-                        }
-                      >
-                        {column.key !== "other" && column.key !== "actions"
-                          ? column.header +
-                            (sortColumn === column.key
-                              ? sortDirection
-                                ? "↑"
-                                : "↓"
-                              : "")
-                          : column.header}
-                      </TableCell>
-                    );
-                  })}
+                  {columns &&
+                    Array.from(columns, ([key, header]) => ({
+                      key,
+                      header,
+                    })).map((column, index) => {
+                      return (
+                        <TableCell
+                          key={`headCell-${index}`}
+                          sx={tableHeaderSx(
+                            column.key !== "other" && column.key !== "actions"
+                          )}
+                          onClick={
+                            column.key !== "other" && column.key !== "actions"
+                              ? () => sortData(column.key)
+                              : () => {}
+                          }
+                        >
+                          {column.key !== "other" && column.key !== "actions"
+                            ? column.header +
+                              (sortColumn === column.key
+                                ? sortDirection
+                                  ? "↑"
+                                  : "↓"
+                                : "")
+                            : column.header}
+                        </TableCell>
+                      );
+                    })}
                 </TableRow>
               </TableHead>
               <TableBody>
                 {filteredData &&
                   filteredData.map((row: Item, index: number) => (
                     <TableRow key={`row-${index}`}>
-                      {Array.from(columns, ([key, header]) => ({
-                        key,
-                        header,
-                      })).map((column, innerIndex) => {
-                        const content = row[column.key as keyof Item];
-
-                        return (
-                          <TableCell
-                            key={`cell-${innerIndex}`}
-                            style={{ border: "1px solid #ddd" }}
-                            sx={tableCellSx}
-                          >
-                            {column.key === "other" ? (
-                              <>
-                                <Grid
-                                  container
-                                  wrap="nowrap"
-                                  alignItems="center"
-                                >
-                                  {Array.from(
-                                    otherColumn.get(row.type) as Map<
-                                      string,
-                                      string
-                                    >,
-                                    ([key, header]) => ({
-                                      key,
-                                      header,
-                                    })
-                                  ).map((otherColumnMap, i) => (
-                                    <Grid item key={i} sx={otherStyle}>
-                                      <StyledHeader>
-                                        {otherColumnMap.header}
-                                      </StyledHeader>
-                                    </Grid>
-                                  ))}
-                                </Grid>
-                                <br />
-                                <Grid
-                                  container
-                                  direction={"row"}
-                                  wrap="nowrap"
-                                  alignItems="center"
-                                >
-                                  {Array.from(
-                                    otherColumn.get(row.type) as Map<
-                                      string,
-                                      string
-                                    >,
-                                    ([key, header]) => ({
-                                      key,
-                                      header,
-                                    })
-                                  ).map((otherColumnMap, i) => (
-                                    <Grid
-                                      item
-                                      container
-                                      direction="column"
-                                      justifyContent="center"
-                                      alignItems="center"
-                                      key={i}
-                                      sx={innerOtherStyle}
-                                    >
-                                      <Box>
-                                        {row[
-                                          otherColumnMap.key as keyof Item
-                                        ] &&
-                                        row[otherColumnMap.key as keyof Item]
-                                          .length > 20 ? (
-                                          <span
-                                            style={
-                                              (hoveringLongText
-                                                ? longTextStyleHover
-                                                : longTextStyle) as Properties<
-                                                string | number,
-                                                string & {}
-                                              >
-                                            }
-                                            onMouseEnter={() =>
-                                              setHoveringLongText(true)
-                                            }
-                                            onMouseLeave={() =>
-                                              setHoveringLongText(false)
-                                            }
-                                          >
-                                            {
-                                              row[
-                                                otherColumnMap.key as keyof Item
-                                              ]
-                                            }
-                                          </span>
-                                        ) : (
+                      {columns &&
+                        Array.from(columns, ([key, header]) => ({
+                          key,
+                          header,
+                        })).map((column, innerIndex) => {
+                          const content = row[column.key as keyof Item];
+                          const otherColumnValue = otherColumn.get(
+                            row.type as ItemTypes
+                          );
+                          return (
+                            <TableCell
+                              key={`cell-${innerIndex}`}
+                              style={{ border: "1px solid #ddd" }}
+                              sx={tableCellSx}
+                            >
+                              {column.key === "other" ? (
+                                <>
+                                  <Grid
+                                    container
+                                    wrap="nowrap"
+                                    alignItems="center"
+                                  >
+                                    {otherColumnValue &&
+                                      Array.from(
+                                        otherColumnValue as Map<string, string>,
+                                        ([key, header]) => ({
+                                          key,
+                                          header,
+                                        })
+                                      ).map((otherColumnMap, i) => (
+                                        <Grid item key={i} sx={otherStyle}>
+                                          <StyledHeader>
+                                            {otherColumnMap.header}
+                                          </StyledHeader>
+                                        </Grid>
+                                      ))}
+                                  </Grid>
+                                  <br />
+                                  <Grid
+                                    container
+                                    direction={"row"}
+                                    wrap="nowrap"
+                                    alignItems="center"
+                                  >
+                                    {Array.from(
+                                      otherColumn.get(
+                                        row.type as ItemTypes
+                                      ) as Map<string, string>,
+                                      ([key, header]) => ({
+                                        key,
+                                        header,
+                                      })
+                                    ).map((otherColumnMap, i) => (
+                                      <Grid
+                                        item
+                                        container
+                                        direction="column"
+                                        justifyContent="center"
+                                        alignItems="center"
+                                        key={i}
+                                        sx={innerOtherStyle}
+                                      >
+                                        <Box>
+                                          {row[
+                                            otherColumnMap.key as keyof Item
+                                          ] &&
                                           row[otherColumnMap.key as keyof Item]
-                                        )}
-                                      </Box>
-                                    </Grid>
-                                  ))}
-                                </Grid>
-                              </>
-                            ) : column.key === "actions" ? (
-                              <>
-                                <Button onClick={() => openModal(row)}>
-                                  ✏️
-                                </Button>
-                                <Button onClick={() => deleteItem(row)}>
-                                  🗑️
-                                </Button>
-                              </>
-                            ) : (
-                              content || "-"
-                            )}
-                          </TableCell>
-                        );
-                      })}
+                                            .length > 20 ? (
+                                            <span
+                                              style={
+                                                (hoveringLongText
+                                                  ? longTextStyleHover
+                                                  : longTextStyle) as Properties<
+                                                  string | number,
+                                                  string & {}
+                                                >
+                                              }
+                                              onMouseEnter={() =>
+                                                setHoveringLongText(true)
+                                              }
+                                              onMouseLeave={() =>
+                                                setHoveringLongText(false)
+                                              }
+                                            >
+                                              {
+                                                row[
+                                                  otherColumnMap.key as keyof Item
+                                                ]
+                                              }
+                                            </span>
+                                          ) : (
+                                            row[
+                                              otherColumnMap.key as keyof Item
+                                            ]
+                                          )}
+                                        </Box>
+                                      </Grid>
+                                    ))}
+                                  </Grid>
+                                </>
+                              ) : column.key === "actions" ? (
+                                <>
+                                  <Button onClick={() => openModal(row)}>
+                                    ✏️
+                                  </Button>
+                                  <Button onClick={() => deleteItem(row)}>
+                                    🗑️
+                                  </Button>
+                                </>
+                              ) : (
+                                content || "-"
+                              )}
+                            </TableCell>
+                          );
+                        })}
                     </TableRow>
                   ))}
               </TableBody>

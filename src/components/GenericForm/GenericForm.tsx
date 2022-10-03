@@ -30,6 +30,8 @@ const GenericForm = ({ closeForm, item, refresh }: GenericFormProps) => {
 
   const [itemState, setItemState] = useState<Item>(item);
 
+  const fieldsArray = fieldsConfig.get(type);
+
   return (
     <Grid container direction="column" rowSpacing={6}>
       <Grid item container justifyContent="center" columnSpacing={0.5}>
@@ -54,8 +56,9 @@ const GenericForm = ({ closeForm, item, refresh }: GenericFormProps) => {
         minWidth="540px"
       >
         {itemState &&
+          fieldsArray &&
           Array.from(
-            fieldsConfig.get(type),
+            fieldsArray,
             ([key, { label, placeHolder, dropDownOptions, datePicker }]) => ({
               key,
               label,
