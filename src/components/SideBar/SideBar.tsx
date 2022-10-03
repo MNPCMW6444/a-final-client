@@ -26,6 +26,19 @@ const boxSx = {
   maxWidth: { xs: "250px" },
 };
 
+const drawerSx = {
+  display: { xs: "block", sm: "none" },
+  "& .MuiDrawer-paper": {
+    boxSizing: "border-box",
+    width: drawerWidthSettings.width,
+  },
+};
+
+const sideSx = {
+  width: { sm: drawerWidthSettings.width },
+  flexShrink: { sm: 0 },
+};
+
 const SideBar = ({
   route,
   refresh,
@@ -85,39 +98,19 @@ const SideBar = ({
   );
 
   return (
-    <Box
-      component="nav"
-      sx={{ width: { sm: drawerWidthSettings.width }, flexShrink: { sm: 0 } }}
-      aria-label="mailbox folders"
-    >
+    <Box component="nav" sx={sideSx} aria-label="mailbox folders">
       <Drawer
         variant="temporary"
         open={drawerOpen}
         onClose={() => setDrawerOpen(!drawerOpen)}
         ModalProps={{
-          keepMounted: true, // Better open performance on mobile.
+          keepMounted: true,
         }}
-        sx={{
-          display: { xs: "block", sm: "none" },
-          "& .MuiDrawer-paper": {
-            boxSizing: "border-box",
-            width: drawerWidthSettings.width,
-          },
-        }}
+        sx={drawerSx}
       >
         {drawer}
       </Drawer>
-      <Drawer
-        variant="permanent"
-        sx={{
-          display: { xs: "none", sm: "block" },
-          "& .MuiDrawer-paper": {
-            boxSizing: "border-box",
-            width: drawerWidthSettings.width,
-          },
-        }}
-        open
-      >
+      <Drawer variant="permanent" sx={drawerSx} open>
         {drawer}
       </Drawer>
     </Box>
