@@ -15,16 +15,23 @@ import TopBar from "./components/TopBar/TopBar";
 import CalendarRouter from "./components/CalendarRouter/CalendarRouter";
 
 const modalStyle = {
+  width: "42vw",
+  height: "80vh",
+  border: "0.2rem solid #000",
+  boxShadow: 24,
+  backgroundColor: "white",
+  borderRadius: "5vw",
+  padding: "4vw",
+  position: "fixed",
+  minWidth: "540px",
+  maxWidth: "700px",
+  left: "50%",
+  top: "50%",
+  transform: "translate(-50%, -50%)",
+  overflowX: "hidden",
+  overflowY: "scroll",
   "&::-webkit-scrollbar": {
-    backgroundColor: "white",
-    position: "fixed",
-    minWidth: "540px",
-    maxWidth: "700px",
-    left: "50%",
-    top: "50%",
-    transform: "translate(-50% -50%)",
-    overflowX: "hidden",
-    overflowY: "scroll",
+    width: "",
   },
 };
 
@@ -66,15 +73,7 @@ function App() {
           }}
         >
           <Fade in={isCreateFormOpen}>
-            <Box
-              sx={modalStyle}
-              width="42vw"
-              height="80vh"
-              border="0.2rem solid #000"
-              boxShadow={24}
-              borderRadius="5vw"
-              padding="4vw"
-            >
+            <Box sx={modalStyle}>
               <GenericForm
                 closeForm={closeModal}
                 item={editedItem}
