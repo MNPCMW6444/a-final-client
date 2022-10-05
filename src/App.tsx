@@ -15,13 +15,7 @@ import TopBar from "./components/TopBar/TopBar";
 import CalendarRouter from "./components/CalendarRouter/CalendarRouter";
 
 const modalStyle = {
-  width: "42vw",
-  height: "80vh",
-  border: "0.2rem solid #000",
-  boxShadow: 24,
   backgroundColor: "white",
-  borderRadius: "5vw",
-  padding: "4vw",
   position: "fixed",
   minWidth: "540px",
   maxWidth: "700px",
@@ -73,7 +67,15 @@ function App() {
           }}
         >
           <Fade in={isCreateFormOpen}>
-            <Box sx={modalStyle}>
+            <Box
+              sx={modalStyle}
+              width="42vw"
+              height="80vh"
+              border="0.2rem solid #000"
+              boxShadow={24}
+              borderRadius="5vw"
+              padding="4vw"
+            >
               <GenericForm
                 closeForm={closeModal}
                 item={editedItem}
