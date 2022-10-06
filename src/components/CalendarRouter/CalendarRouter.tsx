@@ -18,7 +18,7 @@ interface CalendarRouterProps {
     refresh: () => void;
     drawerOpen: boolean;
   };
-  refresher: number;
+  data: Item[];
 }
 
 const errorStyle = { color: "red" };
@@ -29,9 +29,7 @@ const ErrorFallback = () => (
   </Box>
 );
 
-const CalendarRouter = ({ commonProps, refresher }: CalendarRouterProps) => {
-  const data = useDataProcessor(refresher);
-
+const CalendarRouter = ({ commonProps, data }: CalendarRouterProps) => {
   const defaultElement = (
     <GenericTable
       commonProps={commonProps}

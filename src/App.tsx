@@ -13,6 +13,7 @@ import { Item } from "./types/index";
 import GenericForm from "./components/GenericForm/GenericForm";
 import TopBar from "./components/TopBar/TopBar";
 import CalendarRouter from "./components/CalendarRouter/CalendarRouter";
+import useDataProcessor from "./hooks/useDataProcessor";
 
 const modalStyle = {
   backgroundColor: "white",
@@ -35,9 +36,6 @@ function App() {
   const [editedItem, setEditedItem] = useState<Item>();
   const [isCreateFormOpen, setIsCreateFormOpen] = useState<boolean>(false);
 
-  const [refresher, setRefreher] = useState<number>(0);
-  const refresh = () => setRefreher(refresher + 1);
-
   const [drawerOpen, setDrawerOpen] = useState<boolean>(false);
 
   const openModal = (editedItem: any) => {
@@ -46,6 +44,12 @@ function App() {
   };
 
   const closeModal = () => setIsCreateFormOpen(false);
+
+  const {
+    data,
+    refresh,
+  }: { data: Item[]; refresh: () => Promise<() => void> } =
+    useDataProcessor() as { data: Item[]; refresh: () => Promise<() => void> };
 
   const commonProps = {
     setDrawerOpen: setDrawerOpen,
@@ -93,7 +97,9 @@ function App() {
         drawerOpen={drawerOpen}
         setDrawerOpen={setDrawerOpen}
       />
-      <CalendarRouter commonProps={commonProps} refresher={refresher} />
+      {data && data.length > 0 && (
+        <CalendarRouter commonProps={commonProps} data={data} />
+      )}
     </ThemeProvider>
   );
 }

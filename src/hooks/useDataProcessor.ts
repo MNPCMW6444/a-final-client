@@ -15,27 +15,25 @@ colorMap.set("Black", "⚫️");
 colorMap.set("White", "⚪️");
 colorMap.set("Brown", "🟤");
 
-const useDataProcessor = (refresher: number) => {
+const useDataProcessor = () => {
+  const axiosController = new AbortController();
+  const fetchData = async () => {
+    const res = await Axios.get(domain + "alldata");
+    res.data.tasks.forEach((task: Task) => {
+      task.type = ItemTypes.task;
+    });
+    res.data.events.forEach((event: Event) => {
+      event.type = ItemTypes.event;
+    });
+    setData([...res.data.tasks, ...res.data.events]);
+    return () => axiosController.abort();
+  };
   const [data, setData] = useState<Item[]>([]);
   useEffect(() => {
-    const axiosController = new AbortController();
-    const fetchData = async () => {
-      const res = await Axios.get(domain + "alldata");
-      res.data.tasks.forEach((task: Task) => {
-        task.type = ItemTypes.task;
-      });
-      res.data.events.forEach((event: Event) => {
-        event.type = ItemTypes.event;
-      });
-      setData([...res.data.tasks, ...res.data.events]);
-      return () => axiosController.abort();
-    };
     fetchData();
-  }, [refresher]);
-
+  }, []);
   if (data.length > 0) {
     const dbData = structuredClone(data);
-
     const jsonEvents = (dbData as Item[]).filter(
       (item: Item) => item.type === ItemTypes.event
     );
@@ -131,7 +129,7 @@ const useDataProcessor = (refresher: number) => {
       return task;
     });
     return [...parsedEvents, ...parsedTasks];
-  } else return data;
+  } else return { data: data, refresh: fetchData };
 };
 
 export default useDataProcessor;
