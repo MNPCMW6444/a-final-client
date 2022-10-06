@@ -1,5 +1,5 @@
 import Grid from "@mui/material/Grid";
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { Item } from "../../types";
 import Button from "@mui/material/Button";
 import Axios from "axios";
@@ -12,9 +12,9 @@ import SelectInput from "./SelectInput";
 import { Typography } from "@mui/material";
 import selectButton from "../CalendarButton/CalendarButton";
 import DateInput from "./DateInput";
+import FormContext from "../../context/FormContext";
 
 interface GenericFormProps {
-  closeForm: () => void;
   item: Item;
   refresh: () => void;
 }
@@ -23,7 +23,9 @@ const fieldStyle = { width: "70%" };
 
 const controlButtonStyle = { width: "100px" };
 
-const GenericForm = ({ closeForm, item, refresh }: GenericFormProps) => {
+const GenericForm = ({ item, refresh }: GenericFormProps) => {
+  const closeForm = useContext(FormContext);
+
   const [type, setType] = useState<string>(item.type || ItemTypes.task);
 
   const [errorMessage, setErrorMessage] = useState<string>("");

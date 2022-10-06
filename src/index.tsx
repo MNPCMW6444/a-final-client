@@ -1,13 +1,16 @@
 import { StrictMode } from "react";
 import ReactDOM from "react-dom/client";
 import App from "./App";
+import FormProvider from "./context/FormContext";
 import reportWebVitals from "./reportWebVitals";
 
 const rootElement: HTMLElement = document.getElementById("root") as HTMLElement;
 const root = ReactDOM.createRoot(rootElement);
 root.render(
   <StrictMode>
-    <App />
+    <FormProvider>
+      <App />
+    </FormProvider>
   </StrictMode>
 );
 

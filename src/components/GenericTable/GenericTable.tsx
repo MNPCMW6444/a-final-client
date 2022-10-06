@@ -25,7 +25,6 @@ import { ItemTypes, PageTypes } from "../../utils/enums";
 interface GenericTableProps {
   commonProps: {
     setDrawerOpen: Dispatch<SetStateAction<boolean>>;
-    openModal: (editedItem: Item) => void;
     query: string;
     refresh: () => void;
     drawerOpen: boolean;
@@ -115,7 +114,7 @@ const GenericTable = ({
   columns,
   route,
 }: GenericTableProps) => {
-  const { setDrawerOpen, openModal, query, refresh, drawerOpen } = commonProps;
+  const { setDrawerOpen, query, refresh, drawerOpen } = commonProps;
   const [filteredData, setFilteredData] = useState<Item[]>(
     data.filter((item: Item) => {
       return (

@@ -1,7 +1,6 @@
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import { Task, Event, Item } from "../../types/index";
 import columnsConfig from "../../config/columns";
-import useDataProcessor from "../../hooks/useDataProcessor";
 import GenericTable from "../GenericTable/GenericTable";
 import { ErrorBoundary } from "react-error-boundary";
 import Box from "@mui/material/Box";
@@ -13,7 +12,6 @@ import { Dispatch, SetStateAction } from "react";
 interface CalendarRouterProps {
   commonProps: {
     setDrawerOpen: Dispatch<SetStateAction<boolean>>;
-    openModal: (editedItem: Item) => void;
     query: string;
     refresh: () => void;
     drawerOpen: boolean;
