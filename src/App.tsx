@@ -7,7 +7,7 @@ import {
   Fade,
   ThemeProvider,
 } from "@mui/material";
-import { useState } from "react";
+import { createContext, useContext, useState } from "react";
 import Modal from "@mui/material/Modal";
 import { Item } from "./types/index";
 import GenericForm from "./components/GenericForm/GenericForm";
@@ -33,7 +33,7 @@ const modalStyle = {
 function App() {
   const [query, setQuery] = useState<string>("");
 
-  const [editedItem, setEditedItem] = useState<Item>();
+  const [editedItem, setEditedItem] = useState<Item>({} as Item);
   const [isCreateFormOpen, setIsCreateFormOpen] = useState<boolean>(false);
 
   const [drawerOpen, setDrawerOpen] = useState<boolean>(false);
@@ -58,11 +58,15 @@ function App() {
     openModal: openModal,
   };
 
-  debugger;
+  const FormContext = createContext(
+    <GenericForm closeForm={closeModal} item={editedItem} refresh={refresh} />
+  );
+
+  const form = useContext(FormContext);
 
   return (
     <ThemeProvider theme={createTheme()}>
-      {editedItem && (
+      {
         <Modal
           open={isCreateFormOpen}
           onClose={closeModal}
@@ -81,15 +85,11 @@ function App() {
               borderRadius="5vw"
               padding="4vw"
             >
-              <GenericForm
-                closeForm={closeModal}
-                item={editedItem}
-                refresh={refresh}
-              />
+              {form}
             </Box>
           </Fade>
         </Modal>
-      )}
+      }
       <ReactNotifications />
       <CssBaseline />
       <TopBar
