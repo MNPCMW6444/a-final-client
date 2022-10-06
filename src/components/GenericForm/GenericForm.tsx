@@ -14,9 +14,9 @@ import selectButton from "../CalendarButton/CalendarButton";
 import DateInput from "./DateInput";
 
 interface GenericFormProps {
-  closeForm?: () => void;
-  item?: Item;
-  refresh?: () => void;
+  closeForm: () => void;
+  item: Item;
+  refresh: () => void;
 }
 
 const fieldStyle = { width: "70%" };
@@ -24,27 +24,25 @@ const fieldStyle = { width: "70%" };
 const controlButtonStyle = { width: "100px" };
 
 const GenericForm = ({ closeForm, item, refresh }: GenericFormProps) => {
-  const [type, setType] = useState<string>(
-    (item && item.type) || ItemTypes.task
-  );
+  const [type, setType] = useState<string>(item.type || ItemTypes.task);
 
   const [errorMessage, setErrorMessage] = useState<string>("");
 
-  const [itemState, setItemState] = useState<Item>(item || ({} as Item));
+  const [itemState, setItemState] = useState<Item>(item);
 
   const fieldsArray = fieldsConfig.get(type);
 
   const handleFormSend = async () => {
     try {
-      item && item.type
+      item.type
         ? await Axios.put(domain + "edit" + type + "/" + itemState._id, {
             newItem: itemState,
           })
         : await Axios.post(domain + "create" + type, {
             newItem: itemState,
           });
-      closeForm && closeForm();
-      refresh && refresh();
+      closeForm();
+      refresh();
     } catch (err: any) {
       setErrorMessage(err.response.data.erroMsg);
     }
@@ -56,7 +54,7 @@ const GenericForm = ({ closeForm, item, refresh }: GenericFormProps) => {
         {Object.values(ItemTypes).map((option) => {
           const SelectButton = selectButton(option, type === option);
           return (
-            ((item && !item.type) || (item && item.type === option)) && (
+            (!item.type || item.type === option) && (
               <Grid item>
                 <SelectButton onClick={() => setType(option)} />
               </Grid>
@@ -139,7 +137,7 @@ const GenericForm = ({ closeForm, item, refresh }: GenericFormProps) => {
             sx={controlButtonStyle}
             variant="outlined"
             color="error"
-            onClick={() => closeForm && closeForm()}
+            onClick={() => closeForm()}
           >
             Cancel
           </Button>
