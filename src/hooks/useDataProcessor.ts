@@ -128,7 +128,7 @@ const useDataProcessor = () => {
       task.type = ItemTypes.task;
       return task;
     });
-    return [...parsedEvents, ...parsedTasks];
+    return { data: [...parsedEvents, ...parsedTasks], refresh: fetchData };
   } else return { data: data, refresh: fetchData };
 };
 

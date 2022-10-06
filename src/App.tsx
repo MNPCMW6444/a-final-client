@@ -48,8 +48,7 @@ function App() {
   const {
     data,
     refresh,
-  }: { data: Item[]; refresh: () => Promise<() => void> } =
-    useDataProcessor() as { data: Item[]; refresh: () => Promise<() => void> };
+  }: { data: Item[]; refresh: () => Promise<() => void> } = useDataProcessor();
 
   const commonProps = {
     setDrawerOpen: setDrawerOpen,
@@ -58,6 +57,8 @@ function App() {
     query: query,
     openModal: openModal,
   };
+
+  debugger;
 
   return (
     <ThemeProvider theme={createTheme()}>
