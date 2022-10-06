@@ -7,7 +7,7 @@ import {
   Fade,
   ThemeProvider,
 } from "@mui/material";
-import { createContext, useContext, useState } from "react";
+import { useState } from "react";
 import Modal from "@mui/material/Modal";
 import { Item } from "./types/index";
 import GenericForm from "./components/GenericForm/GenericForm";
@@ -58,12 +58,6 @@ function App() {
     openModal: openModal,
   };
 
-  const FormContext = createContext(
-    <GenericForm closeForm={closeModal} item={editedItem} refresh={refresh} />
-  );
-
-  const form = useContext(FormContext);
-
   return (
     <ThemeProvider theme={createTheme()}>
       {
@@ -85,7 +79,11 @@ function App() {
               borderRadius="5vw"
               padding="4vw"
             >
-              {form}
+              <GenericForm
+                closeForm={closeModal}
+                item={editedItem}
+                refresh={refresh}
+              />
             </Box>
           </Fade>
         </Modal>
