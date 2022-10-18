@@ -24,7 +24,7 @@ const fieldStyle = { width: "70%" };
 const controlButtonStyle = { width: "100px" };
 
 const GenericForm = ({ item, refresh }: GenericFormProps) => {
-  const closeForm = useContext(FormContext);
+  const { dispatch } = useContext(FormContext);
 
   const [type, setType] = useState<string>(item.type || ItemTypes.task);
 
@@ -43,7 +43,8 @@ const GenericForm = ({ item, refresh }: GenericFormProps) => {
         : await Axios.post(domain + "create" + type, {
             newItem: itemState,
           });
-      closeForm();
+      dispatch({ type: "SET_STATE", state: { isFormOpen: true } });
+
       refresh();
     } catch (err: any) {
       setErrorMessage(err.response.data.erroMsg);
@@ -139,7 +140,9 @@ const GenericForm = ({ item, refresh }: GenericFormProps) => {
             sx={controlButtonStyle}
             variant="outlined"
             color="error"
-            onClick={() => closeForm()}
+            onClick={() =>
+              dispatch({ type: "SET_STATE", state: { isFormOpen: false } })
+            }
           >
             Cancel
           </Button>

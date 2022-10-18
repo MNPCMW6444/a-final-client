@@ -3,7 +3,13 @@ import TableCell from "@mui/material/TableCell";
 import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
-import { Dispatch, SetStateAction, useEffect, useState } from "react";
+import {
+  Dispatch,
+  SetStateAction,
+  useContext,
+  useEffect,
+  useState,
+} from "react";
 import { Properties } from "csstype";
 import otherColumn from "../../config/otherColumn";
 import { blue } from "@mui/material/colors";
@@ -21,6 +27,7 @@ import quickFiltersConfig from "../../config/quickFilters";
 import GenericQuickFilter from "../QuickFilter/QuickFilter";
 import { Typography } from "@mui/material";
 import { ItemTypes, PageTypes } from "../../utils/enums";
+import FormContext from "../../context/FormContext";
 
 interface GenericTableProps {
   commonProps: {
@@ -115,6 +122,7 @@ const GenericTable = ({
   route,
 }: GenericTableProps) => {
   const { setDrawerOpen, query, refresh, drawerOpen } = commonProps;
+
   const [filteredData, setFilteredData] = useState<Item[]>(
     data.filter((item: Item) => {
       return (
@@ -124,9 +132,12 @@ const GenericTable = ({
     })
   );
 
+  const { dispatch } = useContext(FormContext);
+
   const [hoveringLongText, setHoveringLongText] = useState<boolean>(false);
 
   const [sortDirection, setSortDirection] = useState<boolean>(false);
+
   const [sortColumn, setSortColumn] = useState<string>();
 
   const [activeQuickFilters, setActiveQuickfilters] = useState<boolean[]>(
@@ -367,7 +378,18 @@ const GenericTable = ({
                                 </>
                               ) : column.key === "actions" ? (
                                 <>
-                                  <Button onClick={() => openModal(row)}>
+                                  <Button
+                                    onClick={() => {
+                                      dispatch({
+                                        type: "SET_STATE",
+                                        state: { isFormOpen: true },
+                                      });
+                                      dispatch({
+                                        type: "SET_STATE",
+                                        state: { item: row },
+                                      });
+                                    }}
+                                  >
                                     ✏️
                                   </Button>
                                   <Button onClick={() => deleteItem(row)}>
@@ -388,7 +410,15 @@ const GenericTable = ({
         </Grid>
         <br />
         <Grid item>
-          <Button variant="contained" onClick={() => openModal({} as Item)}>
+          <Button
+            variant="contained"
+            onClick={() =>
+              dispatch({
+                type: "SET_STATE",
+                state: { isFormOpen: true },
+              })
+            }
+          >
             Create a New Item
           </Button>
         </Grid>
