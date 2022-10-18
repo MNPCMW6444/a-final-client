@@ -21,6 +21,7 @@ function App() {
   const commonProps = {
     setDrawerOpen: setDrawerOpen,
     drawerOpen: drawerOpen,
+    refresh: refresh,
     query: query,
   };
 

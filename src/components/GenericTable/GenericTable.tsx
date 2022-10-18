@@ -28,6 +28,7 @@ import GenericQuickFilter from "../QuickFilter/QuickFilter";
 import { Typography } from "@mui/material";
 import { ItemTypes, PageTypes } from "../../utils/enums";
 import FormContext from "../../context/FormContext";
+import GenericForm from "../GenericForm/GenericForm";
 
 interface GenericTableProps {
   commonProps: {
@@ -382,7 +383,14 @@ const GenericTable = ({
                                     onClick={() =>
                                       dispatch({
                                         type: "SET_STATE",
-                                        state: { isFormOpen: true, item: row },
+                                        state: {
+                                          form: (
+                                            <GenericForm
+                                              item={row}
+                                              refresh={refresh}
+                                            />
+                                          ),
+                                        },
                                       })
                                     }
                                   >
@@ -411,7 +419,9 @@ const GenericTable = ({
             onClick={() =>
               dispatch({
                 type: "SET_STATE",
-                state: { isFormOpen: true, item: {} as Item },
+                state: {
+                  form: <GenericForm item={{} as Item} refresh={refresh} />,
+                },
               })
             }
           >

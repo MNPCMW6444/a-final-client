@@ -6,16 +6,12 @@ import {
   ReactElement,
 } from "react";
 
-import { Item } from "../types";
-
 interface FormState {
   form: ReactElement<any, any>;
-  item: Item;
 }
 
 const initialState: FormState = {
   form: <></>,
-  item: {} as Item,
 };
 
 type FormAction = {
