@@ -13,7 +13,10 @@ function App() {
 
   const [drawerOpen, setDrawerOpen] = useState<boolean>(false);
 
-  const { data }: { data: Item[] } = useDataProcessor();
+  const {
+    data,
+    refresh,
+  }: { data: Item[]; refresh: () => Promise<() => void> } = useDataProcessor();
 
   const commonProps = {
     setDrawerOpen: setDrawerOpen,
