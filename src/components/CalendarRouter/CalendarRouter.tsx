@@ -13,6 +13,7 @@ interface CalendarRouterProps {
   commonProps: {
     setDrawerOpen: Dispatch<SetStateAction<boolean>>;
     query: string;
+    refresh: () => void;
     drawerOpen: boolean;
   };
   data: Item[];
