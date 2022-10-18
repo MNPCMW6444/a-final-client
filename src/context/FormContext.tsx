@@ -1,14 +1,21 @@
-import { createContext, useReducer, Dispatch, ReactNode } from "react";
+import {
+  createContext,
+  useReducer,
+  Dispatch,
+  ReactNode,
+  ReactElement,
+} from "react";
+
 import { Item } from "../types";
 
 interface FormState {
+  form: ReactElement<any, any>;
   item: Item;
-  isFormOpen: boolean;
 }
 
 const initialState: FormState = {
+  form: <></>,
   item: {} as Item,
-  isFormOpen: false,
 };
 
 type FormAction = {
