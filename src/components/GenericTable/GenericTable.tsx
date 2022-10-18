@@ -379,16 +379,12 @@ const GenericTable = ({
                               ) : column.key === "actions" ? (
                                 <>
                                   <Button
-                                    onClick={() => {
+                                    onClick={() =>
                                       dispatch({
                                         type: "SET_STATE",
-                                        state: { isFormOpen: true },
-                                      });
-                                      dispatch({
-                                        type: "SET_STATE",
-                                        state: { item: row },
-                                      });
-                                    }}
+                                        state: { isFormOpen: true, item: row },
+                                      })
+                                    }
                                   >
                                     ✏️
                                   </Button>
@@ -415,7 +411,7 @@ const GenericTable = ({
             onClick={() =>
               dispatch({
                 type: "SET_STATE",
-                state: { isFormOpen: true },
+                state: { isFormOpen: true, item: {} as Item },
               })
             }
           >

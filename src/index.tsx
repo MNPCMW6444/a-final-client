@@ -28,7 +28,7 @@ if ("serviceWorker" in navigator) {
 
 // Code to handle install prompt on desktop
 
-let deferredPrompt: any;
+//let deferredPrompt;
 //const addBtn: any = document.querySelector(".add-button");
 //addBtn.style.display = "none";      //////     CAN BE USED TO IMPROVE iOS UX
 
@@ -37,7 +37,7 @@ window.addEventListener("beforeinstallprompt", (e) => {
   // Prevent Chrome 67 and earlier from automatically showing the prompt
   e.preventDefault();
   // Stash the event so it can be triggered later.
-  deferredPrompt = e;
+  //deferredPrompt = e;
   // Update UI to notify the user they can add to home screen
   //addBtn.style.display = "block";      //////     CAN BE USED TO IMPROVE iOS UX
 

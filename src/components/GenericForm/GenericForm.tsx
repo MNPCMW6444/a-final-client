@@ -43,8 +43,7 @@ const GenericForm = ({ item, refresh }: GenericFormProps) => {
         : await Axios.post(domain + "create" + type, {
             newItem: itemState,
           });
-      dispatch({ type: "SET_STATE", state: { isFormOpen: true } });
-
+      dispatch({ type: "SET_STATE", state: { isFormOpen: false } });
       refresh();
     } catch (err: any) {
       setErrorMessage(err.response.data.erroMsg);

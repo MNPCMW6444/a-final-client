@@ -16,11 +16,13 @@ type FormAction = {
   state: Partial<FormState>;
 };
 
-interface FormContext extends FormState {
+interface FormContextType extends FormState {
   dispatch: Dispatch<FormAction>;
 }
 
-const FormContext = createContext<FormContext>(initialState as FormContext);
+const FormContext = createContext<FormContextType>(
+  initialState as FormContextType
+);
 
 const { Provider } = FormContext;
 export const FormProvider: React.FC<{ children: ReactNode }> = (props) => {
