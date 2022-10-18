@@ -11,10 +11,10 @@ import ButtonGroup from "@mui/material/ButtonGroup";
 import { Dispatch, SetStateAction, useState } from "react";
 import { PageTypes } from "../../utils/enums";
 import selectButton from "../CalendarButton/CalendarButton";
+import useDataProcessor from "../../hooks/useDataProcessor";
 
 interface SideBarProps {
   route: string;
-  refresh: () => void;
   drawerOpen: boolean;
   setDrawerOpen: Dispatch<SetStateAction<boolean>>;
 }
@@ -42,19 +42,12 @@ const wideBarSx = {
   },
 };
 
-const sideSx = {
-  width: { sm: drawerWidthSettings.width },
-  flexShrink: { sm: 0 },
-};
-
-const SideBar = ({
-  route,
-  refresh,
-  drawerOpen,
-  setDrawerOpen,
-}: SideBarProps) => {
+const SideBar = ({ route, drawerOpen, setDrawerOpen }: SideBarProps) => {
   const navigateTo = useNavigate();
   const [selected, setSelected] = useState(route);
+
+  const { refresh }: { refresh: () => Promise<() => void> } =
+    useDataProcessor();
 
   const drawer = (
     <>

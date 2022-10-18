@@ -28,12 +28,13 @@ import GenericQuickFilter from "../QuickFilter/QuickFilter";
 import { Typography } from "@mui/material";
 import { ItemTypes, PageTypes } from "../../utils/enums";
 import FormContext from "../../context/FormContext";
+import GenericForm from "../GenericForm/GenericForm";
+import useDataProcessor from "../../hooks/useDataProcessor";
 
 interface GenericTableProps {
   commonProps: {
     setDrawerOpen: Dispatch<SetStateAction<boolean>>;
     query: string;
-    refresh: () => void;
     drawerOpen: boolean;
   };
   data: Item[];
@@ -121,7 +122,10 @@ const GenericTable = ({
   columns,
   route,
 }: GenericTableProps) => {
-  const { setDrawerOpen, query, refresh, drawerOpen } = commonProps;
+  const { refresh }: { refresh: () => Promise<() => void> } =
+    useDataProcessor();
+
+  const { setDrawerOpen, query, drawerOpen } = commonProps;
 
   const [filteredData, setFilteredData] = useState<Item[]>(
     data.filter((item: Item) => {
@@ -382,7 +386,10 @@ const GenericTable = ({
                                     onClick={() =>
                                       dispatch({
                                         type: "SET_STATE",
-                                        state: { isFormOpen: true, item: row },
+                                        state: {
+                                          form: <GenericForm item={row} />,
+                                          item: row,
+                                        },
                                       })
                                     }
                                   >
@@ -411,7 +418,10 @@ const GenericTable = ({
             onClick={() =>
               dispatch({
                 type: "SET_STATE",
-                state: { isFormOpen: true, item: {} as Item },
+                state: {
+                  form: <GenericForm item={{} as Item} />,
+                  item: {} as Item,
+                },
               })
             }
           >
@@ -422,7 +432,6 @@ const GenericTable = ({
       <Box component="nav" sx={navigationStyle}>
         <SideBar
           route={route}
-          refresh={refresh}
           drawerOpen={drawerOpen}
           setDrawerOpen={setDrawerOpen}
         />
