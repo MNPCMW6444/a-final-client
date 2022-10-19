@@ -28,7 +28,6 @@ import GenericQuickFilter from "../QuickFilter/QuickFilter";
 import { Typography } from "@mui/material";
 import { ItemTypes, PageTypes } from "../../utils/enums";
 import FormContext from "../../context/FormContext";
-import GenericForm from "../GenericForm/GenericForm";
 
 interface GenericTableProps {
   commonProps: {
@@ -133,7 +132,7 @@ const GenericTable = ({
     })
   );
 
-  const { dispatch } = useContext(FormContext);
+  const { setIsFormOpen, setItem } = useContext(FormContext);
 
   const [hoveringLongText, setHoveringLongText] = useState<boolean>(false);
 
@@ -380,19 +379,10 @@ const GenericTable = ({
                               ) : column.key === "actions" ? (
                                 <>
                                   <Button
-                                    onClick={() =>
-                                      dispatch({
-                                        type: "SET_STATE",
-                                        state: {
-                                          form: (
-                                            <GenericForm
-                                              item={row}
-                                              refresh={refresh}
-                                            />
-                                          ),
-                                        },
-                                      })
-                                    }
+                                    onClick={() => {
+                                      setIsFormOpen(true);
+                                      setItem(row);
+                                    }}
                                   >
                                     ✏️
                                   </Button>
@@ -416,14 +406,10 @@ const GenericTable = ({
         <Grid item>
           <Button
             variant="contained"
-            onClick={() =>
-              dispatch({
-                type: "SET_STATE",
-                state: {
-                  form: <GenericForm item={{} as Item} refresh={refresh} />,
-                },
-              })
-            }
+            onClick={() => {
+              setIsFormOpen(true);
+              setItem({} as Item);
+            }}
           >
             Create a New Item
           </Button>

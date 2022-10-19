@@ -30,7 +30,7 @@ function App() {
   return (
     <ThemeProvider theme={createTheme()}>
       <ReactNotifications />
-      <> {form}</>
+      {form}
       <CssBaseline />
       <TopBar
         query={query}
