@@ -2,6 +2,7 @@ import { ReactNotifications } from "react-notifications-component";
 import "react-notifications-component/dist/theme.css";
 import { createTheme, CssBaseline, ThemeProvider } from "@mui/material";
 import { useState } from "react";
+
 import { Item } from "./types/index";
 import TopBar from "./components/TopBar/TopBar";
 import CalendarRouter from "./components/CalendarRouter/CalendarRouter";
@@ -41,6 +42,7 @@ function App() {
         </ShowIf>
       </ThemeProvider>
     </FormProvider>
+
   );
 }
 
