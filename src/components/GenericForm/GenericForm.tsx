@@ -1,5 +1,5 @@
 import Grid from "@mui/material/Grid";
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { Item } from "../../types";
 import Button from "@mui/material/Button";
 import Axios from "axios";
@@ -12,18 +12,20 @@ import SelectInput from "./SelectInput";
 import { Typography } from "@mui/material";
 import selectButton from "../CalendarButton/CalendarButton";
 import DateInput from "./DateInput";
+import FormContext from "../../context/FormContext";
 
 interface GenericFormProps {
-  closeForm: () => void;
   item: Item;
-  refresh: () => void;
+  refresh: () => Promise<() => void>;
 }
 
 const fieldStyle = { width: "70%" };
 
 const controlButtonStyle = { width: "100px" };
 
-const GenericForm = ({ closeForm, item, refresh }: GenericFormProps) => {
+const GenericForm = ({ item, refresh }: GenericFormProps) => {
+  const { setIsFormOpen } = useContext(FormContext);
+
   const [type, setType] = useState<string>(item.type || ItemTypes.task);
 
   const [errorMessage, setErrorMessage] = useState<string>("");
@@ -41,7 +43,7 @@ const GenericForm = ({ closeForm, item, refresh }: GenericFormProps) => {
         : await Axios.post(domain + "create" + type, {
             newItem: itemState,
           });
-      closeForm();
+      setIsFormOpen(false);
       refresh();
     } catch (err: any) {
       setErrorMessage(err.response.data.erroMsg);
@@ -51,11 +53,11 @@ const GenericForm = ({ closeForm, item, refresh }: GenericFormProps) => {
   return (
     <Grid container direction="column" rowSpacing={6}>
       <Grid item container justifyContent="center" columnSpacing={0.5}>
-        {Object.values(ItemTypes).map((option) => {
+        {Object.values(ItemTypes).map((option, index) => {
           const SelectButton = selectButton(option, type === option);
           return (
             (!item.type || item.type === option) && (
-              <Grid item>
+              <Grid item key={index}>
                 <SelectButton onClick={() => setType(option)} />
               </Grid>
             )
@@ -137,7 +139,7 @@ const GenericForm = ({ closeForm, item, refresh }: GenericFormProps) => {
             sx={controlButtonStyle}
             variant="outlined"
             color="error"
-            onClick={() => closeForm()}
+            onClick={() => setIsFormOpen(false)}
           >
             Cancel
           </Button>

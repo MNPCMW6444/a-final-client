@@ -3,7 +3,13 @@ import TableCell from "@mui/material/TableCell";
 import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
-import { Dispatch, SetStateAction, useEffect, useState } from "react";
+import {
+  Dispatch,
+  SetStateAction,
+  useContext,
+  useEffect,
+  useState,
+} from "react";
 import { Properties } from "csstype";
 import otherColumn from "../../config/otherColumn";
 import { blue } from "@mui/material/colors";
@@ -21,13 +27,13 @@ import quickFiltersConfig from "../../config/quickFilters";
 import GenericQuickFilter from "../QuickFilter/QuickFilter";
 import { Typography } from "@mui/material";
 import { ItemTypes, PageTypes } from "../../utils/enums";
+import FormContext from "../../context/FormContext";
 
 interface GenericTableProps {
   commonProps: {
     setDrawerOpen: Dispatch<SetStateAction<boolean>>;
-    openModal: (editedItem: Item) => void;
-    query: string;
-    refresh: () => void;
+    searchValue: string;
+    refresh: () => Promise<() => void>;
     drawerOpen: boolean;
   };
   data: Item[];
@@ -115,19 +121,24 @@ const GenericTable = ({
   columns,
   route,
 }: GenericTableProps) => {
-  const { setDrawerOpen, openModal, query, refresh, drawerOpen } = commonProps;
+  const { setDrawerOpen, searchValue, refresh, drawerOpen } = commonProps;
+
   const [filteredData, setFilteredData] = useState<Item[]>(
     data.filter((item: Item) => {
       return (
-        item.title.toLocaleLowerCase().includes(query.toLocaleLowerCase()) ||
-        !query
+        item.title
+          .toLocaleLowerCase()
+          .includes(searchValue.toLocaleLowerCase()) || !searchValue
       );
     })
   );
 
+  const { setIsFormOpen, setItem } = useContext(FormContext);
+
   const [hoveringLongText, setHoveringLongText] = useState<boolean>(false);
 
   const [sortDirection, setSortDirection] = useState<boolean>(false);
+
   const [sortColumn, setSortColumn] = useState<string>();
 
   const [activeQuickFilters, setActiveQuickfilters] = useState<boolean[]>(
@@ -163,8 +174,9 @@ const GenericTable = ({
     setFilteredData(
       data.filter(
         (item: Item) =>
-          item.title.toLocaleLowerCase().includes(query.toLocaleLowerCase()) ||
-          !query
+          item.title
+            .toLocaleLowerCase()
+            .includes(searchValue.toLocaleLowerCase()) || !searchValue
       )
     );
     setActiveQuickfilters(
@@ -174,13 +186,14 @@ const GenericTable = ({
         ] as keyof typeof quickFiltersConfig
       ].map(() => false)
     );
-  }, [data, query, route]);
+  }, [data, searchValue, route]);
 
   useEffect(() => {
     let newData = data.filter(
       (item: Item) =>
-        item.title.toLocaleLowerCase().includes(query.toLocaleLowerCase()) ||
-        !query
+        item.title
+          .toLocaleLowerCase()
+          .includes(searchValue.toLocaleLowerCase()) || !searchValue
     );
     activeQuickFilters.forEach((filter, index) => {
       if (filter)
@@ -193,7 +206,7 @@ const GenericTable = ({
         );
     });
     setFilteredData(newData);
-  }, [activeQuickFilters, data, query, route]);
+  }, [activeQuickFilters, data, searchValue, route]);
 
   return (
     <Box component="main" sx={tableStyle}>
@@ -216,9 +229,8 @@ const GenericTable = ({
               route as keyof typeof PageTypes
             ] as keyof typeof quickFiltersConfig
           ].map((filter, index) => (
-            <Grid item>
+            <Grid item key={index}>
               <GenericQuickFilter
-                key={index}
                 index={index}
                 name={filter.name}
                 isActive={activeQuickFilters}
@@ -368,7 +380,12 @@ const GenericTable = ({
                                 </>
                               ) : column.key === "actions" ? (
                                 <>
-                                  <Button onClick={() => openModal(row)}>
+                                  <Button
+                                    onClick={() => {
+                                      setIsFormOpen(true);
+                                      setItem(row);
+                                    }}
+                                  >
                                     ✏️
                                   </Button>
                                   <Button onClick={() => deleteItem(row)}>
@@ -389,7 +406,13 @@ const GenericTable = ({
         </Grid>
         <br />
         <Grid item>
-          <Button variant="contained" onClick={() => openModal({} as Item)}>
+          <Button
+            variant="contained"
+            onClick={() => {
+              setIsFormOpen(true);
+              setItem({} as Item);
+            }}
+          >
             Create a New Item
           </Button>
         </Grid>
