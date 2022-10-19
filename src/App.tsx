@@ -1,22 +1,22 @@
 import { ReactNotifications } from "react-notifications-component";
 import "react-notifications-component/dist/theme.css";
 import { createTheme, CssBaseline, ThemeProvider } from "@mui/material";
-import { useContext, useState } from "react";
+import { useState } from "react";
 import { Item } from "./types/index";
 import TopBar from "./components/TopBar/TopBar";
 import CalendarRouter from "./components/CalendarRouter/CalendarRouter";
+import { FormProvider } from "./context/FormContext";
 import useDataProcessor from "./hooks/useDataProcessor";
-import FormContext from "./context/FormContext";
 
 function App() {
-  const [query, setQuery] = useState<string>("");
-
-  const [drawerOpen, setDrawerOpen] = useState<boolean>(false);
-
   const {
     data,
     refresh,
   }: { data: Item[]; refresh: () => Promise<() => void> } = useDataProcessor();
+
+  const [query, setQuery] = useState<string>("");
+
+  const [drawerOpen, setDrawerOpen] = useState<boolean>(false);
 
   const commonProps = {
     setDrawerOpen: setDrawerOpen,
@@ -25,23 +25,22 @@ function App() {
     query: query,
   };
 
-  const { form } = useContext(FormContext);
-
   return (
-    <ThemeProvider theme={createTheme()}>
-      <ReactNotifications />
-      {form}
-      <CssBaseline />
-      <TopBar
-        query={query}
-        setQuery={setQuery}
-        drawerOpen={drawerOpen}
-        setDrawerOpen={setDrawerOpen}
-      />
-      {data && data.length > 0 && (
-        <CalendarRouter commonProps={commonProps} data={data} />
-      )}
-    </ThemeProvider>
+    <FormProvider refresh={refresh}>
+      <ThemeProvider theme={createTheme()}>
+        <ReactNotifications />
+        <CssBaseline />
+        <TopBar
+          query={query}
+          setQuery={setQuery}
+          drawerOpen={drawerOpen}
+          setDrawerOpen={setDrawerOpen}
+        />
+        {data && data.length > 0 && (
+          <CalendarRouter commonProps={commonProps} data={data} />
+        )}
+      </ThemeProvider>
+    </FormProvider>
   );
 }
 

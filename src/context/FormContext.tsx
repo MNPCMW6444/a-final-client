@@ -34,13 +34,18 @@ interface FormContextInterface {
   setItem: Dispatch<SetStateAction<Item>>;
 }
 
+interface FormProviderProps {
+  refresh: () => Promise<() => void>;
+  children: ReactNode;
+}
+
 const FormContext = createContext<FormContextInterface>(
   {} as FormContextInterface
 );
 
 const { Provider } = FormContext;
 
-export const FormProvider: React.FC<{ children: ReactNode }> = (props) => {
+export const FormProvider = ({ refresh, children }: FormProviderProps) => {
   const [isFormOpen, setIsFormOpen] = useState<boolean>(false);
 
   const [item, setItem] = useState<Item>({} as Item);
@@ -64,7 +69,7 @@ export const FormProvider: React.FC<{ children: ReactNode }> = (props) => {
           borderRadius="5vw"
           padding="4vw"
         >
-          <GenericForm item={item} refresh={() => {}} />
+          <GenericForm item={item} refresh={refresh} />
         </Box>
       </Fade>
     </Modal>
@@ -80,7 +85,7 @@ export const FormProvider: React.FC<{ children: ReactNode }> = (props) => {
         setItem,
       }}
     >
-      {props.children}
+      {children}
     </Provider>
   );
 };

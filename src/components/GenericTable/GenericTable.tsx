@@ -33,7 +33,7 @@ interface GenericTableProps {
   commonProps: {
     setDrawerOpen: Dispatch<SetStateAction<boolean>>;
     query: string;
-    refresh: () => void;
+    refresh: () => Promise<() => void>;
     drawerOpen: boolean;
   };
   data: Item[];
@@ -226,9 +226,8 @@ const GenericTable = ({
               route as keyof typeof PageTypes
             ] as keyof typeof quickFiltersConfig
           ].map((filter, index) => (
-            <Grid item>
+            <Grid item key={index}>
               <GenericQuickFilter
-                key={index}
                 index={index}
                 name={filter.name}
                 isActive={activeQuickFilters}

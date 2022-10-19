@@ -16,7 +16,7 @@ import FormContext from "../../context/FormContext";
 
 interface GenericFormProps {
   item: Item;
-  refresh: () => void;
+  refresh: () => Promise<() => void>;
 }
 
 const fieldStyle = { width: "70%" };
@@ -53,11 +53,11 @@ const GenericForm = ({ item, refresh }: GenericFormProps) => {
   return (
     <Grid container direction="column" rowSpacing={6}>
       <Grid item container justifyContent="center" columnSpacing={0.5}>
-        {Object.values(ItemTypes).map((option) => {
+        {Object.values(ItemTypes).map((option, index) => {
           const SelectButton = selectButton(option, type === option);
           return (
             (!item.type || item.type === option) && (
-              <Grid item>
+              <Grid item key={index}>
                 <SelectButton onClick={() => setType(option)} />
               </Grid>
             )

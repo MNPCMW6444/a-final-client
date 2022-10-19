@@ -14,7 +14,7 @@ import selectButton from "../CalendarButton/CalendarButton";
 
 interface SideBarProps {
   route: string;
-  refresh: () => void;
+  refresh: () => Promise<() => void>;
   drawerOpen: boolean;
   setDrawerOpen: Dispatch<SetStateAction<boolean>>;
 }
@@ -40,11 +40,6 @@ const wideBarSx = {
     boxSizing: "border-box",
     width: drawerWidthSettings.width,
   },
-};
-
-const sideSx = {
-  width: { sm: drawerWidthSettings.width },
-  flexShrink: { sm: 0 },
 };
 
 const SideBar = ({
