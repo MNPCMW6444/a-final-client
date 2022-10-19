@@ -28,15 +28,21 @@ import GenericQuickFilter from "../QuickFilter/QuickFilter";
 import { Typography } from "@mui/material";
 import { ItemTypes, PageTypes } from "../../utils/enums";
 import FormContext from "../../context/FormContext";
+import { useSelector } from "react-redux";
+import {
+  selectEvents,
+  selectTasks,
+  selectTodayItems,
+} from "../../store/selectors/index";
+import { useDispatch } from "react-redux";
+import { fetchData } from "../../store/reducers";
 
 interface GenericTableProps {
   commonProps: {
     setDrawerOpen: Dispatch<SetStateAction<boolean>>;
     searchValue: string;
-    refresh: () => Promise<() => void>;
     drawerOpen: boolean;
   };
-  data: Item[];
   columns: Map<string, string> | undefined;
   route: string;
 }
@@ -115,13 +121,16 @@ const navigationStyle = {
   flexShrink: { sm: 0 },
 };
 
-const GenericTable = ({
-  commonProps,
-  data,
-  columns,
-  route,
-}: GenericTableProps) => {
-  const { setDrawerOpen, searchValue, refresh, drawerOpen } = commonProps;
+const GenericTable = ({ commonProps, columns, route }: GenericTableProps) => {
+  const { setDrawerOpen, searchValue, drawerOpen } = commonProps;
+
+  const data = useSelector(
+    route === "today"
+      ? selectTodayItems
+      : route === "tasks"
+      ? selectTasks
+      : selectEvents
+  );
 
   const [filteredData, setFilteredData] = useState<Item[]>(
     data.filter((item: Item) => {
@@ -151,7 +160,7 @@ const GenericTable = ({
 
   const deleteItem = async (item: Item) => {
     await Axios.delete(domain + "delete" + item.type + "/" + item._id);
-    refresh();
+    dispatch(fetchData() as any);
   };
 
   const sortData = (property: string) => {
@@ -186,7 +195,7 @@ const GenericTable = ({
         ] as keyof typeof quickFiltersConfig
       ].map(() => false)
     );
-  }, [data, searchValue, route]);
+  }, [searchValue, route, data]);
 
   useEffect(() => {
     let newData = data.filter(
@@ -206,7 +215,9 @@ const GenericTable = ({
         );
     });
     setFilteredData(newData);
-  }, [activeQuickFilters, data, searchValue, route]);
+  }, [activeQuickFilters, searchValue, data, route]);
+
+  const dispatch = useDispatch();
 
   return (
     <Box component="main" sx={tableStyle}>
@@ -381,6 +392,7 @@ const GenericTable = ({
                               ) : column.key === "actions" ? (
                                 <>
                                   <Button
+                                    sx={{ fontSize: "1.3rem" }}
                                     onClick={() => {
                                       setIsFormOpen(true);
                                       setItem(row);
@@ -388,7 +400,10 @@ const GenericTable = ({
                                   >
                                     ✏️
                                   </Button>
-                                  <Button onClick={() => deleteItem(row)}>
+                                  <Button
+                                    sx={{ fontSize: "1.3rem" }}
+                                    onClick={() => deleteItem(row)}
+                                  >
                                     🗑️
                                   </Button>
                                 </>
@@ -420,7 +435,6 @@ const GenericTable = ({
       <Box component="nav" sx={navigationStyle}>
         <SideBar
           route={route}
-          refresh={refresh}
           drawerOpen={drawerOpen}
           setDrawerOpen={setDrawerOpen}
         />

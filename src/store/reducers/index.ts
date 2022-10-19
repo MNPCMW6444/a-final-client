@@ -1,8 +1,9 @@
-import { useEffect, useState } from "react";
-import { Item, Task, Event } from "../types/index";
-import domain from "../config/domain";
-import Axios from "axios";
-import { ItemTypes } from "../utils/enums";
+import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
+import { sub } from "date-fns";
+import axios from "axios";
+import { Item, Task, Event } from "../../types";
+import domain from "../../config/domain";
+import { ItemTypes } from "../../utils/enums";
 
 const colorMap = new Map();
 colorMap.set("Red", "🔴");
@@ -15,23 +16,16 @@ colorMap.set("Black", "⚫️");
 colorMap.set("White", "⚪️");
 colorMap.set("Brown", "🟤");
 
-const useDataProcessor = () => {
-  const axiosController = new AbortController();
-  const fetchData = async () => {
-    const res = await Axios.get(domain + "alldata");
-    res.data.tasks.forEach((task: Task) => {
-      task.type = ItemTypes.task;
-    });
-    res.data.events.forEach((event: Event) => {
-      event.type = ItemTypes.event;
-    });
-    setData([...res.data.tasks, ...res.data.events]);
-    return () => axiosController.abort();
-  };
-  const [data, setData] = useState<Item[]>([]);
-  useEffect(() => {
-    fetchData();
-  }, []);
+export const fetchData = createAsyncThunk("items/get", async () => {
+  const res = await axios.get(domain + "alldata");
+  res.data.tasks.forEach((task: Task) => {
+    task.type = ItemTypes.task;
+  });
+  res.data.events.forEach((event: Event) => {
+    event.type = ItemTypes.event;
+  });
+  const data = [...res.data.tasks, ...res.data.events];
+
   if (data.length > 0) {
     const dbData = structuredClone(data);
     const jsonEvents = (dbData as Item[]).filter(
@@ -128,8 +122,12 @@ const useDataProcessor = () => {
       task.type = ItemTypes.task;
       return task;
     });
-    return { data: [...parsedEvents, ...parsedTasks], refresh: fetchData };
-  } else return { data: data, refresh: fetchData };
-};
 
-export default useDataProcessor;
+    return [...parsedEvents, ...parsedTasks];
+  } else return data;
+});
+
+export const getItemsStatus = (state: any) => (state as any).status;
+export const getItemsError = (state: any) => (state as any).error;
+
+export default null;
