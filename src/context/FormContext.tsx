@@ -2,7 +2,6 @@ import {
   createContext,
   Dispatch,
   ReactNode,
-  ReactElement,
   useState,
   SetStateAction,
 } from "react";
@@ -27,7 +26,6 @@ const modalStyle = {
 };
 
 interface FormContextInterface {
-  form: ReactElement<any, any>;
   isFormOpen: boolean;
   setIsFormOpen: Dispatch<SetStateAction<boolean>>;
   item: Item;
@@ -50,41 +48,37 @@ export const FormProvider = ({ refresh, children }: FormProviderProps) => {
 
   const [item, setItem] = useState<Item>({} as Item);
 
-  const form = (
-    <Modal
-      open={isFormOpen}
-      onClose={() => setIsFormOpen(false)}
-      closeAfterTransition
-      BackdropProps={{
-        timeout: 500,
-      }}
-    >
-      <Fade in={isFormOpen}>
-        <Box
-          sx={modalStyle}
-          width="42vw"
-          height="80vh"
-          border="0.2rem solid #000"
-          boxShadow={24}
-          borderRadius="5vw"
-          padding="4vw"
-        >
-          <GenericForm item={item} refresh={refresh} />
-        </Box>
-      </Fade>
-    </Modal>
-  );
-
   return (
     <Provider
       value={{
-        form,
         isFormOpen,
         setIsFormOpen,
         item,
         setItem,
       }}
     >
+      <Modal
+        open={isFormOpen}
+        onClose={() => setIsFormOpen(false)}
+        closeAfterTransition
+        BackdropProps={{
+          timeout: 500,
+        }}
+      >
+        <Fade in={isFormOpen}>
+          <Box
+            sx={modalStyle}
+            width="42vw"
+            height="80vh"
+            border="0.2rem solid #000"
+            boxShadow={24}
+            borderRadius="5vw"
+            padding="4vw"
+          >
+            <GenericForm item={item} refresh={refresh} />
+          </Box>
+        </Fade>
+      </Modal>
       {children}
     </Provider>
   );

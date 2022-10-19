@@ -14,7 +14,7 @@ function App() {
     refresh,
   }: { data: Item[]; refresh: () => Promise<() => void> } = useDataProcessor();
 
-  const [query, setQuery] = useState<string>("");
+  const [searchValue, setSearchValue] = useState<string>("");
 
   const [drawerOpen, setDrawerOpen] = useState<boolean>(false);
 
@@ -22,7 +22,7 @@ function App() {
     setDrawerOpen: setDrawerOpen,
     drawerOpen: drawerOpen,
     refresh: refresh,
-    query: query,
+    searchValue: searchValue,
   };
 
   return (
@@ -31,17 +31,20 @@ function App() {
         <ReactNotifications />
         <CssBaseline />
         <TopBar
-          query={query}
-          setQuery={setQuery}
+          searchValue={searchValue}
+          setSearchValue={setSearchValue}
           drawerOpen={drawerOpen}
           setDrawerOpen={setDrawerOpen}
         />
-        {data && data.length > 0 && (
+        <ShowIf show={data && data.length > 0}>
           <CalendarRouter commonProps={commonProps} data={data} />
-        )}
+        </ShowIf>
       </ThemeProvider>
     </FormProvider>
   );
 }
+
+const ShowIf = ({ show, children }: { show: boolean; children: JSX.Element }) =>
+  show ? children : <></>;
 
 export default App;

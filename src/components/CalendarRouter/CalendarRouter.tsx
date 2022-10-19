@@ -7,13 +7,12 @@ import Box from "@mui/material/Box";
 import Toolbar from "@mui/material/Toolbar";
 import { Typography } from "@mui/material";
 import { ItemTypes, PageTypes } from "../../utils/enums";
-import { Dispatch, SetStateAction, useContext } from "react";
-import FormContext from "../../context/FormContext";
+import { Dispatch, SetStateAction } from "react";
 
 interface CalendarRouterProps {
   commonProps: {
     setDrawerOpen: Dispatch<SetStateAction<boolean>>;
-    query: string;
+    searchValue: string;
     refresh: () => Promise<() => void>;
     drawerOpen: boolean;
   };
@@ -29,8 +28,6 @@ const ErrorFallback = () => (
 );
 
 const CalendarRouter = ({ commonProps, data }: CalendarRouterProps) => {
-  const { form } = useContext(FormContext);
-
   const defaultElement = (
     <GenericTable
       commonProps={commonProps}
@@ -48,7 +45,6 @@ const CalendarRouter = ({ commonProps, data }: CalendarRouterProps) => {
 
   return (
     <>
-      {form}
       <Toolbar />
       <Router>
         {data.length > 0 ? (

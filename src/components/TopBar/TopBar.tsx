@@ -11,8 +11,8 @@ import blue from "@mui/material/colors/blue";
 import { Dispatch, SetStateAction } from "react";
 
 interface TopBarProps {
-  query: string;
-  setQuery: Dispatch<SetStateAction<string>>;
+  searchValue: string;
+  setSearchValue: Dispatch<SetStateAction<string>>;
   drawerOpen: boolean;
   setDrawerOpen: Dispatch<SetStateAction<boolean>>;
 }
@@ -33,8 +33,8 @@ const searchBarStyle = {
 const openButtonStyle = { mr: 2, display: { sm: "none" } };
 
 const TopBar = ({
-  setQuery,
-  query,
+  setSearchValue,
+  searchValue,
   drawerOpen,
   setDrawerOpen,
 }: TopBarProps) => (
@@ -70,9 +70,9 @@ const TopBar = ({
             <TextField
               onChange={(
                 e: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>
-              ) => setQuery(e.target.value)}
+              ) => setSearchValue(e.target.value)}
               placeholder="Search By Title..."
-              value={query}
+              value={searchValue}
               variant="outlined"
               sx={searchBarStyle}
               autoComplete="off"

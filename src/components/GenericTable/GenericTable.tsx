@@ -32,7 +32,7 @@ import FormContext from "../../context/FormContext";
 interface GenericTableProps {
   commonProps: {
     setDrawerOpen: Dispatch<SetStateAction<boolean>>;
-    query: string;
+    searchValue: string;
     refresh: () => Promise<() => void>;
     drawerOpen: boolean;
   };
@@ -121,13 +121,14 @@ const GenericTable = ({
   columns,
   route,
 }: GenericTableProps) => {
-  const { setDrawerOpen, query, refresh, drawerOpen } = commonProps;
+  const { setDrawerOpen, searchValue, refresh, drawerOpen } = commonProps;
 
   const [filteredData, setFilteredData] = useState<Item[]>(
     data.filter((item: Item) => {
       return (
-        item.title.toLocaleLowerCase().includes(query.toLocaleLowerCase()) ||
-        !query
+        item.title
+          .toLocaleLowerCase()
+          .includes(searchValue.toLocaleLowerCase()) || !searchValue
       );
     })
   );
@@ -173,8 +174,9 @@ const GenericTable = ({
     setFilteredData(
       data.filter(
         (item: Item) =>
-          item.title.toLocaleLowerCase().includes(query.toLocaleLowerCase()) ||
-          !query
+          item.title
+            .toLocaleLowerCase()
+            .includes(searchValue.toLocaleLowerCase()) || !searchValue
       )
     );
     setActiveQuickfilters(
@@ -184,13 +186,14 @@ const GenericTable = ({
         ] as keyof typeof quickFiltersConfig
       ].map(() => false)
     );
-  }, [data, query, route]);
+  }, [data, searchValue, route]);
 
   useEffect(() => {
     let newData = data.filter(
       (item: Item) =>
-        item.title.toLocaleLowerCase().includes(query.toLocaleLowerCase()) ||
-        !query
+        item.title
+          .toLocaleLowerCase()
+          .includes(searchValue.toLocaleLowerCase()) || !searchValue
     );
     activeQuickFilters.forEach((filter, index) => {
       if (filter)
@@ -203,7 +206,7 @@ const GenericTable = ({
         );
     });
     setFilteredData(newData);
-  }, [activeQuickFilters, data, query, route]);
+  }, [activeQuickFilters, data, searchValue, route]);
 
   return (
     <Box component="main" sx={tableStyle}>
