@@ -381,6 +381,7 @@ const GenericTable = ({
                               ) : column.key === "actions" ? (
                                 <>
                                   <Button
+                                    sx={{ fontSize: "1.3rem" }}
                                     onClick={() => {
                                       setIsFormOpen(true);
                                       setItem(row);
@@ -388,7 +389,10 @@ const GenericTable = ({
                                   >
                                     ✏️
                                   </Button>
-                                  <Button onClick={() => deleteItem(row)}>
+                                  <Button
+                                    sx={{ fontSize: "1.3rem" }}
+                                    onClick={() => deleteItem(row)}
+                                  >
                                     🗑️
                                   </Button>
                                 </>
