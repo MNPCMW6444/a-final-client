@@ -33,7 +33,7 @@ const CalendarRouter = ({ commonProps, data }: CalendarRouterProps) => {
     <GenericTable
       commonProps={commonProps}
       columns={columnsConfig.get(PageTypes.today)}
-      route="today"
+      route={PageTypes.today}
     />
   );
 
@@ -58,7 +58,7 @@ const CalendarRouter = ({ commonProps, data }: CalendarRouterProps) => {
                   <GenericTable
                     commonProps={commonProps}
                     columns={columnsConfig.get(PageTypes.tasks)}
-                    route="tasks"
+                    route={PageTypes.tasks}
                   />
                 }
               />
@@ -68,7 +68,7 @@ const CalendarRouter = ({ commonProps, data }: CalendarRouterProps) => {
                   <GenericTable
                     commonProps={commonProps}
                     columns={columnsConfig.get(PageTypes.events)}
-                    route="events"
+                    route={PageTypes.events}
                   />
                 }
               />

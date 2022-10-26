@@ -40,14 +40,18 @@ const GenericForm = ({ item }: GenericFormProps) => {
 
   const handleFormSend = async () => {
     try {
-      item.type
+      itemState.type
         ? await Axios.put(domain + "edit" + type + "/" + itemState._id, {
             newItem: itemState,
           })
         : await Axios.post(domain + "create" + type, {
             newItem: itemState,
           });
-      item.type ? dispatch(editItem(itemState)) : dispatch(addItem(itemState));
+      itemState._id
+        ? dispatch(editItem({ ...itemState, type }))
+        : dispatch(
+            addItem({ ...itemState, type, _id: Math.random() + "Temp" })
+          );
       setIsFormOpen(false);
     } catch (err: any) {
       setErrorMessage(err.response.data.erroMsg);
