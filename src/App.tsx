@@ -1,7 +1,7 @@
 import { ReactNotifications } from "react-notifications-component";
 import "react-notifications-component/dist/theme.css";
 import { createTheme, CssBaseline, ThemeProvider } from "@mui/material";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 import { Item } from "./types/index";
 import TopBar from "./components/TopBar/TopBar";
@@ -9,11 +9,25 @@ import CalendarRouter from "./components/CalendarRouter/CalendarRouter";
 import { FormProvider } from "./context/FormContext";
 import useDataProcessor from "./hooks/useDataProcessor";
 
+import type { RootState } from "./store/store";
+import { useSelector, useDispatch } from "react-redux";
+import { updateStore } from "./store/reducers/itemsReducer";
+
 function App() {
   const {
     data,
     refresh,
   }: { data: Item[]; refresh: () => Promise<() => void> } = useDataProcessor();
+  const [dataLoaded, setDataLoaded] = useState(false);
+
+  if (!dataLoaded && data.length > 0) setDataLoaded(true);
+
+  const storeData = useSelector((state: RootState) => state.itemsSlice.items);
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(updateStore(data));
+  }, [dataLoaded]);
 
   const [searchValue, setSearchValue] = useState<string>("");
 
@@ -37,12 +51,11 @@ function App() {
           drawerOpen={drawerOpen}
           setDrawerOpen={setDrawerOpen}
         />
-        <ShowIf show={data && data.length > 0}>
-          <CalendarRouter commonProps={commonProps} data={data} />
+        <ShowIf show={storeData && storeData.length > 0}>
+          <CalendarRouter commonProps={commonProps} />
         </ShowIf>
       </ThemeProvider>
     </FormProvider>
-
   );
 }
 

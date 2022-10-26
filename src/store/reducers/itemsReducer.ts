@@ -14,7 +14,7 @@ export const itemsSlice = createSlice({
   name: "counter",
   initialState,
   reducers: {
-    refresh: (state: ItemsState, action: PayloadAction<Item[]>) => {
+    updateStore: (state: ItemsState, action: PayloadAction<Item[]>) => {
       state.items = action.payload;
     },
     add: (state: ItemsState, action: PayloadAction<Item>) => {
@@ -26,6 +26,6 @@ export const itemsSlice = createSlice({
   },
 });
 
-export const { refresh, add, remove } = itemsSlice.actions;
+export const { updateStore, add, remove } = itemsSlice.actions;
 
 export default itemsSlice.reducer;

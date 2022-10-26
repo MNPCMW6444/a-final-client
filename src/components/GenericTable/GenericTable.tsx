@@ -29,6 +29,9 @@ import { Typography } from "@mui/material";
 import { ItemTypes, PageTypes } from "../../utils/enums";
 import FormContext from "../../context/FormContext";
 
+import { useSelector } from "react-redux";
+import { RootState } from "../../store/store";
+
 interface GenericTableProps {
   commonProps: {
     setDrawerOpen: Dispatch<SetStateAction<boolean>>;
@@ -36,7 +39,6 @@ interface GenericTableProps {
     refresh: () => Promise<() => void>;
     drawerOpen: boolean;
   };
-  data: Item[];
   columns: Map<string, string> | undefined;
   route: string;
 }
@@ -115,13 +117,10 @@ const navigationStyle = {
   flexShrink: { sm: 0 },
 };
 
-const GenericTable = ({
-  commonProps,
-  data,
-  columns,
-  route,
-}: GenericTableProps) => {
+const GenericTable = ({ commonProps, columns, route }: GenericTableProps) => {
   const { setDrawerOpen, searchValue, refresh, drawerOpen } = commonProps;
+
+  const data = useSelector((state: RootState) => state.itemsSlice.items);
 
   const [filteredData, setFilteredData] = useState<Item[]>(
     data.filter((item: Item) => {
@@ -186,7 +185,7 @@ const GenericTable = ({
         ] as keyof typeof quickFiltersConfig
       ].map(() => false)
     );
-  }, [data, searchValue, route]);
+  }, [searchValue, route]);
 
   useEffect(() => {
     let newData = data.filter(
@@ -206,7 +205,7 @@ const GenericTable = ({
         );
     });
     setFilteredData(newData);
-  }, [activeQuickFilters, data, searchValue, route]);
+  }, [activeQuickFilters, searchValue, route]);
 
   return (
     <Box component="main" sx={tableStyle}>
