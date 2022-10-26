@@ -24,4 +24,10 @@ interface Task extends Item {
   untilDate: string;
 }
 
-export type { Item, Event, Task };
+type FilterFunction = (item: Item) => boolean;
+
+type SortFunction = (itemA: Item, itemB: Item) => number;
+
+SortFunction;
+
+export type { Item, Event, Task, FilterFunction, SortFunction };

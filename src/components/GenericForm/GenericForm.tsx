@@ -13,17 +13,19 @@ import { Typography } from "@mui/material";
 import selectButton from "../CalendarButton/CalendarButton";
 import DateInput from "./DateInput";
 import FormContext from "../../context/FormContext";
+import { addItem, editItem } from "../../store/reducers/itemsReducer";
+
+import { useDispatch } from "react-redux";
 
 interface GenericFormProps {
   item: Item;
-  refresh: () => Promise<() => void>;
 }
 
 const fieldStyle = { width: "70%" };
 
 const controlButtonStyle = { width: "100px" };
 
-const GenericForm = ({ item, refresh }: GenericFormProps) => {
+const GenericForm = ({ item }: GenericFormProps) => {
   const { setIsFormOpen } = useContext(FormContext);
 
   const [type, setType] = useState<string>(item.type || ItemTypes.task);
@@ -34,6 +36,8 @@ const GenericForm = ({ item, refresh }: GenericFormProps) => {
 
   const fieldsArray = fieldsConfig.get(type);
 
+  const dispatch = useDispatch();
+
   const handleFormSend = async () => {
     try {
       item.type
@@ -43,8 +47,8 @@ const GenericForm = ({ item, refresh }: GenericFormProps) => {
         : await Axios.post(domain + "create" + type, {
             newItem: itemState,
           });
+      item.type ? dispatch(editItem(itemState)) : dispatch(addItem(itemState));
       setIsFormOpen(false);
-      refresh();
     } catch (err: any) {
       setErrorMessage(err.response.data.erroMsg);
     }

@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { Item, Task, Event } from "../types/index";
 import domain from "../config/domain";
 import Axios from "axios";
@@ -15,9 +15,10 @@ colorMap.set("Black", "⚫️");
 colorMap.set("White", "⚪️");
 colorMap.set("Brown", "🟤");
 
+const axiosController = new AbortController();
+
 const useDataProcessor = () => {
-  const axiosController = new AbortController();
-  const fetchData = async () => {
+  const fetchData = useCallback(async () => {
     const res = await Axios.get(domain + "alldata");
     res.data.tasks.forEach((task: Task) => {
       task.type = ItemTypes.task;
@@ -27,11 +28,12 @@ const useDataProcessor = () => {
     });
     setData([...res.data.tasks, ...res.data.events]);
     return () => axiosController.abort();
-  };
+  }, []);
+
   const [data, setData] = useState<Item[]>([]);
   useEffect(() => {
     fetchData();
-  }, []);
+  }, [fetchData]);
   if (data.length > 0) {
     const dbData = structuredClone(data);
     const jsonEvents = (dbData as Item[]).filter(
@@ -128,8 +130,8 @@ const useDataProcessor = () => {
       task.type = ItemTypes.task;
       return task;
     });
-    return { data: [...parsedEvents, ...parsedTasks], refresh: fetchData };
-  } else return { data: data, refresh: fetchData };
+    return [...parsedEvents, ...parsedTasks];
+  } else return data;
 };
 
 export default useDataProcessor;

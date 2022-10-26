@@ -31,12 +31,13 @@ import FormContext from "../../context/FormContext";
 
 import { useSelector } from "react-redux";
 import { RootState } from "../../store/store";
+import { removeItem } from "../../store/reducers/itemsReducer";
+import { useDispatch } from "react-redux";
 
 interface GenericTableProps {
   commonProps: {
     setDrawerOpen: Dispatch<SetStateAction<boolean>>;
     searchValue: string;
-    refresh: () => Promise<() => void>;
     drawerOpen: boolean;
   };
   columns: Map<string, string> | undefined;
@@ -118,19 +119,13 @@ const navigationStyle = {
 };
 
 const GenericTable = ({ commonProps, columns, route }: GenericTableProps) => {
-  const { setDrawerOpen, searchValue, refresh, drawerOpen } = commonProps;
+  const { setDrawerOpen, searchValue, drawerOpen } = commonProps;
 
-  const data = useSelector((state: RootState) => state.itemsSlice.items);
-
-  const [filteredData, setFilteredData] = useState<Item[]>(
-    data.filter((item: Item) => {
-      return (
-        item.title
-          .toLocaleLowerCase()
-          .includes(searchValue.toLocaleLowerCase()) || !searchValue
-      );
-    })
+  const data = useSelector(
+    (state: RootState) => state.itemsSlice.filteredItems
   );
+
+  const [optimizedData, setOptimizedData] = useState<Item[]>([]);
 
   const { setIsFormOpen, setItem } = useContext(FormContext);
 
@@ -138,7 +133,7 @@ const GenericTable = ({ commonProps, columns, route }: GenericTableProps) => {
 
   const [sortDirection, setSortDirection] = useState<boolean>(false);
 
-  const [sortColumn, setSortColumn] = useState<string>();
+  const [sortColumn, setSortColumn] = useState<string>("title");
 
   const [activeQuickFilters, setActiveQuickfilters] = useState<boolean[]>(
     quickFiltersConfig[
@@ -148,15 +143,17 @@ const GenericTable = ({ commonProps, columns, route }: GenericTableProps) => {
     ].map(() => false)
   );
 
+  const dispatch = useDispatch();
+
   const deleteItem = async (item: Item) => {
     await Axios.delete(domain + "delete" + item.type + "/" + item._id);
-    refresh();
+    dispatch(removeItem(item));
   };
 
   const sortData = (property: string) => {
-    if (filteredData)
-      setFilteredData(
-        (filteredData as Item[]).sort((itemA: Item, itemB: Item) => {
+    if (optimizedData)
+      setOptimizedData(
+        optimizedData.sort((itemA: Item, itemB: Item) => {
           setSortDirection(!sortDirection);
           setSortColumn(property);
           return (
@@ -168,24 +165,6 @@ const GenericTable = ({ commonProps, columns, route }: GenericTableProps) => {
         })
       );
   };
-
-  useEffect(() => {
-    setFilteredData(
-      data.filter(
-        (item: Item) =>
-          item.title
-            .toLocaleLowerCase()
-            .includes(searchValue.toLocaleLowerCase()) || !searchValue
-      )
-    );
-    setActiveQuickfilters(
-      quickFiltersConfig[
-        PageTypes[
-          route as keyof typeof PageTypes
-        ] as keyof typeof quickFiltersConfig
-      ].map(() => false)
-    );
-  }, [searchValue, route]);
 
   useEffect(() => {
     let newData = data.filter(
@@ -204,8 +183,16 @@ const GenericTable = ({ commonProps, columns, route }: GenericTableProps) => {
           ][index].filterFunction
         );
     });
-    setFilteredData(newData);
-  }, [activeQuickFilters, searchValue, route]);
+    newData.sort((itemA: Item, itemB: Item) => {
+      return (
+        (sortDirection ? -1 : 1) *
+        itemA[sortColumn as keyof Item].localeCompare(
+          itemB[sortColumn as keyof Item]
+        )
+      );
+    });
+    setOptimizedData(newData);
+  }, [data, activeQuickFilters, searchValue, sortColumn, sortDirection, route]);
 
   return (
     <Box component="main" sx={tableStyle}>
@@ -274,8 +261,8 @@ const GenericTable = ({ commonProps, columns, route }: GenericTableProps) => {
                 </TableRow>
               </TableHead>
               <TableBody>
-                {filteredData &&
-                  filteredData.map((row: Item, index: number) => (
+                {optimizedData &&
+                  optimizedData.map((row: Item, index: number) => (
                     <TableRow key={`row-${index}`}>
                       {columns &&
                         Array.from(columns, ([key, header]) => ({
@@ -423,7 +410,6 @@ const GenericTable = ({ commonProps, columns, route }: GenericTableProps) => {
       <Box component="nav" sx={navigationStyle}>
         <SideBar
           route={route}
-          refresh={refresh}
           drawerOpen={drawerOpen}
           setDrawerOpen={setDrawerOpen}
         />

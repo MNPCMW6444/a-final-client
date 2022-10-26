@@ -1,33 +1,15 @@
 import { ReactNotifications } from "react-notifications-component";
 import "react-notifications-component/dist/theme.css";
 import { createTheme, CssBaseline, ThemeProvider } from "@mui/material";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 
-import { Item } from "./types/index";
 import TopBar from "./components/TopBar/TopBar";
 import CalendarRouter from "./components/CalendarRouter/CalendarRouter";
 import { FormProvider } from "./context/FormContext";
 import useDataProcessor from "./hooks/useDataProcessor";
 
-import type { RootState } from "./store/store";
-import { useSelector, useDispatch } from "react-redux";
-import { updateStore } from "./store/reducers/itemsReducer";
-
 function App() {
-  const {
-    data,
-    refresh,
-  }: { data: Item[]; refresh: () => Promise<() => void> } = useDataProcessor();
-  const [dataLoaded, setDataLoaded] = useState(false);
-
-  if (!dataLoaded && data.length > 0) setDataLoaded(true);
-
-  const storeData = useSelector((state: RootState) => state.itemsSlice.items);
-  const dispatch = useDispatch();
-
-  useEffect(() => {
-    dispatch(updateStore(data));
-  }, [dataLoaded]);
+  const data = useDataProcessor();
 
   const [searchValue, setSearchValue] = useState<string>("");
 
@@ -36,12 +18,11 @@ function App() {
   const commonProps = {
     setDrawerOpen: setDrawerOpen,
     drawerOpen: drawerOpen,
-    refresh: refresh,
     searchValue: searchValue,
   };
 
   return (
-    <FormProvider refresh={refresh}>
+    <FormProvider>
       <ThemeProvider theme={createTheme()}>
         <ReactNotifications />
         <CssBaseline />
@@ -51,8 +32,8 @@ function App() {
           drawerOpen={drawerOpen}
           setDrawerOpen={setDrawerOpen}
         />
-        <ShowIf show={storeData && storeData.length > 0}>
-          <CalendarRouter commonProps={commonProps} />
+        <ShowIf show={data && data.length > 0}>
+          <CalendarRouter commonProps={commonProps} data={data} />
         </ShowIf>
       </ThemeProvider>
     </FormProvider>
