@@ -20,7 +20,7 @@ export const itemsSlice = createSlice({
     add: (state: ItemsState, action: PayloadAction<Item>) => {
       state.items.push(action.payload);
     },
-    remove: (state: ItemsState, action: PayloadAction<Item>) => {
+    remove: (state: ItemsState, action: PayloadAction<string>) => {
       state.items.filter((item) => item._id !== action.payload);
     },
   },
