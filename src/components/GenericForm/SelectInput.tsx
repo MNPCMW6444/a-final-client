@@ -27,11 +27,10 @@ const SelectInput = ({
       setItemState(tempItem);
     }}
   >
-    {dropDownOptions.map((option: string, index: number) => (
-      <MenuItem key={index} value={option}>
-        {option}
-      </MenuItem>
+    {dropDownOptions.map((option: string) => (
+      <MenuItem value={option}>{option}</MenuItem>
     ))}
   </StyleSelect>
 );
+
 export default SelectInput;

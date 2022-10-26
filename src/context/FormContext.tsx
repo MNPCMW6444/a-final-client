@@ -33,6 +33,7 @@ interface FormContextInterface {
 }
 
 interface FormProviderProps {
+  refresh: () => Promise<() => void>;
   children: ReactNode;
 }
 
@@ -42,7 +43,7 @@ const FormContext = createContext<FormContextInterface>(
 
 const { Provider } = FormContext;
 
-export const FormProvider = ({ children }: FormProviderProps) => {
+export const FormProvider = ({ refresh, children }: FormProviderProps) => {
   const [isFormOpen, setIsFormOpen] = useState<boolean>(false);
 
   const [item, setItem] = useState<Item>({} as Item);
@@ -74,7 +75,7 @@ export const FormProvider = ({ children }: FormProviderProps) => {
             borderRadius="5vw"
             padding="4vw"
           >
-            <GenericForm item={item} />
+            <GenericForm item={item} refresh={refresh} />
           </Box>
         </Fade>
       </Modal>

@@ -13,18 +13,17 @@ import { Typography } from "@mui/material";
 import selectButton from "../CalendarButton/CalendarButton";
 import DateInput from "./DateInput";
 import FormContext from "../../context/FormContext";
-import { useDispatch } from "react-redux";
-import { fetchData } from "../../store/reducers";
 
 interface GenericFormProps {
   item: Item;
+  refresh: () => Promise<() => void>;
 }
 
 const fieldStyle = { width: "70%" };
 
 const controlButtonStyle = { width: "100px" };
 
-const GenericForm = ({ item }: GenericFormProps) => {
+const GenericForm = ({ item, refresh }: GenericFormProps) => {
   const { setIsFormOpen } = useContext(FormContext);
 
   const [type, setType] = useState<string>(item.type || ItemTypes.task);
@@ -34,8 +33,6 @@ const GenericForm = ({ item }: GenericFormProps) => {
   const [itemState, setItemState] = useState<Item>(item);
 
   const fieldsArray = fieldsConfig.get(type);
-
-  const dispatch = useDispatch();
 
   const handleFormSend = async () => {
     try {
@@ -47,7 +44,7 @@ const GenericForm = ({ item }: GenericFormProps) => {
             newItem: itemState,
           });
       setIsFormOpen(false);
-      dispatch(fetchData() as any);
+      refresh();
     } catch (err: any) {
       setErrorMessage(err.response.data.erroMsg);
     }
@@ -58,7 +55,6 @@ const GenericForm = ({ item }: GenericFormProps) => {
       <Grid item container justifyContent="center" columnSpacing={0.5}>
         {Object.values(ItemTypes).map((option, index) => {
           const SelectButton = selectButton(option, type === option);
-
           return (
             (!item.type || item.type === option) && (
               <Grid item key={index}>
@@ -86,44 +82,46 @@ const GenericForm = ({ item }: GenericFormProps) => {
             (
               { key, label, placeHolder, dropDownOptions, datePicker },
               index: number
-            ) => (
-              <Grid
-                item
-                container
-                justifyContent="space-between"
-                alignItems="center"
-                key={index}
-              >
-                <Grid item>
-                  <InputLabel>{label + ": "}</InputLabel>
-                </Grid>
-                <Grid item sx={fieldStyle}>
-                  {placeHolder ? (
-                    <TextInput
-                      placeHolder={placeHolder}
-                      dataKey={key}
-                      itemState={itemState}
-                      setItemState={setItemState}
-                    />
-                  ) : dropDownOptions ? (
-                    <SelectInput
-                      dropDownOptions={dropDownOptions}
-                      dataKey={key}
-                      itemState={itemState}
-                      setItemState={setItemState}
-                    />
-                  ) : (
-                    datePicker && (
-                      <DateInput
+            ) => {
+              return (
+                <Grid
+                  item
+                  container
+                  justifyContent="space-between"
+                  alignItems="center"
+                  key={index}
+                >
+                  <Grid item>
+                    <InputLabel>{label + ": "}</InputLabel>
+                  </Grid>
+                  <Grid item sx={fieldStyle}>
+                    {placeHolder ? (
+                      <TextInput
+                        placeHolder={placeHolder}
                         dataKey={key}
                         itemState={itemState}
                         setItemState={setItemState}
                       />
-                    )
-                  )}
+                    ) : dropDownOptions ? (
+                      <SelectInput
+                        dropDownOptions={dropDownOptions}
+                        dataKey={key}
+                        itemState={itemState}
+                        setItemState={setItemState}
+                      />
+                    ) : (
+                      datePicker && (
+                        <DateInput
+                          dataKey={key}
+                          itemState={itemState}
+                          setItemState={setItemState}
+                        />
+                      )
+                    )}
+                  </Grid>
                 </Grid>
-              </Grid>
-            )
+              );
+            }
           )}
       </Grid>
       <Grid item container justifyContent="center" columnSpacing={1}>

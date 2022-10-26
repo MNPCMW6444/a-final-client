@@ -8,7 +8,7 @@ const uncompletedTasksFilter = {
 
 const highPriorityTasksFilter = {
   name: "High priority tasks",
-  filterFunction: (task: Item) => (task as Task).priority === "High",
+  filterFunction: (task: Item) => (task as Task).priority !== "High",
 };
 
 const quickFilters = {

@@ -14,6 +14,7 @@ import selectButton from "../CalendarButton/CalendarButton";
 
 interface SideBarProps {
   route: string;
+  refresh: () => Promise<() => void>;
   drawerOpen: boolean;
   setDrawerOpen: Dispatch<SetStateAction<boolean>>;
 }
@@ -41,7 +42,12 @@ const wideBarSx = {
   },
 };
 
-const SideBar = ({ route, drawerOpen, setDrawerOpen }: SideBarProps) => {
+const SideBar = ({
+  route,
+  refresh,
+  drawerOpen,
+  setDrawerOpen,
+}: SideBarProps) => {
   const navigateTo = useNavigate();
   const [selected, setSelected] = useState(route);
 
@@ -83,6 +89,7 @@ const SideBar = ({ route, drawerOpen, setDrawerOpen }: SideBarProps) => {
                   onClick={() => {
                     navigateTo("/" + option);
                     setSelected(option);
+                    refresh();
                   }}
                 />
               </Grid>
