@@ -11,14 +11,11 @@ import useDataProcessor from "./hooks/useDataProcessor";
 function App() {
   const data = useDataProcessor();
 
-  const [searchValue, setSearchValue] = useState<string>("");
-
   const [drawerOpen, setDrawerOpen] = useState<boolean>(false);
 
   const commonProps = {
     setDrawerOpen: setDrawerOpen,
     drawerOpen: drawerOpen,
-    searchValue: searchValue,
   };
 
   return (
@@ -26,12 +23,7 @@ function App() {
       <ThemeProvider theme={createTheme()}>
         <ReactNotifications />
         <CssBaseline />
-        <TopBar
-          searchValue={searchValue}
-          setSearchValue={setSearchValue}
-          drawerOpen={drawerOpen}
-          setDrawerOpen={setDrawerOpen}
-        />
+        <TopBar drawerOpen={drawerOpen} setDrawerOpen={setDrawerOpen} />
         <ShowIf show={data && data.length > 0}>
           <CalendarRouter commonProps={commonProps} data={data} />
         </ShowIf>

@@ -3,7 +3,7 @@ import TableCell from "@mui/material/TableCell";
 import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
-import { Dispatch, SetStateAction, useContext, useState } from "react";
+import { useContext, useState } from "react";
 import { Properties } from "csstype";
 import otherColumn from "../../config/otherColumn";
 import { blue } from "@mui/material/colors";
@@ -16,7 +16,6 @@ import Button from "@mui/material/Button";
 import Axios from "axios";
 import domain from "../../config/domain";
 import drawerWidthSettings from "../../config/drawerWidthSettings";
-import SideBar from "../SideBar/SideBar";
 import quickFiltersConfig from "../../config/quickFilters";
 import GenericQuickFilter from "../QuickFilter/QuickFilter";
 import { Typography } from "@mui/material";
@@ -26,15 +25,11 @@ import FormContext from "../../context/FormContext";
 import { useSelector } from "react-redux";
 import { removeItem } from "../../store/reducers/itemsReducer";
 import { useDispatch } from "react-redux";
-import itemsSelector from "../../store/selectors/itemsSelectors";
+import itemsSelector from "../../store/selectors/itemsSelector";
 
 interface GenericTableProps {
-  commonProps: {
-    setDrawerOpen: Dispatch<SetStateAction<boolean>>;
-    drawerOpen: boolean;
-  };
   columns: Map<string, string> | undefined;
-  route: PageTypes;
+  pageType: PageTypes;
 }
 
 const outerGridSx = {
@@ -106,14 +101,7 @@ const innerOtherStyle = {
   paddingRight: "5px",
 };
 
-const navigationStyle = {
-  width: { sm: drawerWidthSettings.width },
-  flexShrink: { sm: 0 },
-};
-
-const GenericTable = ({ commonProps, columns, route }: GenericTableProps) => {
-  const { setDrawerOpen, drawerOpen } = commonProps;
-
+const GenericTable = ({ columns, pageType }: GenericTableProps) => {
   const { setIsFormOpen, setItem } = useContext(FormContext);
 
   const [hoveringLongText, setHoveringLongText] = useState<boolean>(false);
@@ -125,7 +113,7 @@ const GenericTable = ({ commonProps, columns, route }: GenericTableProps) => {
   const [activeQuickFilters, setActiveQuickfilters] = useState<boolean[]>(
     quickFiltersConfig[
       PageTypes[
-        route as keyof typeof PageTypes
+        pageType as keyof typeof PageTypes
       ] as keyof typeof quickFiltersConfig
     ].map(() => false)
   );
@@ -139,7 +127,7 @@ const GenericTable = ({ commonProps, columns, route }: GenericTableProps) => {
       optimizedData = optimizedData.filter(
         quickFiltersConfig[
           PageTypes[
-            route as keyof typeof PageTypes
+            pageType as keyof typeof PageTypes
           ] as keyof typeof quickFiltersConfig
         ][index].filterFunction
       );
@@ -184,7 +172,7 @@ const GenericTable = ({ commonProps, columns, route }: GenericTableProps) => {
           </Grid>
           {quickFiltersConfig[
             PageTypes[
-              route as keyof typeof PageTypes
+              pageType as keyof typeof PageTypes
             ] as keyof typeof quickFiltersConfig
           ].map((filter, index) => (
             <Grid item key={index}>
@@ -379,13 +367,6 @@ const GenericTable = ({ commonProps, columns, route }: GenericTableProps) => {
           </Button>
         </Grid>
       </Grid>
-      <Box component="nav" sx={navigationStyle}>
-        <SideBar
-          route={route}
-          drawerOpen={drawerOpen}
-          setDrawerOpen={setDrawerOpen}
-        />
-      </Box>
     </Box>
   );
 };

@@ -8,13 +8,11 @@ import Typography from "@mui/material/Typography";
 import TextField from "@mui/material/TextField";
 import SearchIcon from "@mui/icons-material/Search";
 import blue from "@mui/material/colors/blue";
-import { Dispatch, SetStateAction } from "react";
+import { Dispatch, SetStateAction, useState } from "react";
 import { search } from "../../store/reducers/itemsReducer";
 import { useDispatch } from "react-redux";
 
 interface TopBarProps {
-  searchValue: string;
-  setSearchValue: Dispatch<SetStateAction<string>>;
   drawerOpen: boolean;
   setDrawerOpen: Dispatch<SetStateAction<boolean>>;
 }
@@ -34,13 +32,11 @@ const searchBarStyle = {
 
 const openButtonStyle = { mr: 2, display: { sm: "none" } };
 
-const TopBar = ({
-  setSearchValue,
-  searchValue,
-  drawerOpen,
-  setDrawerOpen,
-}: TopBarProps) => {
+const TopBar = ({ drawerOpen, setDrawerOpen }: TopBarProps) => {
   const dispatch = useDispatch();
+
+  const [searchValue, setSearchValue] = useState<string>();
+
   return (
     <AppBar position="fixed" sx={appBarStyle}>
       <Toolbar>

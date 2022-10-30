@@ -16,7 +16,7 @@ import { useDispatch } from "react-redux";
 import { navigate } from "../../store/reducers/itemsReducer";
 
 interface SideBarProps {
-  route: PageTypes;
+  pageType: PageTypes;
   drawerOpen: boolean;
   setDrawerOpen: Dispatch<SetStateAction<boolean>>;
 }
@@ -44,15 +44,15 @@ const wideBarSx = {
   },
 };
 
-const SideBar = ({ route, drawerOpen, setDrawerOpen }: SideBarProps) => {
+const SideBar = ({ pageType, drawerOpen, setDrawerOpen }: SideBarProps) => {
   const navigateTo = useNavigate();
-  const [selected, setSelected] = useState(route);
+  const [selected, setSelected] = useState(pageType);
 
   const dispatch = useDispatch();
 
   useEffect(() => {
-    dispatch(dispatch(navigate(route)));
-  }, [dispatch, route]);
+    dispatch(dispatch(navigate(pageType)));
+  }, [dispatch, pageType]);
 
   const drawer = (
     <>

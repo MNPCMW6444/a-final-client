@@ -1,6 +1,6 @@
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import columnsConfig from "../../config/columns";
-import GenericTable from "../GenericTable/GenericTable";
+import GenericPage from "../GenericPage/GenericPage";
 import { ErrorBoundary } from "react-error-boundary";
 import Box from "@mui/material/Box";
 import Toolbar from "@mui/material/Toolbar";
@@ -14,7 +14,6 @@ import { setAllItems } from "../../store/reducers/itemsReducer";
 interface CalendarRouterProps {
   commonProps: {
     setDrawerOpen: Dispatch<SetStateAction<boolean>>;
-    searchValue: string;
     drawerOpen: boolean;
   };
   data: Item[];
@@ -30,10 +29,9 @@ const ErrorFallback = () => (
 
 const CalendarRouter = ({ commonProps, data }: CalendarRouterProps) => {
   const defaultElement = (
-    <GenericTable
-      commonProps={commonProps}
+    <GenericPage
       columns={columnsConfig.get(PageTypes.today)}
-      route={PageTypes.today}
+      commonProps={commonProps}
     />
   );
 
@@ -55,20 +53,18 @@ const CalendarRouter = ({ commonProps, data }: CalendarRouterProps) => {
               <Route
                 path={PageTypes.tasks}
                 element={
-                  <GenericTable
-                    commonProps={commonProps}
+                  <GenericPage
                     columns={columnsConfig.get(PageTypes.tasks)}
-                    route={PageTypes.tasks}
+                    commonProps={commonProps}
                   />
                 }
               />
               <Route
                 path={PageTypes.events}
                 element={
-                  <GenericTable
-                    commonProps={commonProps}
+                  <GenericPage
                     columns={columnsConfig.get(PageTypes.events)}
-                    route={PageTypes.events}
+                    commonProps={commonProps}
                   />
                 }
               />
