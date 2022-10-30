@@ -8,12 +8,15 @@ import Typography from "@mui/material/Typography";
 import BT from "../../assets/BT.png";
 import { useNavigate } from "react-router-dom";
 import ButtonGroup from "@mui/material/ButtonGroup";
-import { Dispatch, SetStateAction, useState } from "react";
+import { Dispatch, SetStateAction, useEffect, useState } from "react";
 import { PageTypes } from "../../utils/enums";
 import selectButton from "../CalendarButton/CalendarButton";
 
+import { useDispatch } from "react-redux";
+import { navigate } from "../../store/reducers/itemsReducer";
+
 interface SideBarProps {
-  route: string;
+  route: PageTypes;
   drawerOpen: boolean;
   setDrawerOpen: Dispatch<SetStateAction<boolean>>;
 }
@@ -44,6 +47,12 @@ const wideBarSx = {
 const SideBar = ({ route, drawerOpen, setDrawerOpen }: SideBarProps) => {
   const navigateTo = useNavigate();
   const [selected, setSelected] = useState(route);
+
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(dispatch(navigate(route)));
+  }, [dispatch, route]);
 
   const drawer = (
     <>
@@ -83,6 +92,7 @@ const SideBar = ({ route, drawerOpen, setDrawerOpen }: SideBarProps) => {
                   onClick={() => {
                     navigateTo("/" + option);
                     setSelected(option);
+                    dispatch(navigate(option));
                   }}
                 />
               </Grid>

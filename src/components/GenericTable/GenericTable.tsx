@@ -31,11 +31,10 @@ import itemsSelector from "../../store/selectors/itemsSelectors";
 interface GenericTableProps {
   commonProps: {
     setDrawerOpen: Dispatch<SetStateAction<boolean>>;
-    searchValue: string;
     drawerOpen: boolean;
   };
   columns: Map<string, string> | undefined;
-  route: string;
+  route: PageTypes;
 }
 
 const outerGridSx = {
@@ -113,7 +112,7 @@ const navigationStyle = {
 };
 
 const GenericTable = ({ commonProps, columns, route }: GenericTableProps) => {
-  const { setDrawerOpen, searchValue, drawerOpen } = commonProps;
+  const { setDrawerOpen, drawerOpen } = commonProps;
 
   const { setIsFormOpen, setItem } = useContext(FormContext);
 
@@ -131,7 +130,7 @@ const GenericTable = ({ commonProps, columns, route }: GenericTableProps) => {
     ].map(() => false)
   );
 
-  const data = useSelector(itemsSelector(route, searchValue));
+  const data = useSelector(itemsSelector);
 
   let optimizedData = data;
 

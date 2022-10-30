@@ -1,13 +1,18 @@
 import { createSlice } from "@reduxjs/toolkit";
 import type { PayloadAction } from "@reduxjs/toolkit";
 import { Item } from "../../types";
+import { PageTypes } from "../../utils/enums";
 
 export interface ItemsState {
   items: Item[];
+  pageType: PageTypes;
+  searchValue: string;
 }
 
 const initialState: ItemsState = {
   items: [],
+  pageType: PageTypes.today,
+  searchValue: "",
 };
 
 export const itemsSlice = createSlice({
@@ -31,10 +36,16 @@ export const itemsSlice = createSlice({
         (item) => item._id !== action.payload._id
       );
     },
+    navigate: (state: ItemsState, action: PayloadAction<PageTypes>) => {
+      state.pageType = action.payload;
+    },
+    search: (state: ItemsState, action: PayloadAction<string>) => {
+      state.searchValue = action.payload;
+    },
   },
 });
 
-export const { setAllItems, addItem, editItem, removeItem } =
+export const { setAllItems, addItem, editItem, removeItem, navigate, search } =
   itemsSlice.actions;
 
 export default itemsSlice.reducer;

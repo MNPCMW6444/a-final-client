@@ -9,6 +9,8 @@ import TextField from "@mui/material/TextField";
 import SearchIcon from "@mui/icons-material/Search";
 import blue from "@mui/material/colors/blue";
 import { Dispatch, SetStateAction } from "react";
+import { search } from "../../store/reducers/itemsReducer";
+import { useDispatch } from "react-redux";
 
 interface TopBarProps {
   searchValue: string;
@@ -37,50 +39,56 @@ const TopBar = ({
   searchValue,
   drawerOpen,
   setDrawerOpen,
-}: TopBarProps) => (
-  <AppBar position="fixed" sx={appBarStyle}>
-    <Toolbar>
-      <Grid
-        container
-        justifyContent="flex-start"
-        alignItems="center"
-        wrap="nowrap"
-      >
-        <Grid item>
-          <IconButton
-            color="inherit"
-            aria-label="open drawer"
-            edge="start"
-            onClick={() => setDrawerOpen(!drawerOpen)}
-            sx={openButtonStyle}
-          >
-            <MenuIcon />
-          </IconButton>
-        </Grid>
-        <Grid item>
-          <Typography variant="subtitle1" noWrap component="div">
-            Blue Calendar
-          </Typography>
-        </Grid>
-        <Grid item container justifyContent="center" alignItems="center">
+}: TopBarProps) => {
+  const dispatch = useDispatch();
+  return (
+    <AppBar position="fixed" sx={appBarStyle}>
+      <Toolbar>
+        <Grid
+          container
+          justifyContent="flex-start"
+          alignItems="center"
+          wrap="nowrap"
+        >
           <Grid item>
-            <SearchIcon />
+            <IconButton
+              color="inherit"
+              aria-label="open drawer"
+              edge="start"
+              onClick={() => setDrawerOpen(!drawerOpen)}
+              sx={openButtonStyle}
+            >
+              <MenuIcon />
+            </IconButton>
           </Grid>
-          <Grid item width="50%">
-            <TextField
-              onChange={(
-                e: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>
-              ) => setSearchValue(e.target.value)}
-              placeholder="Search By Title..."
-              value={searchValue}
-              variant="outlined"
-              sx={searchBarStyle}
-              autoComplete="off"
-            />
+          <Grid item>
+            <Typography variant="subtitle1" noWrap component="div">
+              Blue Calendar
+            </Typography>
+          </Grid>
+          <Grid item container justifyContent="center" alignItems="center">
+            <Grid item>
+              <SearchIcon />
+            </Grid>
+            <Grid item width="50%">
+              <TextField
+                onChange={(
+                  e: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>
+                ) => {
+                  setSearchValue(e.target.value);
+                  dispatch(search(e.target.value));
+                }}
+                placeholder="Search By Title..."
+                value={searchValue}
+                variant="outlined"
+                sx={searchBarStyle}
+                autoComplete="off"
+              />
+            </Grid>
           </Grid>
         </Grid>
-      </Grid>
-    </Toolbar>
-  </AppBar>
-);
+      </Toolbar>
+    </AppBar>
+  );
+};
 export default TopBar;
