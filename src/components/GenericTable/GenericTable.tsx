@@ -3,13 +3,7 @@ import TableCell from "@mui/material/TableCell";
 import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
-import {
-  Dispatch,
-  SetStateAction,
-  useContext,
-  useEffect,
-  useState,
-} from "react";
+import { Dispatch, SetStateAction, useContext, useState } from "react";
 import { Properties } from "csstype";
 import otherColumn from "../../config/otherColumn";
 import { blue } from "@mui/material/colors";
@@ -30,9 +24,9 @@ import { ItemTypes, PageTypes } from "../../utils/enums";
 import FormContext from "../../context/FormContext";
 
 import { useSelector } from "react-redux";
-import { RootState } from "../../store/store";
 import { removeItem } from "../../store/reducers/itemsReducer";
 import { useDispatch } from "react-redux";
+import itemsSelector from "../../store/selectors/itemsSelectors";
 
 interface GenericTableProps {
   commonProps: {
@@ -121,12 +115,6 @@ const navigationStyle = {
 const GenericTable = ({ commonProps, columns, route }: GenericTableProps) => {
   const { setDrawerOpen, searchValue, drawerOpen } = commonProps;
 
-  const data = useSelector(
-    (state: RootState) => state.itemsSlice.filteredItems
-  );
-
-  const [optimizedData, setOptimizedData] = useState<Item[]>([]);
-
   const { setIsFormOpen, setItem } = useContext(FormContext);
 
   const [hoveringLongText, setHoveringLongText] = useState<boolean>(false);
@@ -143,6 +131,21 @@ const GenericTable = ({ commonProps, columns, route }: GenericTableProps) => {
     ].map(() => false)
   );
 
+  const data = useSelector(itemsSelector(route, searchValue));
+
+  let optimizedData = data;
+
+  activeQuickFilters.forEach((filter, index) => {
+    if (filter)
+      optimizedData = optimizedData.filter(
+        quickFiltersConfig[
+          PageTypes[
+            route as keyof typeof PageTypes
+          ] as keyof typeof quickFiltersConfig
+        ][index].filterFunction
+      );
+  });
+
   const dispatch = useDispatch();
 
   const deleteItem = async (item: Item) => {
@@ -152,47 +155,17 @@ const GenericTable = ({ commonProps, columns, route }: GenericTableProps) => {
 
   const sortData = (property: string) => {
     if (optimizedData)
-      setOptimizedData(
-        optimizedData.sort((itemA: Item, itemB: Item) => {
-          setSortDirection(!sortDirection);
-          setSortColumn(property);
-          return (
-            (sortDirection ? 1 : -1) *
-            itemA[property as keyof Item].localeCompare(
-              itemB[property as keyof Item]
-            )
-          );
-        })
-      );
-  };
-
-  useEffect(() => {
-    let newData = data.filter(
-      (item: Item) =>
-        item.title
-          .toLocaleLowerCase()
-          .includes(searchValue.toLocaleLowerCase()) || !searchValue
-    );
-    activeQuickFilters.forEach((filter, index) => {
-      if (filter)
-        newData = newData.filter(
-          quickFiltersConfig[
-            PageTypes[
-              route as keyof typeof PageTypes
-            ] as keyof typeof quickFiltersConfig
-          ][index].filterFunction
+      optimizedData = optimizedData.sort((itemA: Item, itemB: Item) => {
+        setSortDirection(!sortDirection);
+        setSortColumn(property);
+        return (
+          (sortDirection ? 1 : -1) *
+          itemA[property as keyof Item].localeCompare(
+            itemB[property as keyof Item]
+          )
         );
-    });
-    newData.sort((itemA: Item, itemB: Item) => {
-      return (
-        (sortDirection ? -1 : 1) *
-        itemA[sortColumn as keyof Item].localeCompare(
-          itemB[sortColumn as keyof Item]
-        )
-      );
-    });
-    setOptimizedData(newData);
-  }, [data, activeQuickFilters, searchValue, sortColumn, sortDirection, route]);
+      });
+  };
 
   return (
     <Box component="main" sx={tableStyle}>
