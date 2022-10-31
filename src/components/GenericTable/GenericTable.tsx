@@ -3,7 +3,7 @@ import TableCell from "@mui/material/TableCell";
 import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
-import { useContext, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { Properties } from "csstype";
 import otherColumn from "../../config/otherColumn";
 import { blue } from "@mui/material/colors";
@@ -110,7 +110,7 @@ const GenericTable = ({ columns, pageType }: GenericTableProps) => {
 
   const [sortColumn, setSortColumn] = useState<string>("title");
 
-  const [activeQuickFilters, setActiveQuickfilters] = useState<boolean[]>(
+  const [activeQuickFilters, setActiveQuickfilters] = useState<boolean[]>(() =>
     quickFiltersConfig[
       PageTypes[
         pageType as keyof typeof PageTypes
@@ -118,18 +118,30 @@ const GenericTable = ({ columns, pageType }: GenericTableProps) => {
     ].map(() => false)
   );
 
+  useEffect(() => {
+    setActiveQuickfilters(
+      quickFiltersConfig[
+        PageTypes[
+          pageType as keyof typeof PageTypes
+        ] as keyof typeof quickFiltersConfig
+      ].map(() => false)
+    );
+  }, [pageType]);
+
   const data = useSelector(itemsSelector);
 
   let optimizedData = data;
 
   activeQuickFilters.forEach((filter, index) => {
+    const quckFilter =
+      quickFiltersConfig[
+        PageTypes[
+          pageType as keyof typeof PageTypes
+        ] as keyof typeof quickFiltersConfig
+      ][index];
     if (filter)
       optimizedData = optimizedData.filter(
-        quickFiltersConfig[
-          PageTypes[
-            pageType as keyof typeof PageTypes
-          ] as keyof typeof quickFiltersConfig
-        ][index].filterFunction
+        quckFilter ? quckFilter.filterFunction : (item: Item) => true
       );
   });
 
