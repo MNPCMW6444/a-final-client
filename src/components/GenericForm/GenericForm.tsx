@@ -16,10 +16,74 @@ import FormContext from "../../context/FormContext";
 import { addItem, editItem } from "../../store/reducers/itemsReducer";
 
 import { useDispatch } from "react-redux";
+import { gql } from "@apollo/client";
 
 interface GenericFormProps {
   item: Item;
 }
+
+const editEvent = gql`
+  query Mutation {
+    editEvent
+  }
+`;
+
+const editTask = gql`
+  query Mutation {
+    editTask
+  }
+`;
+
+const createTask = gql`
+  query Mutation {
+    createTask
+  }
+`;
+
+const createEvent = gql`
+  query Mutation {
+    createEvent
+  }
+`;
+
+const deleteTask = gql`
+  query Mutation {
+    deleteTask
+  }
+`;
+
+const deleteEvent = gql`
+  query Mutation {
+    deleteEvent
+  }
+`;
+
+const getAllTasks = gql`
+  query Query {
+    allTasks {
+      title
+      description
+      estimatedTime
+      status
+      priority
+      untilDate
+      review
+      timeSpent
+      location
+      notificationTime
+    }
+    allEvents {
+      title
+      description
+      beginningTime
+      endingTime
+      color
+      invitedGuests
+      location
+      notificationTime
+    }
+  }
+`;
 
 const fieldStyle = { width: "70%" };
 
