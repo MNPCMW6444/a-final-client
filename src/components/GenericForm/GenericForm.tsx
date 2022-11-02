@@ -23,37 +23,40 @@ interface GenericFormProps {
 }
 
 const editEvent = gql`
-  query Mutation {
-    editEvent
+  mutation Mutation($event: Event!) {
+    editEvent(event: $event) {
+      id
+      type
+    }
   }
 `;
 
 const editTask = gql`
-  query Mutation {
+  mutation Mutation {
     editTask
   }
 `;
 
 const createTask = gql`
-  query Mutation {
+  mutation Mutation {
     createTask
   }
 `;
 
 const createEvent = gql`
-  query Mutation {
+  mutation Mutation {
     createEvent
   }
 `;
 
 const deleteTask = gql`
-  query Mutation {
+  mutation Mutation {
     deleteTask
   }
 `;
 
 const deleteEvent = gql`
-  query Mutation {
+  mutation Mutation {
     deleteEvent
   }
 `;
