@@ -25,18 +25,25 @@ const getAllTasks = gql`
   query Query {
     allTasks {
       title
+      description
+      estimatedTime
       status
       priority
+      untilDate
       review
       timeSpent
       location
+      notificationTime
     }
     allEvents {
       title
       description
+      beginningTime
+      endingTime
       color
       invitedGuests
       location
+      notificationTime
     }
   }
 `;
