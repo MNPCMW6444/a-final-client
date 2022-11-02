@@ -58,13 +58,11 @@ function App() {
     events: data ? data.allEvents : [],
   };
 
-  debugger;
-
-  res.tasks.forEach((task: Task) => {
-    task = { ...task, typeName: ItemTypes.task };
+  res.tasks = res.tasks.map((task: Task) => {
+    return { ...task, type: ItemTypes.task };
   });
-  res.events.forEach((event: Event) => {
-    event = { ...event, typeName: ItemTypes.event };
+  res.events = res.events.map((event: Event) => {
+    return { ...event, type: ItemTypes.event };
   });
 
   processedData = [...res.tasks, ...res.events];
@@ -72,12 +70,12 @@ function App() {
   if (processedData.length > 0) {
     const dbprocessedData = structuredClone(processedData);
     const jsonEvents = (dbprocessedData as Item[]).filter(
-      (item: Item) => item.typeName === ItemTypes.event
+      (item: Item) => item.type === ItemTypes.event
     );
     const jsonTasks = (dbprocessedData as Item[]).filter(
-      (item: Item) => item.typeName === ItemTypes.task
+      (item: Item) => item.type === ItemTypes.task
     );
-    debugger;
+
     let parsedEvents: Event[];
     parsedEvents = jsonEvents.map((event: any) => {
       event.beginningTime =
