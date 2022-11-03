@@ -7,7 +7,7 @@ import TopBar from "./components/TopBar/TopBar";
 import CalendarRouter from "./components/CalendarRouter/CalendarRouter";
 import { FormProvider } from "./context/FormContext";
 import { Item, Event, Task } from "./types";
-import { gql, useQuery } from "@apollo/client";
+import { gql, useQuery, useSubscription } from "@apollo/client";
 import { ItemTypes } from "./utils/enums";
 
 const colorMap = new Map();
@@ -48,9 +48,60 @@ const getAllTasks = gql`
   }
 `;
 
+const subscribeToUpdates = gql`
+  subscription Subscription {
+    taskAdded {
+      title
+      description
+      estimatedTime
+      status
+      priority
+      untilDate
+      review
+      timeSpent
+      location
+      notificationTime
+    }
+    eventAdded {
+      title
+      description
+      beginningTime
+      endingTime
+      color
+      invitedGuests
+      location
+      notificationTime
+    }
+    taskEdited {
+      title
+      description
+      estimatedTime
+      status
+      priority
+      untilDate
+      review
+      timeSpent
+      location
+      notificationTime
+    }
+    eventEdited {
+      title
+      description
+      beginningTime
+      endingTime
+      color
+      invitedGuests
+      location
+      notificationTime
+    }
+  }
+`;
+
 function App() {
   const [drawerOpen, setDrawerOpen] = useState<boolean>(false);
 
+  const datas = useSubscription(subscribeToUpdates).data;
+  console.log(datas);
   const commonProps = {
     setDrawerOpen: setDrawerOpen,
     drawerOpen: drawerOpen,
