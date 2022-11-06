@@ -13,8 +13,6 @@ import { Item } from "../../types/index";
 import Grid from "@mui/material/Grid";
 import Table from "@mui/material/Table";
 import Button from "@mui/material/Button";
-import Axios from "axios";
-import domain from "../../config/domain";
 import drawerWidthSettings from "../../config/drawerWidthSettings";
 import quickFiltersConfig from "../../config/quickFilters";
 import GenericQuickFilter from "../QuickFilter/QuickFilter";
