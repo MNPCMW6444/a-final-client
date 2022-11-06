@@ -69,7 +69,7 @@ const fieldStyle = { width: "70%" };
 const controlButtonStyle = { width: "100px" };
 
 const GenericForm = ({ item }: GenericFormProps) => {
-  const [editEventFunc, { error }] = useMutation(editEvent);
+  const [editEventFunc] = useMutation(editEvent);
   const [editTaskFunc] = useMutation(editTask);
   const [createTaskFunc] = useMutation(createTask);
   const [createEventFunc] = useMutation(createEvent);
@@ -85,8 +85,6 @@ const GenericForm = ({ item }: GenericFormProps) => {
   const fieldsArray = fieldsConfig.get(type);
 
   const dispatch = useDispatch();
-
-  console.log("ERROR " + error);
 
   const handleFormSend = async () => {
     try {
