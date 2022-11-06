@@ -26,6 +26,7 @@ import { useSelector } from "react-redux";
 import { removeItem } from "../../store/reducers/itemsReducer";
 import { useDispatch } from "react-redux";
 import itemsSelector from "../../store/selectors/itemsSelector";
+import { gql, useMutation } from "@apollo/client";
 
 interface GenericTableProps {
   columns: Map<string, string> | undefined;
@@ -101,8 +102,23 @@ const innerOtherStyle = {
   paddingRight: "5px",
 };
 
+const deleteTask = gql`
+  mutation Mutation {
+    deleteTask
+  }
+`;
+
+const deleteEvent = gql`
+  mutation Mutation {
+    deleteEvent
+  }
+`;
+
 const GenericTable = ({ columns, pageType }: GenericTableProps) => {
   const { setIsFormOpen, setItem } = useContext(FormContext);
+
+  const [deleteTaskFunc] = useMutation(deleteTask);
+  const [deleteEventFunc] = useMutation(deleteEvent);
 
   const [hoveringLongText, setHoveringLongText] = useState<boolean>(false);
 
@@ -148,7 +164,9 @@ const GenericTable = ({ columns, pageType }: GenericTableProps) => {
   const dispatch = useDispatch();
 
   const deleteItem = async (item: Item) => {
-    await Axios.delete(domain + "delete" + item.type + "/" + item._id);
+    item.type === ItemTypes.event
+      ? deleteEventFunc({ variables: { id: item._id } })
+      : deleteTaskFunc({ variables: { id: item._id } });
     dispatch(removeItem(item));
   };
 

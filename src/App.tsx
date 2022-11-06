@@ -24,6 +24,7 @@ colorMap.set("Brown", "🟤");
 const getAllTasks = gql`
   query Query {
     allTasks {
+      _id
       title
       description
       estimatedTime
@@ -36,6 +37,7 @@ const getAllTasks = gql`
       notificationTime
     }
     allEvents {
+      _id
       title
       description
       beginningTime
@@ -51,6 +53,7 @@ const getAllTasks = gql`
 const newEventSubscription = gql`
   subscription Subscription {
     newEvent {
+      _id
       title
       description
       beginningTime
@@ -66,6 +69,7 @@ const newEventSubscription = gql`
 const newTaskSubscription = gql`
   subscription subscription {
     newTask {
+      _id
       title
       description
       estimatedTime

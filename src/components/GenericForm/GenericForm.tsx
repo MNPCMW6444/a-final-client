@@ -2,8 +2,6 @@ import Grid from "@mui/material/Grid";
 import { useContext, useState } from "react";
 import { Item } from "../../types";
 import Button from "@mui/material/Button";
-import Axios from "axios";
-import domain from "../../config/domain";
 import fieldsConfig from "../../config/fields";
 import InputLabel from "@mui/material/InputLabel";
 import { ItemTypes } from "../../utils/enums";
@@ -16,7 +14,7 @@ import FormContext from "../../context/FormContext";
 import { addItem, editItem } from "../../store/reducers/itemsReducer";
 
 import { useDispatch } from "react-redux";
-import { gql } from "@apollo/client";
+import { gql, useMutation } from "@apollo/client";
 
 interface GenericFormProps {
   item: Item;
@@ -66,50 +64,16 @@ const createEvent = gql`
   }
 `;
 
-const deleteTask = gql`
-  mutation Mutation {
-    deleteTask
-  }
-`;
-
-const deleteEvent = gql`
-  mutation Mutation {
-    deleteEvent
-  }
-`;
-
-const getAllTasks = gql`
-  query Query {
-    allTasks {
-      title
-      description
-      estimatedTime
-      status
-      priority
-      untilDate
-      review
-      timeSpent
-      location
-      notificationTime
-    }
-    allEvents {
-      title
-      description
-      beginningTime
-      endingTime
-      color
-      invitedGuests
-      location
-      notificationTime
-    }
-  }
-`;
-
 const fieldStyle = { width: "70%" };
 
 const controlButtonStyle = { width: "100px" };
 
 const GenericForm = ({ item }: GenericFormProps) => {
+  const [editEventFunc, { error }] = useMutation(editEvent);
+  const [editTaskFunc] = useMutation(editTask);
+  const [createTaskFunc] = useMutation(createTask);
+  const [createEventFunc] = useMutation(createEvent);
+
   const { setIsFormOpen } = useContext(FormContext);
 
   const [type, setType] = useState<string>(item.type || ItemTypes.task);
@@ -122,15 +86,20 @@ const GenericForm = ({ item }: GenericFormProps) => {
 
   const dispatch = useDispatch();
 
+  console.log("ERROR " + error);
+
   const handleFormSend = async () => {
     try {
       itemState.type
-        ? await Axios.put(domain + "edit" + type + "/" + itemState._id, {
-            newItem: itemState,
-          })
-        : await Axios.post(domain + "create" + type, {
-            newItem: itemState,
-          });
+        ? type === ItemTypes.event
+          ? editEventFunc({
+              variables: { newItem: itemState },
+            })
+          : editTaskFunc({ variables: { task: itemState } })
+        : type === ItemTypes.event
+        ? createEventFunc({ variables: { event: itemState } })
+        : createTaskFunc({ variables: { task: itemState } });
+
       itemState._id
         ? dispatch(editItem({ ...itemState, type }))
         : dispatch(
