@@ -48,43 +48,9 @@ const getAllTasks = gql`
   }
 `;
 
-const subscribeToUpdates = gql`
+const newEventSubscription = gql`
   subscription Subscription {
-    taskAdded {
-      title
-      description
-      estimatedTime
-      status
-      priority
-      untilDate
-      review
-      timeSpent
-      location
-      notificationTime
-    }
-    eventAdded {
-      title
-      description
-      beginningTime
-      endingTime
-      color
-      invitedGuests
-      location
-      notificationTime
-    }
-    taskEdited {
-      title
-      description
-      estimatedTime
-      status
-      priority
-      untilDate
-      review
-      timeSpent
-      location
-      notificationTime
-    }
-    eventEdited {
+    newEvent {
       title
       description
       beginningTime
@@ -97,11 +63,50 @@ const subscribeToUpdates = gql`
   }
 `;
 
+const newTaskSubscription = gql`
+  subscription subscription {
+    newTask {
+      title
+      description
+      estimatedTime
+      status
+      priority
+      untilDate
+      review
+      timeSpent
+      location
+      notificationTime
+    }
+  }
+`;
+
+const deletedEventSubscription = gql`
+  subscription Subscription {
+    deletedEvent
+  }
+`;
+
+const deletedTaskSubscription = gql`
+  subscription Subscription {
+    deletedTask
+  }
+`;
+
 function App() {
   const [drawerOpen, setDrawerOpen] = useState<boolean>(false);
 
-  const datas = useSubscription(subscribeToUpdates).data;
-  console.log(datas);
+  const deletedTask = useSubscription(deletedTaskSubscription).data;
+  console.log(deletedTask);
+
+  const deletedEvent = useSubscription(deletedEventSubscription).data;
+  console.log(deletedEvent);
+
+  const newTask = useSubscription(newTaskSubscription).data;
+  console.log(newTask);
+
+  const newEvent = useSubscription(newEventSubscription).data;
+  console.log(newEvent);
+
   const commonProps = {
     setDrawerOpen: setDrawerOpen,
     drawerOpen: drawerOpen,

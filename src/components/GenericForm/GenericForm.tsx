@@ -23,17 +23,34 @@ interface GenericFormProps {
 }
 
 const editEvent = gql`
-  mutation Mutation($event: Event!) {
-    editEvent(event: $event) {
-      id
-      type
+  mutation Mutation {
+    editEvent {
+      title
+      description
+      beginningTime
+      endingTime
+      color
+      invitedGuests
+      location
+      notificationTime
     }
   }
 `;
 
 const editTask = gql`
   mutation Mutation {
-    editTask
+    editTask {
+      title
+      description
+      estimatedTime
+      status
+      priority
+      untilDate
+      review
+      timeSpent
+      location
+      notificationTime
+    }
   }
 `;
 
