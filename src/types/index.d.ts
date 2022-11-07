@@ -1,9 +1,9 @@
 interface Item {
   _id: string;
-  type: string;
-  id: string;
   title: string;
   description: string;
+  type: string;
+  __typename: any;
 }
 
 interface Event extends Item {

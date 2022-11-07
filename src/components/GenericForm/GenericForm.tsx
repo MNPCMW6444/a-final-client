@@ -11,9 +11,9 @@ import { Typography } from "@mui/material";
 import selectButton from "../CalendarButton/CalendarButton";
 import DateInput from "./DateInput";
 import FormContext from "../../context/FormContext";
-import { addItem, editItem } from "../../store/reducers/itemsReducer";
+//import { addItem, editItem } from "../../store/reducers/itemsReducer";
 
-import { useDispatch } from "react-redux";
+//import { useDispatch } from "react-redux";
 import { gql, useMutation } from "@apollo/client";
 
 interface GenericFormProps {
@@ -21,8 +21,9 @@ interface GenericFormProps {
 }
 
 const editEvent = gql`
-  mutation Mutation {
-    editEvent {
+  mutation Mutation($newItem: EventInput) {
+    editEvent(newItem: $newItem) {
+      _id
       title
       description
       beginningTime
@@ -36,8 +37,9 @@ const editEvent = gql`
 `;
 
 const editTask = gql`
-  mutation Mutation {
-    editTask {
+  mutation Mutation($newItem: TaskInput) {
+    editTask(newItem: $newItem) {
+      _id
       title
       description
       estimatedTime
@@ -53,14 +55,36 @@ const editTask = gql`
 `;
 
 const createTask = gql`
-  mutation Mutation {
-    createTask
+  mutation Mutation($newItem: TaskInput) {
+    createTask(newItem: $newItem) {
+      _id
+      title
+      description
+      estimatedTime
+      status
+      priority
+      untilDate
+      review
+      timeSpent
+      location
+      notificationTime
+    }
   }
 `;
 
 const createEvent = gql`
-  mutation Mutation {
-    createEvent
+  mutation Mutation($newItem: EventInput) {
+    createEvent(newItem: $newItem) {
+      _id
+      title
+      description
+      beginningTime
+      endingTime
+      color
+      invitedGuests
+      location
+      notificationTime
+    }
   }
 `;
 
@@ -84,7 +108,7 @@ const GenericForm = ({ item }: GenericFormProps) => {
 
   const fieldsArray = fieldsConfig.get(type);
 
-  const dispatch = useDispatch();
+  //  const dispatch = useDispatch();
 
   const handleFormSend = async () => {
     try {
@@ -93,16 +117,16 @@ const GenericForm = ({ item }: GenericFormProps) => {
           ? editEventFunc({
               variables: { newItem: itemState },
             })
-          : editTaskFunc({ variables: { task: itemState } })
+          : editTaskFunc({ variables: { newItem: itemState } })
         : type === ItemTypes.event
-        ? createEventFunc({ variables: { event: itemState } })
-        : createTaskFunc({ variables: { task: itemState } });
-
+        ? createEventFunc({ variables: { newItem: itemState } })
+        : createTaskFunc({ variables: { newItem: itemState } });
+      /* 
       itemState._id
         ? dispatch(editItem({ ...itemState, type }))
         : dispatch(
             addItem({ ...itemState, type, _id: Math.random() + "Temp" })
-          );
+          ); */
       setIsFormOpen(false);
     } catch (err: any) {
       setErrorMessage(err.response.data.erroMsg);

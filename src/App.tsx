@@ -7,7 +7,7 @@ import TopBar from "./components/TopBar/TopBar";
 import CalendarRouter from "./components/CalendarRouter/CalendarRouter";
 import { FormProvider } from "./context/FormContext";
 import { Item, Event, Task } from "./types";
-import { gql, useQuery, useSubscription } from "@apollo/client";
+import { gql, useQuery } from "@apollo/client";
 import { ItemTypes } from "./utils/enums";
 
 const colorMap = new Map();
@@ -50,66 +50,8 @@ const getAllTasks = gql`
   }
 `;
 
-const newEventSubscription = gql`
-  subscription Subscription {
-    newEvent {
-      _id
-      title
-      description
-      beginningTime
-      endingTime
-      color
-      invitedGuests
-      location
-      notificationTime
-    }
-  }
-`;
-
-const newTaskSubscription = gql`
-  subscription subscription {
-    newTask {
-      _id
-      title
-      description
-      estimatedTime
-      status
-      priority
-      untilDate
-      review
-      timeSpent
-      location
-      notificationTime
-    }
-  }
-`;
-
-const deletedEventSubscription = gql`
-  subscription Subscription {
-    deletedEvent
-  }
-`;
-
-const deletedTaskSubscription = gql`
-  subscription Subscription {
-    deletedTask
-  }
-`;
-
 function App() {
   const [drawerOpen, setDrawerOpen] = useState<boolean>(false);
-
-  const deletedTask = useSubscription(deletedTaskSubscription).data;
-  console.log(deletedTask);
-
-  const deletedEvent = useSubscription(deletedEventSubscription).data;
-  console.log(deletedEvent);
-
-  const newTask = useSubscription(newTaskSubscription).data;
-  console.log(newTask);
-
-  const newEvent = useSubscription(newEventSubscription).data;
-  console.log(newEvent);
 
   const commonProps = {
     setDrawerOpen: setDrawerOpen,
@@ -138,13 +80,13 @@ function App() {
     const dbprocessedData = structuredClone(processedData);
     const jsonEvents = (dbprocessedData as Item[]).filter(
       (item: Item) => item.type === ItemTypes.event
-    );
+    ) as Event[];
     const jsonTasks = (dbprocessedData as Item[]).filter(
       (item: Item) => item.type === ItemTypes.task
-    );
+    ) as Task[];
 
     let parsedEvents: Event[];
-    parsedEvents = jsonEvents.map((event: any) => {
+    parsedEvents = jsonEvents.map((event: Event) => {
       event.beginningTime =
         new Date(event.beginningTime).toLocaleDateString() +
         ", " +
@@ -163,24 +105,24 @@ function App() {
             0,
             new Date(event.endingTime).toLocaleTimeString().indexOf(":", 3)
           );
-      event.notificationDate =
-        new Date(event.notificationDate).toLocaleDateString() +
+      event.notificationTime =
+        new Date(event.notificationTime + "").toLocaleDateString() +
         ", " +
-        new Date(event.notificationDate)
+        new Date(event.notificationTime + "")
           .toLocaleTimeString()
           .substring(
             0,
-            new Date(event.notificationDate)
+            new Date(event.notificationTime + "")
               .toLocaleTimeString()
               .indexOf(":", 3)
           );
       event.color = colorMap.get(event.color);
-      event.typeName = ItemTypes.event;
+      event.type = ItemTypes.event;
 
       return event;
     });
     let parsedTasks: Task[];
-    parsedTasks = jsonTasks.map((task: any) => {
+    parsedTasks = jsonTasks.map((task: Task) => {
       task.untilDate =
         new Date(task.untilDate).toLocaleDateString() +
         ", " +
@@ -228,7 +170,7 @@ function App() {
               " Seconds";
             break;
         }
-      task.typeName = ItemTypes.task;
+      task.type = ItemTypes.task;
       return task;
     });
     processedData = [...parsedEvents, ...parsedTasks];

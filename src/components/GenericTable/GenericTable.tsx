@@ -21,8 +21,7 @@ import { ItemTypes, PageTypes } from "../../utils/enums";
 import FormContext from "../../context/FormContext";
 
 import { useSelector } from "react-redux";
-import { removeItem } from "../../store/reducers/itemsReducer";
-import { useDispatch } from "react-redux";
+
 import itemsSelector from "../../store/selectors/itemsSelector";
 import { gql, useMutation } from "@apollo/client";
 
@@ -100,15 +99,37 @@ const innerOtherStyle = {
   paddingRight: "5px",
 };
 
-const deleteTask = gql`
-  mutation Mutation {
-    deleteTask
+const deleteEvent = gql`
+  mutation Mutation($id: String) {
+    deleteEvent(id: $id) {
+      _id
+      title
+      description
+      beginningTime
+      endingTime
+      color
+      invitedGuests
+      location
+      notificationTime
+    }
   }
 `;
 
-const deleteEvent = gql`
-  mutation Mutation {
-    deleteEvent
+const deleteTask = gql`
+  mutation Mutation($id: String) {
+    deleteTask(id: $id) {
+      _id
+      title
+      description
+      estimatedTime
+      status
+      priority
+      untilDate
+      review
+      timeSpent
+      location
+      notificationTime
+    }
   }
 `;
 
@@ -159,13 +180,10 @@ const GenericTable = ({ columns, pageType }: GenericTableProps) => {
       );
   });
 
-  const dispatch = useDispatch();
-
   const deleteItem = async (item: Item) => {
     item.type === ItemTypes.event
       ? deleteEventFunc({ variables: { id: item._id } })
       : deleteTaskFunc({ variables: { id: item._id } });
-    dispatch(removeItem(item));
   };
 
   const sortData = (property: string) => {
@@ -173,11 +191,14 @@ const GenericTable = ({ columns, pageType }: GenericTableProps) => {
       optimizedData = optimizedData.sort((itemA: Item, itemB: Item) => {
         setSortDirection(!sortDirection);
         setSortColumn(property);
+
         return (
+          itemA &&
+          itemB &&
           (sortDirection ? 1 : -1) *
-          itemA[property as keyof Item].localeCompare(
-            itemB[property as keyof Item]
-          )
+            itemA[property as keyof Item].localeCompare(
+              itemB[property as keyof Item]
+            )
         );
       });
   };
