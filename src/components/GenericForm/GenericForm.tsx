@@ -7,13 +7,10 @@ import InputLabel from "@mui/material/InputLabel";
 import { ItemTypes } from "../../utils/enums";
 import TextInput from "./TextInput";
 import SelectInput from "./SelectInput";
-import { Typography } from "@mui/material";
 import selectButton from "../CalendarButton/CalendarButton";
 import DateInput from "./DateInput";
 import FormContext from "../../context/FormContext";
-//import { addItem, editItem } from "../../store/reducers/itemsReducer";
 
-//import { useDispatch } from "react-redux";
 import { gql, useMutation } from "@apollo/client";
 
 interface GenericFormProps {
@@ -48,8 +45,6 @@ const editTask = gql`
       untilDate
       review
       timeSpent
-      location
-      notificationTime
     }
   }
 `;
@@ -66,8 +61,6 @@ const createTask = gql`
       untilDate
       review
       timeSpent
-      location
-      notificationTime
     }
   }
 `;
@@ -102,35 +95,23 @@ const GenericForm = ({ item }: GenericFormProps) => {
 
   const [type, setType] = useState<string>(item.type || ItemTypes.task);
 
-  const [errorMessage, setErrorMessage] = useState<string>("");
-
   const [itemState, setItemState] = useState<Item>(item);
 
   const fieldsArray = fieldsConfig.get(type);
 
-  //  const dispatch = useDispatch();
-
   const handleFormSend = async () => {
-    try {
-      itemState.type
-        ? type === ItemTypes.event
-          ? editEventFunc({
-              variables: { newItem: itemState },
-            })
-          : editTaskFunc({ variables: { newItem: itemState } })
-        : type === ItemTypes.event
-        ? createEventFunc({ variables: { newItem: itemState } })
-        : createTaskFunc({ variables: { newItem: itemState } });
-      /* 
-      itemState._id
-        ? dispatch(editItem({ ...itemState, type }))
-        : dispatch(
-            addItem({ ...itemState, type, _id: Math.random() + "Temp" })
-          ); */
-      setIsFormOpen(false);
-    } catch (err: any) {
-      setErrorMessage(err.response.data.erroMsg);
-    }
+    delete itemState.__typename;
+    itemState.type
+      ? type === ItemTypes.event
+        ? editEventFunc({
+            variables: { newItem: itemState },
+          })
+        : editTaskFunc({ variables: { newItem: itemState } })
+      : type === ItemTypes.event
+      ? createEventFunc({ variables: { newItem: itemState } })
+      : createTaskFunc({ variables: { newItem: itemState } });
+
+    setIsFormOpen(false);
   };
 
   return (
@@ -227,9 +208,6 @@ const GenericForm = ({ item }: GenericFormProps) => {
             Cancel
           </Button>
         </Grid>
-      </Grid>
-      <Grid item justifyContent="center">
-        <Typography style={{ color: "red" }}>{errorMessage}</Typography>
       </Grid>
     </Grid>
   );

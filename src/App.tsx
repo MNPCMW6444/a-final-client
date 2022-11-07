@@ -33,9 +33,8 @@ const getAllTasks = gql`
       untilDate
       review
       timeSpent
-      location
-      notificationTime
     }
+
     allEvents {
       _id
       title

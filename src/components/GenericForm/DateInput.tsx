@@ -15,9 +15,7 @@ const DateInput = ({ dataKey, itemState, setItemState }: DateInputProps) => (
   <StyleOutlinedInput
     value={
       itemState[dataKey as keyof Item] &&
-      new Date(itemState[dataKey as keyof Item] + "")
-        .toISOString()
-        .substring(0, 10)
+      new Date(itemState[dataKey as keyof Item]).toISOString().substring(0, 10)
     }
     type="date"
     onChange={(

@@ -127,7 +127,6 @@ const deleteTask = gql`
       untilDate
       review
       timeSpent
-      location
       notificationTime
     }
   }

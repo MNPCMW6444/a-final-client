@@ -65,8 +65,6 @@ const newTaskSubscription = gql`
       untilDate
       review
       timeSpent
-      location
-      notificationTime
     }
   }
 `;
@@ -99,8 +97,6 @@ const editTaskSubscription = gql`
       untilDate
       review
       timeSpent
-      location
-      notificationTime
     }
   }
 `;
@@ -133,8 +129,6 @@ const deletedTaskSubscription = gql`
       untilDate
       review
       timeSpent
-      location
-      notificationTime
     }
   }
 `;
@@ -162,7 +156,6 @@ export default function GenericPage({
   const dispatch = useDispatch();
 
   useEffect(() => {
-    debugger;
     deletedEvent && dispatch(removeItem(deletedEvent.deletedEvent));
     deletedTask && dispatch(removeItem(deletedTask.deletedTask));
 
