@@ -156,6 +156,7 @@ export default function GenericPage({
   const dispatch = useDispatch();
 
   useEffect(() => {
+    debugger;
     deletedEvent && dispatch(removeItem(deletedEvent.deletedEvent));
     deletedTask && dispatch(removeItem(deletedTask.deletedTask));
 

@@ -101,34 +101,13 @@ const innerOtherStyle = {
 
 const deleteEvent = gql`
   mutation Mutation($id: String) {
-    deleteEvent(id: $id) {
-      _id
-      title
-      description
-      beginningTime
-      endingTime
-      color
-      invitedGuests
-      location
-      notificationTime
-    }
+    deleteEvent(id: $id)
   }
 `;
 
 const deleteTask = gql`
   mutation Mutation($id: String) {
-    deleteTask(id: $id) {
-      _id
-      title
-      description
-      estimatedTime
-      status
-      priority
-      untilDate
-      review
-      timeSpent
-      notificationTime
-    }
+    deleteTask(id: $id)
   }
 `;
 

@@ -101,15 +101,16 @@ const GenericForm = ({ item }: GenericFormProps) => {
 
   const handleFormSend = async () => {
     delete itemState.__typename;
+    delete itemState.typename;
     itemState.type
       ? type === ItemTypes.event
         ? editEventFunc({
-            variables: { newItem: itemState },
+            variables: { newItem: { ...itemState, type } },
           })
-        : editTaskFunc({ variables: { newItem: itemState } })
+        : editTaskFunc({ variables: { newItem: { ...itemState, type } } })
       : type === ItemTypes.event
-      ? createEventFunc({ variables: { newItem: itemState } })
-      : createTaskFunc({ variables: { newItem: itemState } });
+      ? createEventFunc({ variables: { newItem: { ...itemState, type } } })
+      : createTaskFunc({ variables: { newItem: { ...itemState, type } } });
 
     setIsFormOpen(false);
   };
