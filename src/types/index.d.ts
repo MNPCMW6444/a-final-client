@@ -3,7 +3,6 @@ interface Item {
   title: string;
   description: string;
   type: string;
-  typename: any;
   __typename: any;
 }
 

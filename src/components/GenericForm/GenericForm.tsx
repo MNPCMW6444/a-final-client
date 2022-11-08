@@ -102,7 +102,6 @@ const GenericForm = ({ item }: GenericFormProps) => {
   const handleFormSend = async () => {
     let itemStateCopy = itemState;
     delete itemStateCopy.__typename;
-    delete itemStateCopy.typename;
 
     itemStateCopy.type
       ? type === ItemTypes.event

@@ -149,7 +149,6 @@ export default function GenericPage({
             new Date(task.untilDate).toLocaleTimeString().indexOf(":", 3)
           );
 
-      task.typename = ItemTypes.task;
       task.type = ItemTypes.task;
       dispatch(addItem(task));
     }
@@ -185,7 +184,6 @@ export default function GenericPage({
               .indexOf(":", 3)
           );
       event.color = colorMap.get(event.color);
-      event.typename = ItemTypes.event;
       event.type = ItemTypes.event;
       dispatch(addItem(event));
     }
@@ -202,7 +200,6 @@ export default function GenericPage({
             0,
             new Date(task.untilDate).toLocaleTimeString().indexOf(":", 3)
           );
-      task.typename = ItemTypes.task;
       task.type = ItemTypes.task;
       dispatch(editItem(task));
       editTask = undefined;
@@ -239,7 +236,6 @@ export default function GenericPage({
               .indexOf(":", 3)
           );
       event.color = colorMap.get(event.color);
-      event.typename = ItemTypes.event;
       event.type = ItemTypes.event;
       dispatch(editItem(event));
       editEvent = undefined;

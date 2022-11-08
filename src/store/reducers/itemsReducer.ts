@@ -27,7 +27,6 @@ export const itemsSlice = createSlice({
         0 && state.items.push(action.payload);
     },
     editItem: (state: ItemsState, action: PayloadAction<Item>) => {
-      debugger;
       state.items = state.items.filter(
         (item) => item._id !== action.payload._id
       );
