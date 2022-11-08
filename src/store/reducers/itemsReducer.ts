@@ -23,18 +23,18 @@ export const itemsSlice = createSlice({
       state.items = action.payload;
     },
     addItem: (state: ItemsState, action: PayloadAction<Item>) => {
-      state.items.push(action.payload);
+      state.items.filter((item) => item._id === action.payload._id).length ===
+        0 && state.items.push(action.payload);
     },
     editItem: (state: ItemsState, action: PayloadAction<Item>) => {
+      debugger;
       state.items = state.items.filter(
         (item) => item._id !== action.payload._id
       );
       state.items.push(action.payload);
     },
-    removeItem: (state: ItemsState, action: PayloadAction<Item>) => {
-      state.items = state.items.filter(
-        (item) => item._id !== action.payload._id
-      );
+    removeItem: (state: ItemsState, action: PayloadAction<string>) => {
+      state.items = state.items.filter((item) => item._id !== action.payload);
     },
     navigate: (state: ItemsState, action: PayloadAction<PageTypes>) => {
       state.pageType = action.payload;

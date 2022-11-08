@@ -100,17 +100,19 @@ const GenericForm = ({ item }: GenericFormProps) => {
   const fieldsArray = fieldsConfig.get(type);
 
   const handleFormSend = async () => {
-    delete itemState.__typename;
-    delete itemState.typename;
-    itemState.type
+    let itemStateCopy = itemState;
+    delete itemStateCopy.__typename;
+    delete itemStateCopy.typename;
+
+    itemStateCopy.type
       ? type === ItemTypes.event
         ? editEventFunc({
-            variables: { newItem: { ...itemState, type } },
+            variables: { newItem: { ...itemStateCopy, type } },
           })
-        : editTaskFunc({ variables: { newItem: { ...itemState, type } } })
+        : editTaskFunc({ variables: { newItem: { ...itemStateCopy, type } } })
       : type === ItemTypes.event
-      ? createEventFunc({ variables: { newItem: { ...itemState, type } } })
-      : createTaskFunc({ variables: { newItem: { ...itemState, type } } });
+      ? createEventFunc({ variables: { newItem: { ...itemStateCopy, type } } })
+      : createTaskFunc({ variables: { newItem: { ...itemStateCopy, type } } });
 
     setIsFormOpen(false);
   };

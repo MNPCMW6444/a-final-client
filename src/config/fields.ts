@@ -84,7 +84,7 @@ const fieldMap = new Map([
         "estimatedTime",
         {
           label: "Estimated Time",
-          placeHolder: "*y *w *d *h",
+          placeHolder: "1 Month 2 Days...",
         },
       ],
       [

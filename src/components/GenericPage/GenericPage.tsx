@@ -54,7 +54,7 @@ const newEventSubscription = gql`
 `;
 
 const newTaskSubscription = gql`
-  subscription subscription {
+  subscription Subscription {
     newTask {
       _id
       title
@@ -86,7 +86,7 @@ const editEventSubscription = gql`
 `;
 
 const editTaskSubscription = gql`
-  subscription subscription {
+  subscription Subscription {
     editTask {
       _id
       title
@@ -103,33 +103,13 @@ const editTaskSubscription = gql`
 
 const deletedEventSubscription = gql`
   subscription Subscription {
-    deletedEvent {
-      _id
-      title
-      description
-      beginningTime
-      endingTime
-      color
-      invitedGuests
-      location
-      notificationTime
-    }
+    deletedEvent
   }
 `;
 
 const deletedTaskSubscription = gql`
   subscription Subscription {
-    deletedTask {
-      _id
-      title
-      description
-      estimatedTime
-      status
-      priority
-      untilDate
-      review
-      timeSpent
-    }
+    deletedTask
   }
 `;
 
@@ -141,30 +121,23 @@ export default function GenericPage({
 
   const pageType = useSelector(pageTypeSelector);
 
-  const deletedTask = useSubscription(deletedTaskSubscription).data;
+  let deletedTask = useSubscription(deletedTaskSubscription).data;
 
-  const deletedEvent = useSubscription(deletedEventSubscription).data;
+  let deletedEvent = useSubscription(deletedEventSubscription).data;
 
-  const newTask = useSubscription(newTaskSubscription).data;
+  let newTask = useSubscription(newTaskSubscription).data;
 
-  const newEvent = useSubscription(newEventSubscription).data;
+  let newEvent = useSubscription(newEventSubscription).data;
 
-  const editTask = useSubscription(editTaskSubscription).data;
+  let editTask = useSubscription(editTaskSubscription).data;
 
-  const editEvent = useSubscription(editEventSubscription).data;
+  let editEvent = useSubscription(editEventSubscription).data;
 
   const dispatch = useDispatch();
 
   useEffect(() => {
-    debugger;
-    deletedEvent && dispatch(removeItem(deletedEvent.deletedEvent));
-    deletedTask && dispatch(removeItem(deletedTask.deletedTask));
-
-    editTask && dispatch(editItem(editTask.editTask));
-    editEvent && dispatch(editItem(editEvent.editEvent));
-
     if (newTask) {
-      let task = structuredClone(newTask.newTask);
+      let task = { ...newTask.newTask };
       task.type = ItemTypes.task;
       task.untilDate =
         new Date(task.untilDate).toLocaleDateString() +
@@ -175,51 +148,13 @@ export default function GenericPage({
             0,
             new Date(task.untilDate).toLocaleTimeString().indexOf(":", 3)
           );
-      if (task.estimatedTime)
-        switch (task.estimatedTime.slice(-1)) {
-          case "y":
-            task.estimatedTime =
-              task.estimatedTime.substring(0, task.estimatedTime.length - 1) +
-              " years";
-            break;
-          case "M":
-            task.estimatedTime =
-              task.estimatedTime.substring(0, task.estimatedTime.length - 1) +
-              " Months";
-            break;
-          case "w":
-            task.estimatedTime =
-              task.estimatedTime.substring(0, task.estimatedTime.length - 1) +
-              " Weeks";
-            break;
-          case "d":
-            task.estimatedTime =
-              task.estimatedTime.substring(0, task.estimatedTime.length - 1) +
-              " Days";
-            break;
-          case "h":
-            task.estimatedTime =
-              task.estimatedTime.substring(0, task.estimatedTime.length - 1) +
-              " Hours";
-            break;
-          case "m":
-            task.estimatedTime =
-              task.estimatedTime.substring(0, task.estimatedTime.length - 1) +
-              " Minutes";
-            break;
-          case "s":
-            task.estimatedTime =
-              task.estimatedTime.substring(0, task.estimatedTime.length - 1) +
-              " Seconds";
-            break;
-        }
-      task.typeName = ItemTypes.task;
+
+      task.typename = ItemTypes.task;
       task.type = ItemTypes.task;
       dispatch(addItem(task));
     }
-
     if (newEvent) {
-      let event = structuredClone(newEvent.newEvent);
+      let event = { ...newEvent.newEvent };
       event.beginningTime =
         new Date(event.beginningTime).toLocaleDateString() +
         ", " +
@@ -250,9 +185,73 @@ export default function GenericPage({
               .indexOf(":", 3)
           );
       event.color = colorMap.get(event.color);
-      event.typeName = ItemTypes.event;
+      event.typename = ItemTypes.event;
       event.type = ItemTypes.event;
       dispatch(addItem(event));
+    }
+
+    if (editTask) {
+      let task = { ...editTask.editTask };
+      task.type = ItemTypes.task;
+      task.untilDate =
+        new Date(task.untilDate).toLocaleDateString() +
+        ", " +
+        new Date(task.untilDate)
+          .toLocaleTimeString()
+          .substring(
+            0,
+            new Date(task.untilDate).toLocaleTimeString().indexOf(":", 3)
+          );
+      task.typename = ItemTypes.task;
+      task.type = ItemTypes.task;
+      dispatch(editItem(task));
+      editTask = undefined;
+    }
+    if (editEvent) {
+      let event = { ...editEvent.editEvent };
+      event.beginningTime =
+        new Date(event.beginningTime).toLocaleDateString() +
+        ", " +
+        new Date(event.beginningTime)
+          .toLocaleTimeString()
+          .substring(
+            0,
+            new Date(event.beginningTime).toLocaleTimeString().indexOf(":", 3)
+          );
+      event.endingTime =
+        new Date(event.endingTime).toLocaleDateString() +
+        ", " +
+        new Date(event.endingTime)
+          .toLocaleTimeString()
+          .substring(
+            0,
+            new Date(event.endingTime).toLocaleTimeString().indexOf(":", 3)
+          );
+      event.notificationTime =
+        new Date(event.notificationTime).toLocaleDateString() +
+        ", " +
+        new Date(event.notificationTime)
+          .toLocaleTimeString()
+          .substring(
+            0,
+            new Date(event.notificationTime)
+              .toLocaleTimeString()
+              .indexOf(":", 3)
+          );
+      event.color = colorMap.get(event.color);
+      event.typename = ItemTypes.event;
+      event.type = ItemTypes.event;
+      dispatch(editItem(event));
+      editEvent = undefined;
+    }
+
+    if (deletedEvent) {
+      dispatch(removeItem(deletedEvent.deletedEvent));
+      deletedEvent = undefined;
+    }
+    if (deletedTask) {
+      dispatch(removeItem(deletedTask.deletedTask));
+      deletedTask = undefined;
     }
   }, [
     dispatch,
