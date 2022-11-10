@@ -11,6 +11,8 @@ import selectButton from "../CalendarButton/CalendarButton";
 import DateInput from "./DateInput";
 import FormContext from "../../context/FormContext";
 import { gql, useMutation } from "@apollo/client";
+import { addItem, editItem } from "../../store/reducers/itemsReducer";
+import { useDispatch } from "react-redux";
 
 const editEvent = gql`
   mutation Mutation($newItem: EventInput) {
@@ -98,20 +100,34 @@ const GenericForm = ({ item }: GenericFormProps) => {
   const [createTaskFunc] = useMutation(createTask);
   const [createEventFunc] = useMutation(createEvent);
 
+  const dispatch = useDispatch();
+
   const handleFormSend = async () => {
     let itemStateCopy = itemState;
     delete itemStateCopy.__typename;
-
-    itemStateCopy.type
-      ? type === ItemTypes.event
-        ? editEventFunc({
-            variables: { newItem: { ...itemStateCopy, type } },
-          })
-        : editTaskFunc({ variables: { newItem: { ...itemStateCopy, type } } })
-      : type === ItemTypes.event
-      ? createEventFunc({ variables: { newItem: { ...itemStateCopy, type } } })
-      : createTaskFunc({ variables: { newItem: { ...itemStateCopy, type } } });
-
+    if (itemStateCopy.type)
+      if (type === ItemTypes.event) {
+        const res = await editEventFunc({
+          variables: { newItem: { ...itemStateCopy, type } },
+        });
+        !res.errors && dispatch(editItem({ ...itemStateCopy, type }));
+      } else {
+        const res = await editTaskFunc({
+          variables: { newItem: { ...itemStateCopy, type } },
+        });
+        !res.errors && dispatch(editItem({ ...itemStateCopy, type }));
+      }
+    else if (type === ItemTypes.event) {
+      const res = await createEventFunc({
+        variables: { newItem: { ...itemStateCopy, type } },
+      });
+      !res.errors && dispatch(addItem({ ...itemStateCopy, type }));
+    } else {
+      const res = await createTaskFunc({
+        variables: { newItem: { ...itemStateCopy, type } },
+      });
+      !res.errors && dispatch(addItem({ ...itemStateCopy, type }));
+    }
     setIsFormOpen(false);
   };
 

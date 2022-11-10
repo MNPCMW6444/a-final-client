@@ -9,7 +9,7 @@ import {
   removeItem,
 } from "../../store/reducers/itemsReducer";
 import pageTypeSelector from "../../store/selectors/pageTypeSelector";
-import { ItemTypes } from "../../utils/enums";
+import { subscribtionTypes } from "../../utils/enums";
 import GenericTable from "../GenericTable/GenericTable";
 import SideBar from "../SideBar/SideBar";
 
@@ -26,90 +26,43 @@ const navigationStyle = {
   flexShrink: { sm: 0 },
 };
 
-const colorMap = new Map();
-colorMap.set("Red", "🔴");
-colorMap.set("Orange", "🟠");
-colorMap.set("Yellow", "🟡");
-colorMap.set("Green", "🟢");
-colorMap.set("Blue", "🔵");
-colorMap.set("Purple", "🟣");
-colorMap.set("Black", "⚫️");
-colorMap.set("White", "⚪️");
-colorMap.set("Brown", "🟤");
-
-const newEventSubscription = gql`
+const taskMutationSubscription = gql`
   subscription Subscription {
-    newEvent {
-      _id
-      title
-      description
-      beginningTime
-      endingTime
-      color
-      invitedGuests
-      location
-      notificationTime
+    taskMutation {
+      type
+      task {
+        _id
+        title
+        description
+        estimatedTime
+        status
+        priority
+        untilDate
+        review
+        timeSpent
+      }
+      id
     }
   }
 `;
 
-const newTaskSubscription = gql`
+const eventMutationSubscription = gql`
   subscription Subscription {
-    newTask {
-      _id
-      title
-      description
-      estimatedTime
-      status
-      priority
-      untilDate
-      review
-      timeSpent
+    eventMutation {
+      type
+      event {
+        _id
+        title
+        description
+        beginningTime
+        endingTime
+        color
+        invitedGuests
+        location
+        notificationTime
+      }
+      id
     }
-  }
-`;
-
-const editEventSubscription = gql`
-  subscription Subscription {
-    editEvent {
-      _id
-      title
-      description
-      beginningTime
-      endingTime
-      color
-      invitedGuests
-      location
-      notificationTime
-    }
-  }
-`;
-
-const editTaskSubscription = gql`
-  subscription Subscription {
-    editTask {
-      _id
-      title
-      description
-      estimatedTime
-      status
-      priority
-      untilDate
-      review
-      timeSpent
-    }
-  }
-`;
-
-const deletedEventSubscription = gql`
-  subscription Subscription {
-    deletedEvent
-  }
-`;
-
-const deletedTaskSubscription = gql`
-  subscription Subscription {
-    deletedTask
   }
 `;
 
@@ -121,144 +74,37 @@ export default function GenericPage({
 
   const pageType = useSelector(pageTypeSelector);
 
-  const deletedTask = useSubscription(deletedTaskSubscription).data;
+  const eventMutationData = useSubscription(eventMutationSubscription).data;
+  const eventMutation = eventMutationData && eventMutationData.eventMutation;
 
-  const deletedEvent = useSubscription(deletedEventSubscription).data;
-
-  const newTask = useSubscription(newTaskSubscription).data;
-
-  const newEvent = useSubscription(newEventSubscription).data;
-
-  const editTask = useSubscription(editTaskSubscription).data;
-
-  const editEvent = useSubscription(editEventSubscription).data;
+  const taskMutationData = useSubscription(taskMutationSubscription).data;
+  const taskMutation = taskMutationData && taskMutationData.taskMutation;
 
   const dispatch = useDispatch();
 
   useEffect(() => {
-    if (newTask) {
-      let task = { ...newTask.newTask };
-      task.type = ItemTypes.task;
-      task.untilDate =
-        new Date(task.untilDate).toLocaleDateString() +
-        ", " +
-        new Date(task.untilDate)
-          .toLocaleTimeString()
-          .substring(
-            0,
-            new Date(task.untilDate).toLocaleTimeString().indexOf(":", 3)
-          );
-
-      task.type = ItemTypes.task;
-      dispatch(addItem(task));
-    }
-  }, [dispatch, newTask]);
+    eventMutation &&
+      eventMutation.type === subscribtionTypes.add &&
+      dispatch(addItem({ ...eventMutation.event }));
+    eventMutation &&
+      eventMutation.type === subscribtionTypes.edit &&
+      dispatch(editItem({ ...eventMutation.event }));
+    eventMutation &&
+      eventMutation.type === subscribtionTypes.delete &&
+      dispatch(removeItem(eventMutation.id));
+  }, [dispatch, eventMutation]);
 
   useEffect(() => {
-    if (newEvent) {
-      let event = { ...newEvent.newEvent };
-      event.beginningTime =
-        new Date(event.beginningTime).toLocaleDateString() +
-        ", " +
-        new Date(event.beginningTime)
-          .toLocaleTimeString()
-          .substring(
-            0,
-            new Date(event.beginningTime).toLocaleTimeString().indexOf(":", 3)
-          );
-      event.endingTime =
-        new Date(event.endingTime).toLocaleDateString() +
-        ", " +
-        new Date(event.endingTime)
-          .toLocaleTimeString()
-          .substring(
-            0,
-            new Date(event.endingTime).toLocaleTimeString().indexOf(":", 3)
-          );
-      event.notificationTime =
-        new Date(event.notificationTime).toLocaleDateString() +
-        ", " +
-        new Date(event.notificationTime)
-          .toLocaleTimeString()
-          .substring(
-            0,
-            new Date(event.notificationTime)
-              .toLocaleTimeString()
-              .indexOf(":", 3)
-          );
-      event.color = colorMap.get(event.color);
-      event.type = ItemTypes.event;
-      dispatch(addItem(event));
-    }
-  }, [dispatch, newEvent]);
-
-  useEffect(() => {
-    if (editTask) {
-      let task = { ...editTask.editTask };
-      task.type = ItemTypes.task;
-      task.untilDate =
-        new Date(task.untilDate).toLocaleDateString() +
-        ", " +
-        new Date(task.untilDate)
-          .toLocaleTimeString()
-          .substring(
-            0,
-            new Date(task.untilDate).toLocaleTimeString().indexOf(":", 3)
-          );
-      task.type = ItemTypes.task;
-      dispatch(editItem(task));
-    }
-  }, [dispatch, editTask]);
-
-  useEffect(() => {
-    if (editEvent) {
-      let event = { ...editEvent.editEvent };
-      event.beginningTime =
-        new Date(event.beginningTime).toLocaleDateString() +
-        ", " +
-        new Date(event.beginningTime)
-          .toLocaleTimeString()
-          .substring(
-            0,
-            new Date(event.beginningTime).toLocaleTimeString().indexOf(":", 3)
-          );
-      event.endingTime =
-        new Date(event.endingTime).toLocaleDateString() +
-        ", " +
-        new Date(event.endingTime)
-          .toLocaleTimeString()
-          .substring(
-            0,
-            new Date(event.endingTime).toLocaleTimeString().indexOf(":", 3)
-          );
-      event.notificationTime =
-        new Date(event.notificationTime).toLocaleDateString() +
-        ", " +
-        new Date(event.notificationTime)
-          .toLocaleTimeString()
-          .substring(
-            0,
-            new Date(event.notificationTime)
-              .toLocaleTimeString()
-              .indexOf(":", 3)
-          );
-      event.color = colorMap.get(event.color);
-      event.type = ItemTypes.event;
-      dispatch(editItem(event));
-    }
-  }, [dispatch, editEvent]);
-
-  useEffect(() => {
-    if (deletedTask) {
-      dispatch(removeItem(deletedTask.deletedTask));
-    }
-  }, [dispatch, deletedTask]);
-
-  useEffect(() => {
-    if (deletedEvent) {
-      dispatch(removeItem(deletedEvent.deletedEvent));
-    }
-  }, [dispatch, deletedEvent]);
+    taskMutation &&
+      taskMutation.type === subscribtionTypes.add &&
+      dispatch(addItem({ ...taskMutation.task }));
+    taskMutation &&
+      taskMutation.type === subscribtionTypes.edit &&
+      dispatch(editItem({ ...taskMutation.task }));
+    taskMutation &&
+      taskMutation.type === subscribtionTypes.delete &&
+      dispatch(removeItem(taskMutation.id));
+  }, [dispatch, taskMutation]);
 
   return (
     <Box>

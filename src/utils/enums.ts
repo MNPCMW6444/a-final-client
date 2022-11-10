@@ -9,4 +9,10 @@ enum ItemTypes {
   task = "Task",
 }
 
-export { PageTypes, ItemTypes };
+enum subscribtionTypes {
+  add = "add",
+  edit = "edit",
+  delete = "delete",
+}
+
+export { PageTypes, ItemTypes, subscribtionTypes };
