@@ -121,17 +121,17 @@ export default function GenericPage({
 
   const pageType = useSelector(pageTypeSelector);
 
-  let deletedTask = useSubscription(deletedTaskSubscription).data;
+  const deletedTask = useSubscription(deletedTaskSubscription).data;
 
-  let deletedEvent = useSubscription(deletedEventSubscription).data;
+  const deletedEvent = useSubscription(deletedEventSubscription).data;
 
-  let newTask = useSubscription(newTaskSubscription).data;
+  const newTask = useSubscription(newTaskSubscription).data;
 
-  let newEvent = useSubscription(newEventSubscription).data;
+  const newEvent = useSubscription(newEventSubscription).data;
 
-  let editTask = useSubscription(editTaskSubscription).data;
+  const editTask = useSubscription(editTaskSubscription).data;
 
-  let editEvent = useSubscription(editEventSubscription).data;
+  const editEvent = useSubscription(editEventSubscription).data;
 
   const dispatch = useDispatch();
 
@@ -152,6 +152,9 @@ export default function GenericPage({
       task.type = ItemTypes.task;
       dispatch(addItem(task));
     }
+  }, [dispatch, newTask]);
+
+  useEffect(() => {
     if (newEvent) {
       let event = { ...newEvent.newEvent };
       event.beginningTime =
@@ -187,7 +190,9 @@ export default function GenericPage({
       event.type = ItemTypes.event;
       dispatch(addItem(event));
     }
+  }, [dispatch, newEvent]);
 
+  useEffect(() => {
     if (editTask) {
       let task = { ...editTask.editTask };
       task.type = ItemTypes.task;
@@ -202,8 +207,10 @@ export default function GenericPage({
           );
       task.type = ItemTypes.task;
       dispatch(editItem(task));
-      editTask = undefined;
     }
+  }, [dispatch, editTask]);
+
+  useEffect(() => {
     if (editEvent) {
       let event = { ...editEvent.editEvent };
       event.beginningTime =
@@ -238,26 +245,20 @@ export default function GenericPage({
       event.color = colorMap.get(event.color);
       event.type = ItemTypes.event;
       dispatch(editItem(event));
-      editEvent = undefined;
     }
+  }, [dispatch, editEvent]);
 
-    if (deletedEvent) {
-      dispatch(removeItem(deletedEvent.deletedEvent));
-      deletedEvent = undefined;
-    }
+  useEffect(() => {
     if (deletedTask) {
       dispatch(removeItem(deletedTask.deletedTask));
-      deletedTask = undefined;
     }
-  }, [
-    dispatch,
-    deletedEvent,
-    deletedTask,
-    newTask,
-    newEvent,
-    editTask,
-    editEvent,
-  ]);
+  }, [dispatch, deletedTask]);
+
+  useEffect(() => {
+    if (deletedEvent) {
+      dispatch(removeItem(deletedEvent.deletedEvent));
+    }
+  }, [dispatch, deletedEvent]);
 
   return (
     <Box>

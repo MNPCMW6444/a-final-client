@@ -10,12 +10,7 @@ import SelectInput from "./SelectInput";
 import selectButton from "../CalendarButton/CalendarButton";
 import DateInput from "./DateInput";
 import FormContext from "../../context/FormContext";
-
 import { gql, useMutation } from "@apollo/client";
-
-interface GenericFormProps {
-  item: Item;
-}
 
 const editEvent = gql`
   mutation Mutation($newItem: EventInput) {
@@ -81,16 +76,15 @@ const createEvent = gql`
   }
 `;
 
+interface GenericFormProps {
+  item: Item;
+}
+
 const fieldStyle = { width: "70%" };
 
 const controlButtonStyle = { width: "100px" };
 
 const GenericForm = ({ item }: GenericFormProps) => {
-  const [editEventFunc] = useMutation(editEvent);
-  const [editTaskFunc] = useMutation(editTask);
-  const [createTaskFunc] = useMutation(createTask);
-  const [createEventFunc] = useMutation(createEvent);
-
   const { setIsFormOpen } = useContext(FormContext);
 
   const [type, setType] = useState<string>(item.type || ItemTypes.task);
@@ -98,6 +92,11 @@ const GenericForm = ({ item }: GenericFormProps) => {
   const [itemState, setItemState] = useState<Item>(item);
 
   const fieldsArray = fieldsConfig.get(type);
+
+  const [editEventFunc] = useMutation(editEvent);
+  const [editTaskFunc] = useMutation(editTask);
+  const [createTaskFunc] = useMutation(createTask);
+  const [createEventFunc] = useMutation(createEvent);
 
   const handleFormSend = async () => {
     let itemStateCopy = itemState;
