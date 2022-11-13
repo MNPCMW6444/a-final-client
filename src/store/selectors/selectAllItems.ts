@@ -1,7 +1,7 @@
 import { createSelector } from "@reduxjs/toolkit";
-import { RootState } from "../store";
+import { ItemsState } from "../reducers/itemsReducer";
 
-const selectAllItems = (state: RootState) => state.itemsSlice.items;
+const selectAllItems = (state: ItemsState) => state.items;
 
 const allItemsSelector = createSelector(selectAllItems, (items) => items);
 

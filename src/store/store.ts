@@ -1,8 +1,24 @@
-import { createStore, applyMiddleware } from "redux";
+import { configureStore } from "@reduxjs/toolkit";
 import { createEpicMiddleware } from "redux-observable";
-import { pingEpic } from "./epics";
-import pingReducer from "./reducers/pingpong";
+import { pingEpic } from "./epics/index";
+import userReducer from "./reducers/itemsReducer";
 
-const epicMiddleware = createEpicMiddleware(pingEpic as unknown as any);
+const rootReducer = {
+  user: userReducer,
+};
+const epicMiddleware = createEpicMiddleware();
 
-export default createStore(pingReducer, applyMiddleware(epicMiddleware));
+export const store = configureStore({
+  reducer: rootReducer,
+  middleware: (getDefaultMiddleware) =>
+    getDefaultMiddleware().concat(epicMiddleware),
+});
+
+epicMiddleware.run(pingEpic);
+
+export type RootStateType = ReturnType<typeof store.getState>;
+export type AppDispatchType = typeof store.dispatch;
+
+export type Store = typeof store;
+
+export default store;
