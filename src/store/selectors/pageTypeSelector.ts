@@ -1,7 +1,7 @@
 import { createSelector } from "@reduxjs/toolkit";
-import { ItemsState } from "../reducers/itemsReducer";
+import { RootState } from "../store";
 
-const selectPageType = (state: ItemsState) => state.pageType;
+const selectPageType = (state: RootState) => state.itemsSlice.pageType;
 
 const pageTypeSelector = createSelector(selectPageType, (pageType) => pageType);
 

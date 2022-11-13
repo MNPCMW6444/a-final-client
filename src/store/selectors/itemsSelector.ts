@@ -1,11 +1,11 @@
 import { createSelector } from "@reduxjs/toolkit";
 import { Item, Task, Event } from "../../types";
 import { ItemTypes, PageTypes } from "../../utils/enums";
-import { ItemsState } from "../reducers/itemsReducer";
+import { RootState } from "../store";
 
-const selectFilterItems = (state: ItemsState) => state.items;
-const selectPageType = (state: ItemsState) => state.pageType;
-const selectSearchValue = (state: ItemsState) => state.searchValue;
+const selectFilterItems = (state: RootState) => state.itemsSlice.items;
+const selectPageType = (state: RootState) => state.itemsSlice.pageType;
+const selectSearchValue = (state: RootState) => state.itemsSlice.searchValue;
 
 const itemsSelector = createSelector(
   selectFilterItems,
