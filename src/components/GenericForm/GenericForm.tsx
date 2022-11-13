@@ -10,7 +10,7 @@ import SelectInput from "./SelectInput";
 import selectButton from "../CalendarButton/CalendarButton";
 import DateInput from "./DateInput";
 import FormContext from "../../context/FormContext";
-import { addItem, editItem, mutate } from "../../store/reducers/itemsReducer";
+import { mutate } from "../../store/reducers/itemsReducer";
 import { useDispatch } from "react-redux";
 
 interface GenericFormProps {
@@ -35,46 +35,28 @@ const GenericForm = ({ item }: GenericFormProps) => {
   const handleFormSend = async () => {
     let itemStateCopy = itemState;
     delete itemStateCopy.__typename;
-    if (itemStateCopy.type) {
-      if (type === ItemTypes.event)
-        dispatch(
+    itemStateCopy.type
+      ? dispatch(
           mutate({
             payload: {
               variables: { newItem: { ...itemStateCopy, type } },
             },
-            type: Mutations.editEvent,
+            type:
+              type === ItemTypes.event
+                ? Mutations.editEvent
+                : Mutations.editTask,
           })
-        );
-      else
-        dispatch(
+        )
+      : dispatch(
           mutate({
             payload: {
               variables: { newItem: { ...itemStateCopy, type } },
             },
-            type: Mutations.editTask,
+            type:
+              type === ItemTypes.event ? Mutations.addEvent : Mutations.addTask,
           })
         );
-      dispatch(editItem({ ...itemStateCopy, type }));
-    } else {
-      if (type === ItemTypes.event)
-        dispatch(
-          mutate({
-            payload: {
-              variables: { newItem: { ...itemStateCopy, type } },
-            },
-            type: Mutations.addEvent,
-          })
-        );
-      else
-        dispatch(
-          mutate({
-            payload: { variables: { newItem: { ...itemStateCopy, type } } },
-            type: Mutations.addTask,
-          })
-        );
-      setIsFormOpen(false);
-    }
-    dispatch(addItem({ ...itemStateCopy, type }));
+    setIsFormOpen(false);
   };
 
   return (

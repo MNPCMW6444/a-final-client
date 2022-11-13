@@ -6,17 +6,13 @@ import Box from "@mui/material/Box";
 import Toolbar from "@mui/material/Toolbar";
 import { Typography } from "@mui/material";
 import { PageTypes } from "../../utils/enums";
-import { Dispatch, SetStateAction, useEffect } from "react";
-import { Item } from "../../types";
-import { useDispatch } from "react-redux";
-import { setAllItems } from "../../store/reducers/itemsReducer";
+import { Dispatch, SetStateAction } from "react";
 
 interface CalendarRouterProps {
   commonProps: {
     setDrawerOpen: Dispatch<SetStateAction<boolean>>;
     drawerOpen: boolean;
   };
-  data: Item[];
 }
 
 const errorStyle = { color: "red" };
@@ -27,19 +23,13 @@ const ErrorFallback = () => (
   </Box>
 );
 
-const CalendarRouter = ({ commonProps, data }: CalendarRouterProps) => {
+const CalendarRouter = ({ commonProps }: CalendarRouterProps) => {
   const defaultElement = (
     <GenericPage
       columns={columnsConfig.get(PageTypes.today)}
       commonProps={commonProps}
     />
   );
-
-  const dispatch = useDispatch();
-
-  useEffect(() => {
-    dispatch(setAllItems(data));
-  });
 
   return (
     <>

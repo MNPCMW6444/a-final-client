@@ -3,13 +3,10 @@ import Box from "@mui/material/Box";
 import { Dispatch, SetStateAction, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import drawerWidthSettings from "../../config/drawerWidthSettings";
-import {
-  addItem,
-  editItem,
-  removeItem,
-} from "../../store/reducers/itemsReducer";
+import { mutate } from "../../store/reducers/itemsReducer";
+
 import pageTypeSelector from "../../store/selectors/pageTypeSelector";
-import { SubscribtionTypes } from "../../utils/enums";
+import { Mutations, SubscribtionTypes } from "../../utils/enums";
 import GenericTable from "../GenericTable/GenericTable";
 import SideBar from "../SideBar/SideBar";
 
@@ -85,25 +82,55 @@ export default function GenericPage({
   useEffect(() => {
     eventMutation &&
       eventMutation.type === SubscribtionTypes.add &&
-      dispatch(addItem({ ...eventMutation.event }));
+      dispatch(
+        mutate({
+          payload: { variables: { newItem: { ...eventMutation.event } } },
+          type: Mutations.addEvent,
+        })
+      );
     eventMutation &&
       eventMutation.type === SubscribtionTypes.edit &&
-      dispatch(editItem({ ...eventMutation.event }));
+      dispatch(
+        mutate({
+          payload: { variables: { newItem: { ...eventMutation.event } } },
+          type: Mutations.editEvent,
+        })
+      );
     eventMutation &&
       eventMutation.type === SubscribtionTypes.delete &&
-      dispatch(removeItem(eventMutation.id));
+      dispatch(
+        mutate({
+          payload: { variables: { newItem: { ...eventMutation.id } } },
+          type: Mutations.deleteEvent,
+        })
+      );
   }, [dispatch, eventMutation]);
 
   useEffect(() => {
     taskMutation &&
       taskMutation.type === SubscribtionTypes.add &&
-      dispatch(addItem({ ...taskMutation.task }));
+      dispatch(
+        mutate({
+          payload: { variables: { newItem: { ...taskMutation.event } } },
+          type: Mutations.addTask,
+        })
+      );
     taskMutation &&
       taskMutation.type === SubscribtionTypes.edit &&
-      dispatch(editItem({ ...taskMutation.task }));
+      dispatch(
+        mutate({
+          payload: { variables: { newItem: { ...taskMutation.event } } },
+          type: Mutations.editTask,
+        })
+      );
     taskMutation &&
       taskMutation.type === SubscribtionTypes.delete &&
-      dispatch(removeItem(taskMutation.id));
+      dispatch(
+        mutate({
+          payload: { variables: { newItem: { ...taskMutation.id } } },
+          type: Mutations.deleteTask,
+        })
+      );
   }, [dispatch, taskMutation]);
 
   return (
