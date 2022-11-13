@@ -1,16 +1,14 @@
 import { ReactNotifications } from "react-notifications-component";
 import "react-notifications-component/dist/theme.css";
 import { createTheme, CssBaseline, ThemeProvider } from "@mui/material";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 
 import TopBar from "./components/TopBar/TopBar";
 import CalendarRouter from "./components/CalendarRouter/CalendarRouter";
 import { FormProvider } from "./context/FormContext";
 import { Item, Event, Task } from "./types";
-import { gql, useQuery, useMutation } from "@apollo/client";
+import { gql, useQuery } from "@apollo/client";
 import { ItemTypes } from "./utils/enums";
-import { useDispatch } from "react-redux";
-import { addMutation } from "./store/reducers/itemsReducer";
 
 const colorMap = new Map();
 colorMap.set("Red", "🔴");
@@ -51,107 +49,8 @@ const getAllTasks = gql`
   }
 `;
 
-const deleteEvent = gql`
-  mutation Mutation($id: String) {
-    deleteEvent(id: $id)
-  }
-`;
-
-const deleteTask = gql`
-  mutation Mutation($id: String) {
-    deleteTask(id: $id)
-  }
-`;
-
-const editEvent = gql`
-  mutation Mutation($newItem: EventInput) {
-    editEvent(newItem: $newItem) {
-      _id
-      title
-      description
-      beginningTime
-      endingTime
-      color
-      invitedGuests
-      location
-      notificationTime
-    }
-  }
-`;
-
-const editTask = gql`
-  mutation Mutation($newItem: TaskInput) {
-    editTask(newItem: $newItem) {
-      _id
-      title
-      description
-      estimatedTime
-      status
-      priority
-      untilDate
-      review
-      timeSpent
-    }
-  }
-`;
-
-const createTask = gql`
-  mutation Mutation($newItem: TaskInput) {
-    createTask(newItem: $newItem) {
-      _id
-      title
-      description
-      estimatedTime
-      status
-      priority
-      untilDate
-      review
-      timeSpent
-    }
-  }
-`;
-
-const createEvent = gql`
-  mutation Mutation($newItem: EventInput) {
-    createEvent(newItem: $newItem) {
-      _id
-      title
-      description
-      beginningTime
-      endingTime
-      color
-      invitedGuests
-      location
-      notificationTime
-    }
-  }
-`;
-
 function App() {
   const [drawerOpen, setDrawerOpen] = useState<boolean>(false);
-
-  const [editEventFunc] = useMutation(editEvent);
-  const [editTaskFunc] = useMutation(editTask);
-  const [createTaskFunc] = useMutation(createTask);
-  const [createEventFunc] = useMutation(createEvent);
-  const [deleteTaskFunc] = useMutation(deleteTask);
-  const [deleteEventFunc] = useMutation(deleteEvent);
-
-  const dispatch = useDispatch();
-
-  useEffect(() => {
-    dispatch(addMutation(createEventFunc));
-
-    dispatch(addMutation(createTaskFunc));
-
-    dispatch(addMutation(editEventFunc));
-
-    dispatch(addMutation(editTaskFunc));
-
-    dispatch(addMutation(deleteEventFunc));
-
-    dispatch(addMutation(deleteTaskFunc));
-  }, []);
 
   const commonProps = {
     setDrawerOpen: setDrawerOpen,

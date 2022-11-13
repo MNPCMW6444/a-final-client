@@ -17,13 +17,13 @@ import drawerWidthSettings from "../../config/drawerWidthSettings";
 import quickFiltersConfig from "../../config/quickFilters";
 import GenericQuickFilter from "../QuickFilter/QuickFilter";
 import { Typography } from "@mui/material";
-import { ItemTypes, Mutations, PageTypes } from "../../utils/enums";
+import { ItemTypes, PageTypes } from "../../utils/enums";
 import FormContext from "../../context/FormContext";
 
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 
 import itemsSelector from "../../store/selectors/itemsSelector";
-import { mutate, removeItem } from "../../store/reducers/itemsReducer";
+import { gql, useMutation } from "@apollo/client";
 
 interface GenericTableProps {
   columns: Map<string, string> | undefined;
@@ -99,8 +99,23 @@ const innerOtherStyle = {
   paddingRight: "5px",
 };
 
+const deleteEvent = gql`
+  mutation Mutation($id: String) {
+    deleteEvent(id: $id)
+  }
+`;
+
+const deleteTask = gql`
+  mutation Mutation($id: String) {
+    deleteTask(id: $id)
+  }
+`;
+
 const GenericTable = ({ columns, pageType }: GenericTableProps) => {
   const { setIsFormOpen, setItem } = useContext(FormContext);
+
+  const [deleteTaskFunc] = useMutation(deleteTask);
+  const [deleteEventFunc] = useMutation(deleteEvent);
 
   const [hoveringLongText, setHoveringLongText] = useState<boolean>(false);
 
@@ -115,8 +130,6 @@ const GenericTable = ({ columns, pageType }: GenericTableProps) => {
       ] as keyof typeof quickFiltersConfig
     ].map(() => false)
   );
-
-  const dispatch = useDispatch();
 
   useEffect(() => {
     setActiveQuickfilters(
@@ -147,19 +160,8 @@ const GenericTable = ({ columns, pageType }: GenericTableProps) => {
 
   const deleteItem = async (item: Item) => {
     item.type === ItemTypes.event
-      ? dispatch(
-          mutate({
-            payload: { variables: { id: item._id } },
-            type: Mutations.deleteEvent,
-          })
-        )
-      : dispatch(
-          mutate({
-            payload: { variables: { id: item._id } },
-            type: Mutations.deleteTask,
-          })
-        );
-    dispatch(removeItem(item._id));
+      ? deleteEventFunc({ variables: { id: item._id } })
+      : deleteTaskFunc({ variables: { id: item._id } });
   };
 
   const sortData = (property: string) => {

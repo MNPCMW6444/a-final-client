@@ -9,7 +9,7 @@ import {
   removeItem,
 } from "../../store/reducers/itemsReducer";
 import pageTypeSelector from "../../store/selectors/pageTypeSelector";
-import { SubscribtionTypes } from "../../utils/enums";
+import { subscribtionTypes } from "../../utils/enums";
 import GenericTable from "../GenericTable/GenericTable";
 import SideBar from "../SideBar/SideBar";
 
@@ -84,25 +84,25 @@ export default function GenericPage({
 
   useEffect(() => {
     eventMutation &&
-      eventMutation.type === SubscribtionTypes.add &&
+      eventMutation.type === subscribtionTypes.add &&
       dispatch(addItem({ ...eventMutation.event }));
     eventMutation &&
-      eventMutation.type === SubscribtionTypes.edit &&
+      eventMutation.type === subscribtionTypes.edit &&
       dispatch(editItem({ ...eventMutation.event }));
     eventMutation &&
-      eventMutation.type === SubscribtionTypes.delete &&
+      eventMutation.type === subscribtionTypes.delete &&
       dispatch(removeItem(eventMutation.id));
   }, [dispatch, eventMutation]);
 
   useEffect(() => {
     taskMutation &&
-      taskMutation.type === SubscribtionTypes.add &&
+      taskMutation.type === subscribtionTypes.add &&
       dispatch(addItem({ ...taskMutation.task }));
     taskMutation &&
-      taskMutation.type === SubscribtionTypes.edit &&
+      taskMutation.type === subscribtionTypes.edit &&
       dispatch(editItem({ ...taskMutation.task }));
     taskMutation &&
-      taskMutation.type === SubscribtionTypes.delete &&
+      taskMutation.type === subscribtionTypes.delete &&
       dispatch(removeItem(taskMutation.id));
   }, [dispatch, taskMutation]);
 
