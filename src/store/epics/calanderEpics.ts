@@ -5,6 +5,14 @@ import { ItemTypes } from "../../utils/enums";
 import { from } from "rxjs";
 import { Task, Event, Item } from "../../types";
 
+import { ADD_ITEM, REMOVE_ITEM } from "../constans";
+
+import { Epic } from "redux-observable";
+
+import { RootState } from "../store";
+
+import { ActionsType } from "../store";
+
 const client = new ApolloClient({
   uri: "http://localhost:4000/graphql",
   cache: new InMemoryCache(),
@@ -65,17 +73,16 @@ const deleteTask = gql`
   }
 `;
 
-const addItemsEpic = (action$: any) =>
+const addItemsEpic: Epic<ActionsType, ActionsType, RootState> = (action$) =>
   action$.pipe(
-    ofType("items/addItem"),
-    mergeMap((action: any) => {
+    ofType(ADD_ITEM),
+    mergeMap((action) => {
       let event;
       let task;
       if (action.payload.type === ItemTypes.event)
         event = { ...action.payload } as Event;
       if (action.payload.type === ItemTypes.task)
         task = { ...action.payload } as Task;
-
       if (event) {
         event.beginningTime =
           new Date(event.beginningTime).toLocaleDateString() +
@@ -131,23 +138,21 @@ const addItemsEpic = (action$: any) =>
           mutation: item?.type === ItemTypes.event ? createEvent : createTask,
           variables: { newItem: item },
         })
-      ).pipe(
-        map((response) => {
-          return response;
-        })
-      );
+      ).pipe(map((response) => response));
     })
   );
 
-const removeItemsEpic = (action$: any) =>
+const removeItemsEpic: Epic<ActionsType, ActionsType, RootState> = (action$) =>
   action$.pipe(
-    ofType("items/removeItem"),
-    mergeMap((action: any) =>
-      client.mutate({
-        mutation:
-          action.payload.type === ItemTypes.event ? deleteEvent : deleteTask,
-        variables: { id: action.payload },
-      })
+    ofType(REMOVE_ITEM),
+    mergeMap((action) =>
+      from(
+        client.mutate({
+          mutation:
+            action.payload.type === ItemTypes.event ? deleteEvent : deleteTask,
+          variables: { id: action.payload },
+        })
+      ).pipe(map((response) => response))
     )
   );
 
