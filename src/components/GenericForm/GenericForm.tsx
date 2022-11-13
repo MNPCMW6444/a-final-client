@@ -10,7 +10,7 @@ import SelectInput from "./SelectInput";
 import selectButton from "../CalendarButton/CalendarButton";
 import DateInput from "./DateInput";
 import FormContext from "../../context/FormContext";
-import { mutate } from "../../store/reducers/itemsReducer";
+import { addItem, editItem, mutate } from "../../store/reducers/itemsReducer";
 import { useDispatch } from "react-redux";
 
 interface GenericFormProps {
@@ -35,28 +35,46 @@ const GenericForm = ({ item }: GenericFormProps) => {
   const handleFormSend = async () => {
     let itemStateCopy = itemState;
     delete itemStateCopy.__typename;
-    itemStateCopy.type
-      ? dispatch(
+    if (itemStateCopy.type) {
+      if (type === ItemTypes.event)
+        dispatch(
           mutate({
             payload: {
               variables: { newItem: { ...itemStateCopy, type } },
             },
-            type:
-              type === ItemTypes.event
-                ? Mutations.editEvent
-                : Mutations.editTask,
-          })
-        )
-      : dispatch(
-          mutate({
-            payload: {
-              variables: { newItem: { ...itemStateCopy, type } },
-            },
-            type:
-              type === ItemTypes.event ? Mutations.addEvent : Mutations.addTask,
+            type: Mutations.editEvent,
           })
         );
-    setIsFormOpen(false);
+      else
+        dispatch(
+          mutate({
+            payload: {
+              variables: { newItem: { ...itemStateCopy, type } },
+            },
+            type: Mutations.editTask,
+          })
+        );
+      dispatch(editItem({ ...itemStateCopy, type }));
+    } else {
+      if (type === ItemTypes.event)
+        dispatch(
+          mutate({
+            payload: {
+              variables: { newItem: { ...itemStateCopy, type } },
+            },
+            type: Mutations.addEvent,
+          })
+        );
+      else
+        dispatch(
+          mutate({
+            payload: { variables: { newItem: { ...itemStateCopy, type } } },
+            type: Mutations.addTask,
+          })
+        );
+      setIsFormOpen(false);
+    }
+    dispatch(addItem({ ...itemStateCopy, type }));
   };
 
   return (

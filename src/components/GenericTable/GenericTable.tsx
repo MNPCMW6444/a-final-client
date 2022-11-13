@@ -23,8 +23,7 @@ import FormContext from "../../context/FormContext";
 import { useDispatch, useSelector } from "react-redux";
 
 import itemsSelector from "../../store/selectors/itemsSelector";
-import { mutate } from "../../store/reducers/itemsReducer";
-import { fetchQuotes } from "../../store/epics";
+import { mutate, removeItem } from "../../store/reducers/itemsReducer";
 
 interface GenericTableProps {
   columns: Map<string, string> | undefined;
@@ -149,17 +148,18 @@ const GenericTable = ({ columns, pageType }: GenericTableProps) => {
   const deleteItem = async (item: Item) => {
     item.type === ItemTypes.event
       ? dispatch(
-          fetchQuotes({
+          mutate({
             payload: { variables: { id: item._id } },
             type: Mutations.deleteEvent,
           })
         )
       : dispatch(
-          fetchQuotes({
+          mutate({
             payload: { variables: { id: item._id } },
             type: Mutations.deleteTask,
           })
         );
+    dispatch(removeItem(item._id));
   };
 
   const sortData = (property: string) => {
