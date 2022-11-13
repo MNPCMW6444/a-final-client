@@ -9,10 +9,19 @@ enum ItemTypes {
   task = "Task",
 }
 
-enum subscribtionTypes {
+enum SubscribtionTypes {
   add = "add",
   edit = "edit",
   delete = "delete",
 }
 
-export { PageTypes, ItemTypes, subscribtionTypes };
+enum Mutations {
+  addEvent = "addEvent",
+  addTask = "addTask",
+  editEvent = "editEvent",
+  editTask = "editTask",
+  deleteEvent = "deleteEvent",
+  deleteTask = "deleteTask",
+}
+
+export { PageTypes, ItemTypes, SubscribtionTypes, Mutations };

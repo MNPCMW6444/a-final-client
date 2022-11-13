@@ -4,79 +4,14 @@ import { Item } from "../../types";
 import Button from "@mui/material/Button";
 import fieldsConfig from "../../config/fields";
 import InputLabel from "@mui/material/InputLabel";
-import { ItemTypes } from "../../utils/enums";
+import { ItemTypes, Mutations } from "../../utils/enums";
 import TextInput from "./TextInput";
 import SelectInput from "./SelectInput";
 import selectButton from "../CalendarButton/CalendarButton";
 import DateInput from "./DateInput";
 import FormContext from "../../context/FormContext";
-import { gql, useMutation } from "@apollo/client";
-import { addItem, editItem } from "../../store/reducers/itemsReducer";
+import { addItem, editItem, mutate } from "../../store/reducers/itemsReducer";
 import { useDispatch } from "react-redux";
-
-const editEvent = gql`
-  mutation Mutation($newItem: EventInput) {
-    editEvent(newItem: $newItem) {
-      _id
-      title
-      description
-      beginningTime
-      endingTime
-      color
-      invitedGuests
-      location
-      notificationTime
-    }
-  }
-`;
-
-const editTask = gql`
-  mutation Mutation($newItem: TaskInput) {
-    editTask(newItem: $newItem) {
-      _id
-      title
-      description
-      estimatedTime
-      status
-      priority
-      untilDate
-      review
-      timeSpent
-    }
-  }
-`;
-
-const createTask = gql`
-  mutation Mutation($newItem: TaskInput) {
-    createTask(newItem: $newItem) {
-      _id
-      title
-      description
-      estimatedTime
-      status
-      priority
-      untilDate
-      review
-      timeSpent
-    }
-  }
-`;
-
-const createEvent = gql`
-  mutation Mutation($newItem: EventInput) {
-    createEvent(newItem: $newItem) {
-      _id
-      title
-      description
-      beginningTime
-      endingTime
-      color
-      invitedGuests
-      location
-      notificationTime
-    }
-  }
-`;
 
 interface GenericFormProps {
   item: Item;
@@ -95,40 +30,51 @@ const GenericForm = ({ item }: GenericFormProps) => {
 
   const fieldsArray = fieldsConfig.get(type);
 
-  const [editEventFunc] = useMutation(editEvent);
-  const [editTaskFunc] = useMutation(editTask);
-  const [createTaskFunc] = useMutation(createTask);
-  const [createEventFunc] = useMutation(createEvent);
-
   const dispatch = useDispatch();
 
   const handleFormSend = async () => {
     let itemStateCopy = itemState;
     delete itemStateCopy.__typename;
-    if (itemStateCopy.type)
-      if (type === ItemTypes.event) {
-        const res = await editEventFunc({
-          variables: { newItem: { ...itemStateCopy, type } },
-        });
-        !res.errors && dispatch(editItem({ ...itemStateCopy, type }));
-      } else {
-        const res = await editTaskFunc({
-          variables: { newItem: { ...itemStateCopy, type } },
-        });
-        !res.errors && dispatch(editItem({ ...itemStateCopy, type }));
-      }
-    else if (type === ItemTypes.event) {
-      const res = await createEventFunc({
-        variables: { newItem: { ...itemStateCopy, type } },
-      });
-      !res.errors && dispatch(addItem({ ...itemStateCopy, type }));
+    if (itemStateCopy.type) {
+      if (type === ItemTypes.event)
+        dispatch(
+          mutate({
+            payload: {
+              variables: { newItem: { ...itemStateCopy, type } },
+            },
+            type: Mutations.editEvent,
+          })
+        );
+      else
+        dispatch(
+          mutate({
+            payload: {
+              variables: { newItem: { ...itemStateCopy, type } },
+            },
+            type: Mutations.editTask,
+          })
+        );
+      dispatch(editItem({ ...itemStateCopy, type }));
     } else {
-      const res = await createTaskFunc({
-        variables: { newItem: { ...itemStateCopy, type } },
-      });
-      !res.errors && dispatch(addItem({ ...itemStateCopy, type }));
+      if (type === ItemTypes.event)
+        dispatch(
+          mutate({
+            payload: {
+              variables: { newItem: { ...itemStateCopy, type } },
+            },
+            type: Mutations.addEvent,
+          })
+        );
+      else
+        dispatch(
+          mutate({
+            payload: { variables: { newItem: { ...itemStateCopy, type } } },
+            type: Mutations.addTask,
+          })
+        );
+      setIsFormOpen(false);
     }
-    setIsFormOpen(false);
+    dispatch(addItem({ ...itemStateCopy, type }));
   };
 
   return (
