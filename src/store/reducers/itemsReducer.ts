@@ -34,6 +34,7 @@ export const itemsSlice = createSlice({
       state.items = action.payload;
     },
     addItem: (state: ItemsState, action: PayloadAction<Item>) => {
+      console.log("REDUCERRR");
       let event, task;
       if (action.payload.type === ItemTypes.event)
         event = action.payload as Event;

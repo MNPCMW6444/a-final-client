@@ -46,38 +46,6 @@ const editTask = gql`
   }
 `;
 
-const createTask = gql`
-  mutation Mutation($newItem: TaskInput) {
-    createTask(newItem: $newItem) {
-      _id
-      title
-      description
-      estimatedTime
-      status
-      priority
-      untilDate
-      review
-      timeSpent
-    }
-  }
-`;
-
-const createEvent = gql`
-  mutation Mutation($newItem: EventInput) {
-    createEvent(newItem: $newItem) {
-      _id
-      title
-      description
-      beginningTime
-      endingTime
-      color
-      invitedGuests
-      location
-      notificationTime
-    }
-  }
-`;
-
 interface GenericFormProps {
   item: Item;
 }
@@ -97,8 +65,6 @@ const GenericForm = ({ item }: GenericFormProps) => {
 
   const [editEventFunc] = useMutation(editEvent);
   const [editTaskFunc] = useMutation(editTask);
-  const [createTaskFunc] = useMutation(createTask);
-  const [createEventFunc] = useMutation(createEvent);
 
   const dispatch = useDispatch();
 
@@ -117,17 +83,10 @@ const GenericForm = ({ item }: GenericFormProps) => {
         });
         !res.errors && dispatch(editItem({ ...itemStateCopy, type }));
       }
-    else if (type === ItemTypes.event) {
-      const res = await createEventFunc({
-        variables: { newItem: { ...itemStateCopy, type } },
-      });
-      !res.errors && dispatch(addItem({ ...itemStateCopy, type }));
-    } else {
-      const res = await createTaskFunc({
-        variables: { newItem: { ...itemStateCopy, type } },
-      });
-      !res.errors && dispatch(addItem({ ...itemStateCopy, type }));
-    }
+    else if (type === ItemTypes.event)
+      dispatch(addItem({ ...itemStateCopy, type }));
+    else dispatch(addItem({ ...itemStateCopy, type }));
+
     setIsFormOpen(false);
   };
 
