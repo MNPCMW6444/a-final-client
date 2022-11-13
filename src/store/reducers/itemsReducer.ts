@@ -1,12 +1,28 @@
 import { createSlice } from "@reduxjs/toolkit";
 import type { PayloadAction } from "@reduxjs/toolkit";
 import { Item, Task, Event } from "../../types";
-import { ItemTypes, PageTypes } from "../../utils/enums";
+import { ItemTypes, Mutations, PageTypes } from "../../utils/enums";
+import {
+  ApolloCache,
+  DefaultContext,
+  MutationFunctionOptions,
+  OperationVariables,
+} from "@apollo/client";
 
 export interface ItemsState {
   items: Item[];
   pageType: PageTypes;
   searchValue: string;
+  mutations: ((
+    options?:
+      | MutationFunctionOptions<
+          any,
+          OperationVariables,
+          DefaultContext,
+          ApolloCache<any>
+        >
+      | undefined
+  ) => Promise<any>)[];
 }
 
 const colorMap = new Map();
@@ -24,6 +40,7 @@ const initialState: ItemsState = {
   items: [],
   pageType: PageTypes.today,
   searchValue: "",
+  mutations: [],
 };
 
 export const itemsSlice = createSlice({
@@ -156,10 +173,66 @@ export const itemsSlice = createSlice({
     search: (state: ItemsState, action: PayloadAction<string>) => {
       state.searchValue = action.payload;
     },
+    addMutation: (
+      state: ItemsState,
+      action: PayloadAction<
+        (
+          options?:
+            | MutationFunctionOptions<
+                any,
+                OperationVariables,
+                DefaultContext,
+                ApolloCache<any>
+              >
+            | undefined
+        ) => Promise<any>
+      >
+    ) => {
+      state.mutations.push(action.payload);
+    },
+    mutate: (
+      state: ItemsState,
+      action: PayloadAction<{ payload: { variables: any }; type: Mutations }>
+    ) => {
+      debugger;
+      switch (action.payload.type) {
+        case Mutations.addEvent:
+          state.mutations[0](action.payload.payload);
+          break;
+        case Mutations.addTask:
+          state.mutations[1](action.payload.payload);
+          break;
+        case Mutations.editEvent:
+          state.mutations[2](action.payload.payload);
+          break;
+        case Mutations.editTask:
+          state.mutations[3](action.payload.payload);
+          break;
+        case Mutations.deleteEvent:
+          state.mutations[4](action.payload.payload);
+          break;
+        case Mutations.deleteTask:
+          state.mutations[5](action.payload.payload);
+          break;
+      }
+      state.mutations[0](action.payload.payload);
+      state.mutations[0](action.payload.payload);
+      state.mutations[0](action.payload.payload);
+      state.mutations[0](action.payload.payload);
+      state.mutations[0](action.payload.payload);
+    },
   },
 });
 
-export const { setAllItems, addItem, editItem, removeItem, navigate, search } =
-  itemsSlice.actions;
+export const {
+  setAllItems,
+  addItem,
+  editItem,
+  removeItem,
+  navigate,
+  search,
+  addMutation,
+  mutate,
+} = itemsSlice.actions;
 
 export default itemsSlice.reducer;
