@@ -4,9 +4,9 @@ import { Dispatch, SetStateAction, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import drawerWidthSettings from "../../config/drawerWidthSettings";
 import {
-  addItem,
-  editItem,
-  removeItem,
+  addItemLocally,
+  editItemLocally,
+  removeItemLocally,
 } from "../../store/reducers/itemsReducer";
 import pageTypeSelector from "../../store/selectors/pageTypeSelector";
 import { subscribtionTypes } from "../../utils/enums";
@@ -85,25 +85,25 @@ export default function GenericPage({
   useEffect(() => {
     eventMutation &&
       eventMutation.type === subscribtionTypes.add &&
-      dispatch(addItem({ ...eventMutation.event }));
+      dispatch(addItemLocally({ ...eventMutation.event }));
     eventMutation &&
       eventMutation.type === subscribtionTypes.edit &&
-      dispatch(editItem({ ...eventMutation.event }));
+      dispatch(editItemLocally({ ...eventMutation.event }));
     eventMutation &&
       eventMutation.type === subscribtionTypes.delete &&
-      dispatch(removeItem(eventMutation.id));
+      dispatch(removeItemLocally(eventMutation.id));
   }, [dispatch, eventMutation]);
 
   useEffect(() => {
     taskMutation &&
       taskMutation.type === subscribtionTypes.add &&
-      dispatch(addItem({ ...taskMutation.task }));
+      dispatch(addItemLocally({ ...taskMutation.task }));
     taskMutation &&
       taskMutation.type === subscribtionTypes.edit &&
-      dispatch(editItem({ ...taskMutation.task }));
+      dispatch(editItemLocally({ ...taskMutation.task }));
     taskMutation &&
       taskMutation.type === subscribtionTypes.delete &&
-      dispatch(removeItem(taskMutation.id));
+      dispatch(removeItemLocally(taskMutation.id));
   }, [dispatch, taskMutation]);
 
   return (

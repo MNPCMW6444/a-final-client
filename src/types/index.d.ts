@@ -1,5 +1,5 @@
 interface Item {
-  _id: string;
+  _id: any;
   title: string;
   description: string;
   type: string;

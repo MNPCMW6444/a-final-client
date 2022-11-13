@@ -83,10 +83,11 @@ const GenericForm = ({ item }: GenericFormProps) => {
         });
         !res.errors && dispatch(editItem({ ...itemStateCopy, type }));
       }
-    else if (type === ItemTypes.event)
-      dispatch(addItem({ ...itemStateCopy, type }));
-    else dispatch(addItem({ ...itemStateCopy, type }));
-
+    else {
+      if (type === ItemTypes.event)
+        dispatch(addItem({ ...itemStateCopy, type }));
+      else dispatch(addItem({ ...itemStateCopy, type }));
+    }
     setIsFormOpen(false);
   };
 
