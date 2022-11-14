@@ -1,18 +1,16 @@
 import { ApolloClient, gql, InMemoryCache } from "@apollo/client";
-import { map, mergeMap } from "rxjs/operators";
-import { ofType } from "redux-observable";
+import { catchError, filter, map, mergeMap } from "rxjs/operators";
+import { Epic, ofType, StateObservable } from "redux-observable";
 import { ItemTypes } from "../../utils/enums";
 import { from } from "rxjs";
 import { Task, Event, Item } from "../../types";
-
 import { ADD_ITEM, REMOVE_ITEM } from "../constans";
+import { ItemsState } from "../reducers/itemsReducer";
 
-import { Epic } from "redux-observable";
-
-import { RootState } from "../store";
+import { isActionOf } from "typesafe-actions";
+import { addItemAction } from "../actions/index";
 
 import { ActionsType } from "../store";
-
 const client = new ApolloClient({
   uri: "http://localhost:4000/graphql",
   cache: new InMemoryCache(),
@@ -73,10 +71,26 @@ const deleteTask = gql`
   }
 `;
 
-const addItemsEpic: Epic<ActionsType, ActionsType, RootState> = (action$) =>
-  action$.pipe(
-    ofType(ADD_ITEM),
-    mergeMap((action) => {
+const addItemsEpic:  Epic<
+ActionsType,
+ActionsType,
+ItemsState,
+>  = (
+  action$,
+  store$
+) =>
+action$.pipe(
+  filter(isActionOf(actions.weatherGetAction)),
+  mergeMap((action) =>
+    from(getWeather(action.payload.lat, action.payload.lng)).pipe(
+      map(actions.weatherSetAction),
+      catchError((error) => of(actions.weatherErrorAction(error)))
+    )
+  )
+  /* action$.pipe(
+    filter(isActionOf(addItemAction)),
+    mergeMap((action: { payload: Item }) => {
+      console.log(store$);
       let event;
       let task;
       if (action.payload.type === ItemTypes.event)
@@ -138,21 +152,41 @@ const addItemsEpic: Epic<ActionsType, ActionsType, RootState> = (action$) =>
           mutation: item?.type === ItemTypes.event ? createEvent : createTask,
           variables: { newItem: item },
         })
-      ).pipe(map((response) => response));
+      ).pipe(
+        map(
+          (response) =>
+            !response.errors &&
+            store$.pipe(
+              mergeMap(async (store) => store.items.push(response.data.newItem))
+            )
+        )
+      );
     })
-  );
+  ); */
 
-const removeItemsEpic: Epic<ActionsType, ActionsType, RootState> = (action$) =>
+const removeItemsEpic = (action$: any, store$: StateObservable<ItemsState>) =>
   action$.pipe(
     ofType(REMOVE_ITEM),
-    mergeMap((action) =>
+    mergeMap((action: { payload: Item }) =>
       from(
         client.mutate({
           mutation:
             action.payload.type === ItemTypes.event ? deleteEvent : deleteTask,
-          variables: { id: action.payload },
+          variables: { id: action.payload._id },
         })
-      ).pipe(map((response) => response))
+      ).pipe(
+        map(
+          (response) =>
+            !response.errors &&
+            store$.pipe(
+              mergeMap((store) =>
+                store.items.filter(
+                  (item: Item) => item._id !== response.data.id
+                )
+              )
+            )
+        )
+      )
     )
   );
 

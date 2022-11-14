@@ -145,7 +145,7 @@ const GenericTable = ({ columns, pageType }: GenericTableProps) => {
       );
   });
 
-  const deleteItem = async (item: Item) => dispatch(removeItem(item._id));
+  const deleteItem = async (item: Item) => dispatch(removeItem(item));
   const sortData = (property: string) => {
     if (optimizedData)
       optimizedData = optimizedData.sort((itemA: Item, itemB: Item) => {

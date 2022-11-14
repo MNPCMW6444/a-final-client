@@ -93,7 +93,7 @@ export const itemsSlice = createSlice({
       );
       item && state.items.push(item);
     },
-    removeItem: (state: ItemsState, action: PayloadAction<string>) => {
+    removeItem: (state: ItemsState, action: PayloadAction<Item>) => {
       // can return a pormise or a "waiting message to the UI"
     },
     addItemLocally: (state: ItemsState, action: PayloadAction<Item>) => {
