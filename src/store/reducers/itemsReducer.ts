@@ -3,11 +3,11 @@ import type { PayloadAction } from "@reduxjs/toolkit";
 import { Item, Task, Event } from "../../types";
 import { ItemTypes, PageTypes } from "../../utils/enums";
 
-export interface ItemsState {
+export type ItemsState = {
   items: Item[];
   pageType: PageTypes;
   searchValue: string;
-}
+};
 
 const colorMap = new Map();
 colorMap.set("Red", "🔴");
@@ -94,7 +94,7 @@ export const itemsSlice = createSlice({
       item && state.items.push(item);
     },
     removeItem: (state: ItemsState, action: PayloadAction<Item>) => {
-      // can return a pormise or a "waiting message to the UI"
+      state.items = state.items.filter((item) => item._id !== action.payload);
     },
     addItemLocally: (state: ItemsState, action: PayloadAction<Item>) => {
       let event, task;

@@ -1,21 +1,18 @@
 import { ApolloClient, gql, InMemoryCache } from "@apollo/client";
-import { catchError, filter, map, mergeMap } from "rxjs/operators";
-import { Epic, ofType, StateObservable } from "redux-observable";
+import { mergeMap } from "rxjs/operators";
+import { Epic, ofType } from "redux-observable";
 import { ItemTypes } from "../../utils/enums";
-import { from } from "rxjs";
 import { Task, Event, Item } from "../../types";
-import { ADD_ITEM, REMOVE_ITEM } from "../constans";
-import { ItemsState } from "../reducers/itemsReducer";
-
-import { isActionOf } from "typesafe-actions";
-import { addItemAction } from "../actions/index";
+import { itemActions } from "../constants/constans";
+import { ItemsState, removeItemLocally } from "../reducers/itemsReducer";
 
 import { ActionsType } from "../store";
+
 const client = new ApolloClient({
   uri: "http://localhost:4000/graphql",
   cache: new InMemoryCache(),
 });
-
+/* 
 const colorMap = new Map();
 colorMap.set("Red", "🔴");
 colorMap.set("Orange", "🟠");
@@ -26,7 +23,7 @@ colorMap.set("Purple", "🟣");
 colorMap.set("Black", "⚫️");
 colorMap.set("White", "⚪️");
 colorMap.set("Brown", "🟤");
-
+ */
 const createTask = gql`
   mutation Mutation($newItem: TaskInput) {
     createTask(newItem: $newItem) {
@@ -71,33 +68,19 @@ const deleteTask = gql`
   }
 `;
 
-const addItemsEpic:  Epic<
-ActionsType,
-ActionsType,
-ItemsState,
->  = (
-  action$,
-  store$
-) =>
-action$.pipe(
-  filter(isActionOf(actions.weatherGetAction)),
-  mergeMap((action) =>
-    from(getWeather(action.payload.lat, action.payload.lng)).pipe(
-      map(actions.weatherSetAction),
-      catchError((error) => of(actions.weatherErrorAction(error)))
-    )
-  )
-  /* action$.pipe(
-    filter(isActionOf(addItemAction)),
-    mergeMap((action: { payload: Item }) => {
-      console.log(store$);
+export type MyEpic = Epic<ActionsType, ActionsType, ItemsState, any>;
+
+const addItemsEpic: MyEpic = (action$) =>
+  action$.pipe(
+    ofType(itemActions.addItem),
+    mergeMap((action: ActionsType) => {
       let event;
       let task;
-      if (action.payload.type === ItemTypes.event)
-        event = { ...action.payload } as Event;
-      if (action.payload.type === ItemTypes.task)
-        task = { ...action.payload } as Task;
-      if (event) {
+      if ((action.payload as Item).type === ItemTypes.event)
+        event = { ...(action.payload as Item) } as Event;
+      if ((action.payload as Item).type === ItemTypes.task)
+        task = { ...(action.payload as Item) } as Task;
+      /*      if (event) {
         event.beginningTime =
           new Date(event.beginningTime).toLocaleDateString() +
           ", " +
@@ -143,50 +126,34 @@ action$.pipe(
               new Date(task.untilDate).toLocaleTimeString().indexOf(":", 3)
             );
         task.type = ItemTypes.task;
-      }
+      } */
       const item: Item = task || event || ({} as Item);
       delete item?._id;
       delete item?.__typename;
-      return from(
-        client.mutate({
+      return client
+        .mutate({
           mutation: item?.type === ItemTypes.event ? createEvent : createTask,
           variables: { newItem: item },
         })
-      ).pipe(
-        map(
-          (response) =>
-            !response.errors &&
-            store$.pipe(
-              mergeMap(async (store) => store.items.push(response.data.newItem))
-            )
-        )
-      );
+        .then((res) => removeItemLocally(res.data));
     })
-  ); */
+  );
 
-const removeItemsEpic = (action$: any, store$: StateObservable<ItemsState>) =>
+const removeItemsEpic: MyEpic = (action$) =>
   action$.pipe(
-    ofType(REMOVE_ITEM),
-    mergeMap((action: { payload: Item }) =>
-      from(
-        client.mutate({
+    ofType(itemActions.removeItem),
+    mergeMap((action: ActionsType) =>
+      client
+        .mutate({
           mutation:
-            action.payload.type === ItemTypes.event ? deleteEvent : deleteTask,
-          variables: { id: action.payload._id },
+            (action.payload as Item).type === "event"
+              ? deleteEvent
+              : deleteTask,
+          variables: {
+            id: (action.payload as Item)._id,
+          },
         })
-      ).pipe(
-        map(
-          (response) =>
-            !response.errors &&
-            store$.pipe(
-              mergeMap((store) =>
-                store.items.filter(
-                  (item: Item) => item._id !== response.data.id
-                )
-              )
-            )
-        )
-      )
+        .then((res) => removeItemLocally(res.data))
     )
   );
 

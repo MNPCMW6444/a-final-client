@@ -151,7 +151,6 @@ const GenericTable = ({ columns, pageType }: GenericTableProps) => {
       optimizedData = optimizedData.sort((itemA: Item, itemB: Item) => {
         setSortDirection(!sortDirection);
         setSortColumn(property);
-
         return (
           itemA &&
           itemB &&

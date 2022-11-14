@@ -3,9 +3,9 @@ import { Item, Task, Event } from "../../types";
 import { ItemTypes, PageTypes } from "../../utils/enums";
 import { RootState } from "../store";
 
-const selectFilterItems = (state: RootState) => state.itemsSlice.items;
-const selectPageType = (state: RootState) => state.itemsSlice.pageType;
-const selectSearchValue = (state: RootState) => state.itemsSlice.searchValue;
+const selectFilterItems = (state: RootState) => state.items;
+const selectPageType = (state: RootState) => state.pageType;
+const selectSearchValue = (state: RootState) => state.searchValue;
 
 const itemsSelector = createSelector(
   selectFilterItems,
