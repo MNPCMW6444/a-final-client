@@ -28,12 +28,11 @@ const removeItemsEpic: Epic<
   ActionsType,
   ActionsType,
   ItemsState,
-  typeof store
-> = (action$, _, storeEnhancer) =>
+  StoreEnhancer
+> = (action$) =>
   action$.pipe(
     ofType(itemActions.removeItem),
     mergeMap(async (action: ActionsType) => {
-      debugger;
       const res = await client.mutate({
         mutation:
           (action.payload as Item).type === "Event" ? deleteEvent : deleteTask,
@@ -41,12 +40,17 @@ const removeItemsEpic: Epic<
           id: (action.payload as Item)._id,
         },
       });
+      debugger;
       if (!res.errors)
-        (storeEnhancer as unknown as StoreEnhancer)
-          .store()
-          .dispatch(removeItemLocally((action.payload as Item)._id));
-      else return { errMsgs: res.errors };
-      return res.data;
+        return {
+          type: itemActions.removeItemLocally,
+          payload: res.data.deleteTask || res.data.deleteEvent,
+        };
+      else
+        return {
+          type: "error",
+          payload: res.data.deleteTask || res.data.deleteEvent,
+        };
     })
   );
 

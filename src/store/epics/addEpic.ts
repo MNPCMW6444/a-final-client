@@ -1,5 +1,5 @@
-import { ApolloClient, gql, InMemoryCache } from "@apollo/client";
-import { mergeMap } from "rxjs/operators";
+import { ApolloClient, gql, InMemoryCache, Observable } from "@apollo/client";
+import { map, mergeMap } from "rxjs/operators";
 import { Epic, ofType } from "redux-observable";
 import { ItemTypes } from "../../utils/enums";
 import { Item } from "../../types";
@@ -7,6 +7,7 @@ import { itemActions } from "../constants/constans";
 import { addItemLocally, ItemsState } from "../reducers/itemsReducer";
 
 import store, { ActionsType, StoreEnhancer } from "../store";
+import { from } from "rxjs";
 
 const client = new ApolloClient({
   uri: "http://localhost:4000/graphql",
@@ -45,15 +46,16 @@ const createEvent = gql`
   }
 `;
 
-const addItemsEpic: Epic<ActionsType, ActionsType, ItemsState, typeof store> = (
-  action$,
-  _,
-  storeEnhancer
-) =>
+const addItemsEpic: Epic<
+  ActionsType,
+  ActionsType,
+  ItemsState,
+  StoreEnhancer
+> = (action$) =>
   action$.pipe(
     ofType(itemActions.addItem),
-    mergeMap(async (action: ActionsType) => {
-      const item = action.payload as Item;
+    mergeMap(async ({ payload }: ActionsType) => {
+      const item = payload as Item;
       delete item?._id;
       delete item?.__typename;
       const res = await client.mutate({
@@ -61,11 +63,15 @@ const addItemsEpic: Epic<ActionsType, ActionsType, ItemsState, typeof store> = (
         variables: { newItem: item },
       });
       if (!res.errors)
-        (storeEnhancer as unknown as StoreEnhancer)
-          .store()
-          .dispatch(addItemLocally(action.payload as Item));
-      else return { errMsgs: res.errors };
-      return res.data;
+        return {
+          type: itemActions.addItemLocally,
+          payload: res.data.createTask || res.data.createEvent,
+        };
+      else
+        return {
+          type: "error",
+          payload: res.data.createTask || res.data.createEvent,
+        };
     })
   );
 
