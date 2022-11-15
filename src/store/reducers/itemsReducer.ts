@@ -94,9 +94,10 @@ export const itemsSlice = createSlice({
       item && state.items.push(item);
     },
     removeItem: (state: ItemsState, action: PayloadAction<Item>) => {
-      state.items = state.items.filter((item) => item._id !== action.payload);
+      // state.items = state.items.filter((item) => item._id !== action.payload);
     },
     addItemLocally: (state: ItemsState, action: PayloadAction<Item>) => {
+      console.log("addItemLocally");
       let event, task;
       if (
         action.payload.type === ItemTypes.event ||

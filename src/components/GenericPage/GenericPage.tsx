@@ -81,7 +81,7 @@ export default function GenericPage({
   const taskMutation = taskMutationData && taskMutationData.taskMutation;
 
   const dispatch = useDispatch();
-
+  /* 
   useEffect(() => {
     eventMutation &&
       eventMutation.type === subscribtionTypes.add &&
@@ -92,9 +92,9 @@ export default function GenericPage({
     eventMutation &&
       eventMutation.type === subscribtionTypes.delete &&
       dispatch(removeItemLocally(eventMutation.id));
-  }, [dispatch, eventMutation]);
+  }, [dispatch, eventMutation]); */
 
-  useEffect(() => {
+  /*   useEffect(() => {
     taskMutation &&
       taskMutation.type === subscribtionTypes.add &&
       dispatch(addItemLocally({ ...taskMutation.task }));
@@ -105,7 +105,7 @@ export default function GenericPage({
       taskMutation.type === subscribtionTypes.delete &&
       dispatch(removeItemLocally(taskMutation.id));
   }, [dispatch, taskMutation]);
-
+ */
   return (
     <Box>
       <GenericTable columns={columns} pageType={pageType} />

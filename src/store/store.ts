@@ -1,29 +1,40 @@
-import { configureStore } from "@reduxjs/toolkit";
-import itemsReducer, { ItemsState } from "./reducers/itemsReducer";
 import { createEpicMiddleware } from "redux-observable";
 
-import { addItemsEpic, removeItemsEpic } from "./epics/calanderEpics";
+import epics from "./epics";
 
 import { actions } from "./reducers/itemsReducer";
 
 import { ActionType } from "typesafe-actions";
+
+import { applyMiddleware, compose, createStore } from "redux";
+
+import reducers, { ItemsState } from "./reducers/itemsReducer";
 
 export type ActionsType = ActionType<typeof actions>;
 
 const epicMiddleware = createEpicMiddleware<
   ActionsType,
   ActionsType,
-  ItemsState,
-  any
->({});
-
-const store = configureStore({
-  reducer: itemsReducer,
-  middleware: [epicMiddleware],
+  ItemsState
+>({
+  dependencies: { ItemsState: () => store },
 });
 
-epicMiddleware.run(addItemsEpic);
-epicMiddleware.run(removeItemsEpic);
+const composeEnhancers = compose;
+
+// Create store
+function configureStore(initialState?: ItemsState) {
+  // configure middlewares
+  const middlewares = [epicMiddleware];
+  // compose enhancers
+  const enhancer = composeEnhancers(applyMiddleware(...middlewares));
+  // create store
+  return createStore(reducers, initialState, enhancer);
+}
+
+const store = configureStore();
+
+epicMiddleware.run(epics);
 
 export type RootState = ReturnType<typeof store.getState>;
 
