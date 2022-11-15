@@ -3,12 +3,13 @@ import { mergeMap } from "rxjs/operators";
 import { Epic, ofType } from "redux-observable";
 import { Item } from "../../types";
 import { itemActions } from "../constants/constans";
-import { ItemsState, removeItemLocally } from "../reducers/itemsReducer";
+import { ItemsState } from "../reducers/itemsReducer";
 
-import store, { ActionsType, StoreEnhancer } from "../store";
+import { ActionsType, StoreEnhancer } from "../store";
+import domain from "../../config/domain";
 
 const client = new ApolloClient({
-  uri: "http://localhost:4000/graphql",
+  uri: "http://" + domain + "/graphql",
   cache: new InMemoryCache(),
 });
 
