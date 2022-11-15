@@ -6,7 +6,7 @@ import { Item } from "../../types";
 import { itemActions } from "../constants/constans";
 import { addItemLocally, ItemsState } from "../reducers/itemsReducer";
 
-import store, { ActionsType } from "../store";
+import store, { ActionsType, StoreEnhancer } from "../store";
 
 const client = new ApolloClient({
   uri: "http://localhost:4000/graphql",
@@ -48,7 +48,7 @@ const createEvent = gql`
 const addItemsEpic: Epic<ActionsType, ActionsType, ItemsState, typeof store> = (
   action$,
   _,
-  b
+  storeEnhancer
 ) =>
   action$.pipe(
     ofType(itemActions.addItem),
@@ -60,9 +60,10 @@ const addItemsEpic: Epic<ActionsType, ActionsType, ItemsState, typeof store> = (
         mutation: item?.type === ItemTypes.event ? createEvent : createTask,
         variables: { newItem: item },
       });
-      debugger;
       if (!res.errors)
-        b.ItemsState().dispatch(addItemLocally(action.payload as Item));
+        (storeEnhancer as unknown as StoreEnhancer)
+          .store()
+          .dispatch(addItemLocally(action.payload as Item));
       else return { errMsgs: res.errors };
       return res.data;
     })

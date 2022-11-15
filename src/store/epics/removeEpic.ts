@@ -5,7 +5,7 @@ import { Item } from "../../types";
 import { itemActions } from "../constants/constans";
 import { ItemsState, removeItemLocally } from "../reducers/itemsReducer";
 
-import store, { ActionsType } from "../store";
+import store, { ActionsType, StoreEnhancer } from "../store";
 
 const client = new ApolloClient({
   uri: "http://localhost:4000/graphql",
@@ -29,19 +29,22 @@ const removeItemsEpic: Epic<
   ActionsType,
   ItemsState,
   typeof store
-> = (action$, _, store) =>
+> = (action$, _, storeEnhancer) =>
   action$.pipe(
     ofType(itemActions.removeItem),
     mergeMap(async (action: ActionsType) => {
+      debugger;
       const res = await client.mutate({
         mutation:
-          (action.payload as Item).type === "event" ? deleteEvent : deleteTask,
+          (action.payload as Item).type === "Event" ? deleteEvent : deleteTask,
         variables: {
           id: (action.payload as Item)._id,
         },
       });
       if (!res.errors)
-        store.dispatch(removeItemLocally((action.payload as Item)._id));
+        (storeEnhancer as unknown as StoreEnhancer)
+          .store()
+          .dispatch(removeItemLocally((action.payload as Item)._id));
       else return { errMsgs: res.errors };
       return res.data;
     })

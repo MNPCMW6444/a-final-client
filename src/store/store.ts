@@ -9,6 +9,7 @@ import { ActionType } from "typesafe-actions";
 import { applyMiddleware, compose, createStore } from "redux";
 
 import reducers, { ItemsState } from "./reducers/itemsReducer";
+import { Store } from "@reduxjs/toolkit";
 
 export type ActionsType = ActionType<typeof actions>;
 
@@ -17,8 +18,10 @@ const epicMiddleware = createEpicMiddleware<
   ActionsType,
   ItemsState
 >({
-  dependencies: { ItemsState: () => store },
+  dependencies: { store: () => store },
 });
+
+export type StoreEnhancer = { store: () => Store };
 
 const composeEnhancers = compose;
 
