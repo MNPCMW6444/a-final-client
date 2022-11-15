@@ -15,19 +15,19 @@ import {
   ApolloProvider,
 } from "@apollo/client";
 import { getMainDefinition } from "@apollo/client/utilities";
-import { GraphQLWsLink } from "@apollo/client/link/subscriptions";
-import { createClient } from "graphql-ws";
+/* import { GraphQLWsLink } from "@apollo/client/link/subscriptions";
+import { createClient } from "graphql-ws"; */
 import domain from "./config/domain";
 
 const httpLink = new HttpLink({
   uri: "http://" + domain + "/graphql",
 });
-
+/* 
 const wsLink = new GraphQLWsLink(
   createClient({
     url: "ws://" + domain + "/graphql-subscriptions",
   })
-);
+); */
 
 const splitLink = split(
   ({ query }) => {
@@ -37,8 +37,8 @@ const splitLink = split(
       definition.operation === "subscription"
     );
   },
-  wsLink,
-  httpLink
+  /*   wsLink,
+   */ httpLink
 );
 
 const client = new ApolloClient({
