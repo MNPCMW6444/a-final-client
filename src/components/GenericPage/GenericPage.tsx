@@ -1,16 +1,16 @@
-import { gql, useSubscription } from "@apollo/client";
-import Box from "@mui/material/Box";
-import { Dispatch, SetStateAction, useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
+/* import { gql, useSubscription } from "@apollo/client";
+ */ import Box from "@mui/material/Box";
+import { Dispatch, SetStateAction /*, useEffect */ } from "react";
+import { /* useDispatch, */ useSelector } from "react-redux";
 import drawerWidthSettings from "../../config/drawerWidthSettings";
-import {
+/* import {
   addItemLocally,
   editItemLocally,
   removeItemLocally,
-} from "../../store/reducers/itemsReducer";
+} from "../../store/reducers/itemsReducer";*/
 import pageTypeSelector from "../../store/selectors/pageTypeSelector";
-import { subscribtionTypes } from "../../utils/enums";
-import GenericTable from "../GenericTable/GenericTable";
+/* import { subscribtionTypes } from "../../utils/enums";
+ */ import GenericTable from "../GenericTable/GenericTable";
 import SideBar from "../SideBar/SideBar";
 
 interface GenericPageProps {
@@ -25,7 +25,7 @@ const navigationStyle = {
   width: { sm: drawerWidthSettings.width },
   flexShrink: { sm: 0 },
 };
-
+/* 
 const taskMutationSubscription = gql`
   subscription Subscription {
     taskMutation {
@@ -65,7 +65,7 @@ const eventMutationSubscription = gql`
     }
   }
 `;
-
+ */
 export default function GenericPage({
   commonProps,
   columns,
@@ -74,14 +74,14 @@ export default function GenericPage({
 
   const pageType = useSelector(pageTypeSelector);
 
-  const eventMutationData = useSubscription(eventMutationSubscription).data;
-  const eventMutation = eventMutationData && eventMutationData.eventMutation;
-
-  const taskMutationData = useSubscription(taskMutationSubscription).data;
-  const taskMutation = taskMutationData && taskMutationData.taskMutation;
-
-  const dispatch = useDispatch();
-  /* 
+  /*   const eventMutationData = useSubscription(eventMutationSubscription).data;
+   */ /*   const eventMutation = eventMutationData && eventMutationData.eventMutation;
+   */
+  /*   const taskMutationData = useSubscription(taskMutationSubscription).data;
+   */ /*   const taskMutation = taskMutationData && taskMutationData.taskMutation;
+   */
+  /*   const dispatch = useDispatch();
+   */ /* 
   useEffect(() => {
     eventMutation &&
       eventMutation.type === subscribtionTypes.add &&
