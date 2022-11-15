@@ -75,4 +75,4 @@ const addItemsEpic: Epic<
     })
   );
 
-export default [addItemsEpic];
+export default addItemsEpic;

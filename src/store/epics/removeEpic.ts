@@ -55,4 +55,4 @@ const removeItemsEpic: Epic<
     })
   );
 
-export default [removeItemsEpic];
+export default removeItemsEpic;
