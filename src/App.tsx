@@ -9,6 +9,7 @@ import { FormProvider } from "./context/FormContext";
 import { Item, Event, Task } from "./types";
 import { gql, useQuery } from "@apollo/client";
 import { ItemTypes } from "./utils/enums";
+import Test from "./Test";
 
 const colorMap = new Map();
 colorMap.set("Red", "🔴");
@@ -139,14 +140,15 @@ function App() {
 
   return (
     <FormProvider>
-      <ThemeProvider theme={createTheme()}>
+      {/*  <ThemeProvider theme={createTheme()}>
         <ReactNotifications />
         <CssBaseline />
         <TopBar drawerOpen={drawerOpen} setDrawerOpen={setDrawerOpen} />
         <ShowIf show={data}>
           <CalendarRouter commonProps={commonProps} data={processedData} />
         </ShowIf>
-      </ThemeProvider>
+      </ThemeProvider> */}
+      <Test />
     </FormProvider>
   );
 }
